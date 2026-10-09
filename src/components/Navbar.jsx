@@ -13,15 +13,31 @@ function Navbar({ cartCount = 0 }) {
 
   return (
     <header className="sticky top-0 z-50 border-b border-gamer-primary/20 bg-gamer-bg/95 shadow-[0_8px_30px_rgba(127,82,255,0.08)] backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+      <div className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center px-4 py-3 sm:px-6 md:grid-cols-[1fr_auto_1fr] lg:px-8">
         <Link
           to="/"
           aria-label="Nexus Gaming, inicio"
-          className="group flex items-center gap-3"
+          className="group flex items-center gap-3 justify-self-start"
           onClick={() => setMenuOpen(false)}
         >
-          <span className="grid size-10 place-items-center rounded border border-gamer-primary/50 bg-gamer-card text-lg font-black text-gamer-primary shadow-[0_0_18px_rgba(127,82,255,0.25)] transition group-hover:shadow-[0_0_24px_rgba(127,82,255,0.45)]">
-            N
+          <span className="grid size-10 place-items-center rounded border border-gamer-primary/50 bg-gamer-card text-gamer-primary shadow-[0_0_18px_rgba(127,82,255,0.25)] transition group-hover:shadow-[0_0_24px_rgba(127,82,255,0.45)]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="size-6"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M6.636 5.636a9 9 0 0 1 13.397 .747l-5.619 5.617l5.619 5.617a9 9 0 1 1 -13.397 -11.981" />
+              <path d="M11.5 7.5a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
+            </svg>
           </span>
           <span className="leading-tight">
             <span className="block text-sm font-black tracking-[0.14em] text-gamer-textMain">
@@ -33,19 +49,19 @@ function Navbar({ cartCount = 0 }) {
           </span>
         </Link>
 
-        <nav aria-label="Navegación principal" className="hidden items-center gap-8 md:flex">
+        <nav aria-label="Navegación principal" className="hidden items-center justify-self-center gap-8 md:flex">
           {navLinks.map(({ label, to }) => (
             <Link
               key={to}
               to={to}
-              className="text-sm font-medium text-gamer-textMain/75 transition hover:text-gamer-accent"
+              className="text-sm font-medium text-gamer-textMain/75 transition duration-200 hover:-translate-y-0.5 hover:scale-105 hover:text-gamer-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
             >
               {label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="col-start-2 flex items-center justify-self-end gap-3 md:col-start-3">
           <Link
             to="/carrito"
             aria-label={`Carrito, ${itemCount} ${itemCount === 1 ? 'producto' : 'productos'}`}
@@ -89,7 +105,7 @@ function Navbar({ cartCount = 0 }) {
                   key={to}
                   to={to}
                   onClick={() => setMenuOpen(false)}
-                  className="border-b border-gamer-textMain/10 py-3 text-sm font-medium text-gamer-textMain/85 last:border-0 hover:text-gamer-accent"
+                  className="border-b border-gamer-textMain/10 py-3 text-sm font-medium text-gamer-textMain/85 transition duration-200 last:border-0 hover:translate-x-1 hover:text-gamer-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gamer-accent"
                 >
                   {label}
                   {to === '/carrito' && (
