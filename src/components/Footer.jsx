@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import nexusWordmark from '../assets/nexus-wordmark.jpg'
 
 const quickLinks = [
   { label: 'Inicio', to: '/' },
@@ -14,8 +15,8 @@ const socialLinks = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -37,8 +38,8 @@ const socialLinks = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -61,8 +62,8 @@ const socialLinks = [
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
+        width="20"
+        height="20"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -81,69 +82,51 @@ const socialLinks = [
 function Footer() {
   return (
     <footer className="border-t border-gamer-accent/20 bg-gamer-bg text-gamer-textMain">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
-        <div className="max-w-sm">
-          <Link to="/" className="inline-flex items-center gap-3" aria-label="Nexus Gaming, inicio">
-            <span className="grid size-10 place-items-center rounded border border-gamer-primary/50 bg-gamer-card text-gamer-primary shadow-[0_0_14px_rgba(127,82,255,0.18)]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-                className="size-6"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M6.636 5.636a9 9 0 0 1 13.397 .747l-5.619 5.617l5.619 5.617a9 9 0 1 1 -13.397 -11.981" />
-                <path d="M11.5 7.5a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" />
-              </svg>
-            </span>
-            <span>
-              <span className="block text-sm font-black tracking-[0.14em]">NEXUS</span>
-              <span className="block text-[0.65rem] font-semibold tracking-[0.24em] text-gamer-accent">
-                GAMING
-              </span>
-            </span>
+      <div className="mx-auto grid max-w-7xl items-start gap-8 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
+        
+        {/* Columna 1: Logo y texto en 1 sola línea */}
+        <div>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
+            aria-label="Nexus Gaming, inicio"
+          >
+            <img
+              src={nexusWordmark}
+              alt="Nexus Gaming"
+              className="aspect-[7/4] w-40 rounded-lg object-cover shadow-[0_0_18px_rgba(127,82,255,0.16)]"
+            />
           </Link>
-          <p className="mt-4 text-sm leading-6 text-gamer-textMain/65">
+          <p className="mt-3 text-xs whitespace-nowrap text-gamer-textMain/65">
             Tu próximo nivel empieza con el equipo indicado.
           </p>
         </div>
 
+        {/* Columna 2: Enlaces Rápidos en una sola línea horizontal */}
         <div>
-          <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-gamer-accent">
+          <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-gamer-accent mb-3">
             Enlaces rápidos
           </h2>
-          <ul className="mt-4 grid grid-cols-2 gap-3">
+          <ul className="flex flex-wrap items-center gap-4 sm:gap-6">
             {quickLinks.map(({ label, to }) => (
               <li key={to}>
                 <Link
                   to={to}
-                  className="group flex items-center gap-2 rounded-lg border border-gamer-primary/40 bg-gamer-card px-3 py-2.5 text-sm font-medium text-gamer-textMain/80 transition-all duration-300 hover:border-gamer-accent hover:text-gamer-accent hover:shadow-[0_0_15px_rgba(0,240,255,0.4)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gamer-accent"
+                  className="text-xs font-medium text-gamer-textMain/75 transition-colors duration-200 hover:text-gamer-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
                 >
-                  <span
-                    aria-hidden="true"
-                    className="text-xs font-black text-gamer-primary transition-transform duration-300 group-hover:translate-x-0.5 group-hover:text-gamer-accent"
-                  >
-                    &gt;
-                  </span>
-                  <span>{label}</span>
+                  {label}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        <div>
-          <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-gamer-accent">
+        {/* Columna 3: Comunidad */}
+        <div className="md:justify-self-end md:text-right">
+          <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-gamer-accent mb-3">
             Comunidad
           </h2>
-          <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-3">
+          <ul className="flex flex-wrap gap-3 md:justify-end">
             {socialLinks.map(({ label, href, icon }) => (
               <li key={label}>
                 <a
@@ -151,7 +134,7 @@ function Footer() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={`Visitar ${label} de Nexus Gaming`}
-                  className="inline-flex text-gamer-accent transition-transform duration-200 hover:scale-110 hover:text-gamer-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-gamer-accent/30 bg-[#131322] text-gamer-accent transition-all duration-300 hover:scale-110 hover:border-gamer-accent hover:text-cyan-300 hover:shadow-[0_0_12px_rgba(6,182,212,0.4)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
                 >
                   {icon}
                 </a>
@@ -159,10 +142,11 @@ function Footer() {
             ))}
           </ul>
         </div>
+
       </div>
 
-      <div className="border-t border-gamer-textMain/10 px-4 py-5 text-center text-xs text-gamer-textMain/50 sm:px-6">
-        © {new Date().getFullYear()} Nexus Gaming. Proyecto académico para la materia de la facultad.
+      <div className="border-t border-gray-800/80 px-4 py-4 text-center text-xs text-gamer-textMain/60 sm:px-6">
+        © {new Date().getFullYear()} BINARY MINDS. Todos los derechos reservados.
       </div>
     </footer>
   )

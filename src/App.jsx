@@ -1,11 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import Inicio from './pages/indexs'
-import Productos from './pages/productos'
-import DetalleProductos from './pages/detalleProductos'
-import Carrito from './pages/carrito'
-import Contactos from './pages/contactos'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
+import { Inicio, Productos, DetalleProductos, Carrito, Contacto } from './pages'
+import { Navbar, Footer } from './components'
 
 function App() {
   return (
@@ -18,7 +13,7 @@ function App() {
             <Route path="/productos" element={<Productos />} />
             <Route path="/productos/:id" element={<DetalleProductos />} />
             <Route path="/carrito" element={<Carrito />} />
-            <Route path="/contacto" element={<Contactos />} />
+            <Route path="/contacto" element={<Contacto />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

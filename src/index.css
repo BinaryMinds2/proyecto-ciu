@@ -82,6 +82,10 @@ h2 {
   color: var(--text-h);
 }
 
+.home-title {
+  font-family: 'Chakra Petch', sans-serif;
+}
+
 h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
