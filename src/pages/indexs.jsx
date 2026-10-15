@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
-import bannerImage from '../assets/banner.jpg'
+import bannerImage from '../assets/banner.png'
+import bannerImageLight from '../assets/banner-light.jpg'
 
-function Inicio() {
+function Inicio({ isLightMode = false }) {
   return (
     <section className="relative isolate flex-1 overflow-hidden bg-gamer-bg">
       <div
@@ -64,7 +65,7 @@ function Inicio() {
             className="absolute inset-8 rounded-full bg-gamer-primary/20 blur-3xl"
           />
           <img
-            src={bannerImage}
+            src={isLightMode ? bannerImageLight : bannerImage}
             alt="Teclado, mouse y tarjeta gráfica gamer con iluminación violeta y celeste"
             className="relative aspect-video w-full rounded-2xl border border-gamer-primary/25 object-cover shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
           />

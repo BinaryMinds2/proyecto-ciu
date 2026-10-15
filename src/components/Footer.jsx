@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import nexusWordmark from '../assets/nexus-wordmark.jpg'
+import nexusWordmark from '../assets/nexus-wordmark.png'
+import nexusWordmarkLight from '../assets/nexus-wordmark-light.jpg'
 
 const quickLinks = [
   { label: 'Inicio', to: '/' },
@@ -79,7 +80,7 @@ const socialLinks = [
   },
 ]
 
-function Footer() {
+function Footer({ isLightMode = false }) {
   return (
     <footer className="border-t border-gamer-accent/20 bg-gamer-bg text-gamer-textMain">
       <div className="mx-auto grid max-w-7xl items-start gap-8 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
@@ -92,7 +93,7 @@ function Footer() {
             aria-label="Nexus Gaming, inicio"
           >
             <img
-              src={nexusWordmark}
+              src={isLightMode ? nexusWordmarkLight : nexusWordmark}
               alt="Nexus Gaming"
               className="aspect-[7/4] w-40 rounded-lg object-cover shadow-[0_0_18px_rgba(127,82,255,0.16)]"
             />
@@ -134,7 +135,7 @@ function Footer() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={`Visitar ${label} de Nexus Gaming`}
-                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-gamer-accent/30 bg-[#131322] text-gamer-accent transition-all duration-300 hover:scale-110 hover:border-gamer-accent hover:text-cyan-300 hover:shadow-[0_0_12px_rgba(6,182,212,0.4)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-gamer-accent/30 bg-gamer-footer text-gamer-accent transition-all duration-300 hover:scale-110 hover:border-gamer-accent hover:text-cyan-300 hover:shadow-[0_0_12px_rgba(6,182,212,0.4)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
                 >
                   {icon}
                 </a>
@@ -145,7 +146,7 @@ function Footer() {
 
       </div>
 
-      <div className="border-t border-gray-800/80 px-4 py-4 text-center text-xs text-gamer-textMain/60 sm:px-6">
+      <div className="border-t border-gamer-textMain/10 px-4 py-4 text-center text-xs text-gamer-textMain/60 sm:px-6">
         © {new Date().getFullYear()} BINARY MINDS. Todos los derechos reservados.
       </div>
     </footer>

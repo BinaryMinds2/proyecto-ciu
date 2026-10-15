@@ -8,12 +8,13 @@ module.exports = {
     extend: {
       colors: {
         gamer: {
-          bg: '#0F0E17',
-          card: '#1A1829',
-          primary: '#7F52FF',
-          accent: '#00F0FF',
-          textMain: '#F3F4F6',
-          textMuted: '#9CA3AF',
+          bg: 'rgb(var(--gamer-bg) / <alpha-value>)',
+          card: 'rgb(var(--gamer-card) / <alpha-value>)',
+          footer: 'rgb(var(--gamer-footer) / <alpha-value>)',
+          primary: 'rgb(var(--gamer-primary) / <alpha-value>)',
+          accent: 'rgb(var(--gamer-accent) / <alpha-value>)',
+          textMain: 'rgb(var(--gamer-textMain) / <alpha-value>)',
+          textMuted: 'rgb(var(--gamer-textMuted) / <alpha-value>)',
         }
       }
     },

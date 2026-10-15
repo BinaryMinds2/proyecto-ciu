@@ -22,6 +22,14 @@
   --heading: 'Plus Jakarta Sans', sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
+  --gamer-bg: 15 14 23;
+  --gamer-card: 26 24 41;
+  --gamer-footer: 19 19 34;
+  --gamer-primary: 127 82 255;
+  --gamer-accent: 0 240 255;
+  --gamer-textMain: 243 244 246;
+  --gamer-textMuted: 156 163 175;
+
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
   color-scheme: dark;
@@ -35,6 +43,32 @@
   @media (max-width: 1024px) {
     font-size: 16px;
   }
+}
+
+:root[data-theme='light'] {
+  --text: #596174;
+  --text-h: #242536;
+  --bg: #f6f7fb;
+  --border: #dfe2eb;
+  --code-bg: #eceef5;
+  --accent: #6847d9;
+  --accent-bg: rgba(104, 71, 217, 0.1);
+  --accent-border: rgba(104, 71, 217, 0.45);
+  --social-bg: rgba(31, 35, 51, 0.08);
+  --shadow:
+    rgba(31, 35, 51, 0.1) 0 10px 15px -3px, rgba(31, 35, 51, 0.05) 0 4px 6px -2px;
+
+  --gamer-bg: 246 247 251;
+  --gamer-card: 255 255 255;
+  --gamer-footer: 255 255 255;
+  --gamer-primary: 104 71 217;
+  --gamer-accent: 0 128 145;
+  --gamer-textMain: 36 37 54;
+  --gamer-textMuted: 89 97 116;
+
+  color-scheme: light;
+  color: var(--text);
+  background: var(--bg);
 }
 
 @media (prefers-color-scheme: dark) {

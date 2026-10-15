@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import nexusSymbol from '../assets/nexus-symbol.jpg'
+import nexusSymbol from '../assets/nexus-symbol.png'
+import nexusSymbolLight from '../assets/nexus-symbol-light.png'
 
 const navLinks = [
   { label: 'Inicio', to: '/' },
@@ -8,7 +9,13 @@ const navLinks = [
   { label: 'Contacto', to: '/contacto' },
 ]
 
-function Navbar({ cartCount = 0, eyeRestMode = false, onToggleEyeRestMode }) {
+function Navbar({
+  cartCount = 0,
+  isLightMode = false,
+  onToggleTheme,
+  eyeRestMode = false,
+  onToggleEyeRestMode,
+}) {
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
   const itemCount = Math.max(0, Number(cartCount) || 0)
@@ -24,7 +31,7 @@ function Navbar({ cartCount = 0, eyeRestMode = false, onToggleEyeRestMode }) {
           onClick={() => setMenuOpen(false)}
         >
           <img
-            src={nexusSymbol}
+            src={isLightMode ? nexusSymbolLight : nexusSymbol}
             alt=""
             aria-hidden="true"
             className="size-10 rounded-xl border border-gamer-primary/50 object-cover shadow-[0_0_18px_rgba(127,82,255,0.25)] transition group-hover:shadow-[0_0_24px_rgba(127,82,255,0.45)]"
@@ -55,6 +62,44 @@ function Navbar({ cartCount = 0, eyeRestMode = false, onToggleEyeRestMode }) {
         </nav>
 
         <div className="col-start-2 flex items-center justify-self-end gap-3 md:col-start-3">
+          <button
+            type="button"
+            aria-label={isLightMode ? 'Activar modo oscuro' : 'Activar modo claro'}
+            aria-pressed={isLightMode}
+            title={isLightMode ? 'Activar modo oscuro' : 'Activar modo claro'}
+            onClick={onToggleTheme}
+            className="grid size-10 place-items-center rounded-xl border border-gamer-primary/30 bg-gamer-card text-gamer-accent transition hover:border-gamer-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gamer-accent"
+          >
+            {isLightMode ? (
+              <svg
+                aria-hidden="true"
+                className="size-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6.5 6.5 0 0 0 8.268 8.268c.344-.215.825-.003.803.401" />
+              </svg>
+            ) : (
+              <svg
+                aria-hidden="true"
+                className="size-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+              </svg>
+            )}
+          </button>
+
           <button
             type="button"
             role="switch"
