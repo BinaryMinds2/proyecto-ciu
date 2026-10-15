@@ -8,7 +8,7 @@ const navLinks = [
   { label: 'Contacto', to: '/contacto' },
 ]
 
-function Navbar({ cartCount = 0 }) {
+function Navbar({ cartCount = 0, eyeRestMode = false, onToggleEyeRestMode }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
   const itemCount = Math.max(0, Number(cartCount) || 0)
@@ -55,6 +55,33 @@ function Navbar({ cartCount = 0 }) {
         </nav>
 
         <div className="col-start-2 flex items-center justify-self-end gap-3 md:col-start-3">
+          <button
+            type="button"
+            role="switch"
+            aria-checked={eyeRestMode}
+            aria-label={
+              eyeRestMode
+                ? 'Desactivar modo descanso visual'
+                : 'Activar modo descanso visual'
+            }
+            title={eyeRestMode ? 'Desactivar modo descanso visual' : 'Activar modo descanso visual'}
+            onClick={onToggleEyeRestMode}
+            className={`eye-rest-toggle relative h-7 w-12 rounded-full border p-0.5 transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gamer-accent ${
+              eyeRestMode
+                ? 'border-amber-200/60 bg-amber-100/30'
+                : 'border-gamer-accent/30 bg-gamer-card'
+            }`}
+          >
+            <span
+              aria-hidden="true"
+              className={`block size-5 rounded-full shadow transition-transform ${
+                eyeRestMode
+                  ? 'translate-x-5 bg-amber-100'
+                  : 'translate-x-0 bg-gamer-accent'
+              }`}
+            />
+          </button>
+
           <Link
             to="/carrito"
             aria-label={`Carrito, ${itemCount} ${itemCount === 1 ? 'producto' : 'productos'}`}

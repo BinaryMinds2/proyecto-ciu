@@ -64,6 +64,18 @@ body {
   background: var(--bg);
 }
 
+.site-shell > header,
+.site-shell > main,
+.site-shell > footer {
+  transition: filter 300ms ease;
+}
+
+.site-shell.eye-rest-mode > header,
+.site-shell.eye-rest-mode > main,
+.site-shell.eye-rest-mode > footer {
+  filter: saturate(0.58) brightness(0.92) sepia(0.08);
+}
+
 #root {
   width: 100%;
   min-height: 100vh;
