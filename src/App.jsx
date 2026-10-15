@@ -11,6 +11,7 @@ function App() {
       return false
     }
   })
+  
   const [eyeRestMode, setEyeRestMode] = useState(() => {
     try {
       return window.localStorage.getItem('nexus-eye-rest-mode') === 'true'
@@ -64,6 +65,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Inicio isLightMode={isLightMode} />} />
             <Route path="/productos" element={<Productos />} />
+            <Route path="/producto/:id" element={<DetalleProductos />} />
             <Route path="/productos/:id" element={<DetalleProductos />} />
             <Route path="/carrito" element={<Carrito />} />
             <Route path="/contacto" element={<Contacto />} />
