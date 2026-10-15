@@ -1,6 +1,6 @@
 import { useLayoutEffect, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { Inicio, Productos, DetalleProductos, Carrito, Contacto } from './pages'
+import { Inicio, Productos, DetalleProducto, Carrito, Contacto } from './pages'
 import { Navbar, Footer } from './components'
 
 function App() {
@@ -65,8 +65,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Inicio isLightMode={isLightMode} />} />
             <Route path="/productos" element={<Productos />} />
-            <Route path="/producto/:id" element={<DetalleProductos />} />
-            <Route path="/productos/:id" element={<DetalleProductos />} />
+            <Route path="/producto/:id" element={<DetalleProducto />} />
+            <Route path="/productos/:id" element={<DetalleProducto />} />
             <Route path="/carrito" element={<Carrito />} />
             <Route path="/contacto" element={<Contacto />} />
             <Route path="*" element={<Navigate to="/" replace />} />
