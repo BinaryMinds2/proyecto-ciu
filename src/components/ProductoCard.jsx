@@ -1,20 +1,7 @@
 import { Link } from 'react-router-dom'
 
-function ProductoCard({ producto }) {
+function ProductoCard({ producto, onAddToCart }) {
   const sinStock = producto.stock === 0
-
-  const agregarAlCarrito = () => {
-    const carritoActual = JSON.parse(window.localStorage.getItem('nexus-cart') || '[]')
-    const productoEnCarrito = carritoActual.find((item) => item.id === producto.id)
-
-    if (productoEnCarrito) {
-      productoEnCarrito.cantidad += 1
-    } else {
-      carritoActual.push({ ...producto, cantidad: 1 })
-    }
-
-    window.localStorage.setItem('nexus-cart', JSON.stringify(carritoActual))
-  }
 
   const precioFormateado = new Intl.NumberFormat('es-AR', {
     style: 'currency',
@@ -54,7 +41,7 @@ function ProductoCard({ producto }) {
           <button
             type="button"
             disabled={sinStock}
-            onClick={agregarAlCarrito}
+            onClick={() => onAddToCart(producto)}
             className="rounded-lg bg-gamer-primary px-4 py-2 font-semibold text-white transition hover:bg-gamer-primary/80 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Agregar al carrito

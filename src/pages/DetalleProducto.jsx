@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router-dom'
 import { productos } from '../data/productos'
 
-function DetalleProducto() {
+function DetalleProducto({ onAddToCart }) {
   const { id } = useParams()
   const producto = productos.find((item) => item.id === Number(id))
 
@@ -59,6 +59,7 @@ function DetalleProducto() {
             <button
               type="button"
               disabled={sinStock}
+              onClick={() => onAddToCart(producto)}
               className="rounded-lg bg-gamer-primary px-5 py-3 font-semibold text-white transition hover:bg-gamer-primary/80 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {sinStock ? 'Sin stock' : 'Agregar al carrito'}

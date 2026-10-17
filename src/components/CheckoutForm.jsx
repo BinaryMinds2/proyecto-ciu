@@ -10,7 +10,7 @@ const initialForm = {
   mensaje: '',
 }
 
-function CheckoutForm({ cart = [], onClearCart }) {
+function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
   const [form, setForm] = useState(initialForm)
   const [errors, setErrors] = useState({})
   const [confirmation, setConfirmation] = useState('')
@@ -52,10 +52,12 @@ function CheckoutForm({ cart = [], onClearCart }) {
 
     if (Object.keys(newErrors).length > 0) return
 
-    setConfirmation(`¡Gracias por tu compra, ${form.nombre.trim()}! Te contactaremos pronto.`)
+    const mensaje = `¡Gracias por tu compra, ${form.nombre.trim()}! Te contactaremos pronto.`
+    setConfirmation(mensaje)
     setForm(initialForm)
     setErrors({})
     onClearCart()
+    onPurchaseConfirmed?.(mensaje)
   }
 
   return (

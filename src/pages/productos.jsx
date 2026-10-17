@@ -4,7 +4,7 @@ import { productos } from '../data/productos'
 
 const categorias = ['Todas', 'Periféricos', 'Hardware', 'Setup']
 
-function Productos() {
+function Productos({ onAddToCart }) {
   const [busqueda, setBusqueda] = useState('')
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('Todas')
   const [soloConStock, setSoloConStock] = useState(false)
@@ -109,7 +109,11 @@ function Productos() {
         {productosFiltrados.length > 0 ? (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {productosFiltrados.map((producto) => (
-              <ProductoCard key={producto.id} producto={producto} />
+              <ProductoCard
+                key={producto.id}
+                producto={producto}
+                onAddToCart={onAddToCart}
+              />
             ))}
           </div>
         ) : (
