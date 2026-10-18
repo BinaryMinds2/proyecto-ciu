@@ -15,11 +15,13 @@ function Navbar({
   onToggleTheme,
   eyeRestMode = false,
   onToggleEyeRestMode,
+  hideCart = false,
 }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
   const itemCount = Math.max(0, Number(cartCount) || 0)
   const isCartPage = pathname === '/carrito'
+  const mostrarCarrito = !hideCart && pathname !== '/checkout'
 
   return (
     <header className="sticky top-0 z-50 border-b border-gamer-primary/20 bg-gamer-bg/95 shadow-[0_8px_30px_rgba(127,82,255,0.08)] backdrop-blur">
@@ -127,7 +129,7 @@ function Navbar({
             />
           </button>
 
-          <Link
+          {mostrarCarrito && <Link
             to="/carrito"
             aria-label={`Carrito, ${itemCount} ${itemCount === 1 ? 'producto' : 'productos'}`}
             aria-current={isCartPage ? 'page' : undefined}
@@ -158,7 +160,7 @@ function Navbar({
             >
               {itemCount > 99 ? '99+' : itemCount}
             </span>
-          </Link>
+          </Link>}
 
           <button
             type="button"

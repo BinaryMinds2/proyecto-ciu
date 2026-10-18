@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CheckoutForm } from '../components'
 
 const precioARS = (importe) =>
   new Intl.NumberFormat('es-AR', {
@@ -9,14 +7,9 @@ const precioARS = (importe) =>
     maximumFractionDigits: 0,
   }).format(importe)
 
-function Carrito({ cart, onUpdateQuantity, onRemoveProduct, onClearCart }) {
-  const [purchaseConfirmation, setPurchaseConfirmation] = useState('')
+function Carrito({ cart, onUpdateQuantity, onRemoveProduct }) {
   const cantidadTotal = cart.reduce((total, item) => total + item.cantidad, 0)
   const total = cart.reduce((acumulado, item) => acumulado + item.precio * item.cantidad, 0)
-
-  const confirmarCompra = (mensaje) => {
-    setPurchaseConfirmation(mensaje)
-  }
 
   return (
     <section className="bg-gamer-bg px-4 py-12 text-gamer-textMain sm:px-6 lg:px-8">
@@ -28,15 +21,6 @@ function Carrito({ cart, onUpdateQuantity, onRemoveProduct, onClearCart }) {
         <p className="mb-8 text-gamer-textMain/70">
           {cantidadTotal} {cantidadTotal === 1 ? 'producto' : 'productos'} en tu compra.
         </p>
-
-        {purchaseConfirmation && cart.length === 0 && (
-          <p
-            role="status"
-            className="mb-6 rounded-lg border border-green-400/40 bg-green-400/10 px-4 py-3 text-green-300"
-          >
-            {purchaseConfirmation}
-          </p>
-        )}
 
         {cart.length === 0 ? (
           <div className="rounded-xl border border-dashed border-gamer-primary/30 bg-gamer-card p-10 text-center">
@@ -127,21 +111,14 @@ function Carrito({ cart, onUpdateQuantity, onRemoveProduct, onClearCart }) {
                   El total no incluye costos de envío.
                 </p>
                 <Link
-                  to="/productos"
-                  className="mt-5 block rounded-lg border border-gamer-accent px-4 py-2 text-center font-semibold text-gamer-accent transition hover:bg-gamer-accent hover:text-gamer-bg"
+                  to="/checkout"
+                  className="mt-5 block rounded-lg bg-gamer-primary px-4 py-3 text-center font-bold text-white transition hover:bg-gamer-primary/80"
                 >
-                  Seguir comprando
+                  Continuar con la compra
                 </Link>
               </aside>
             </div>
 
-            <div className="mt-8">
-              <CheckoutForm
-                cart={cart}
-                onClearCart={onClearCart}
-                onPurchaseConfirmed={confirmarCompra}
-              />
-            </div>
           </>
         )}
       </div>

@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { Inicio, Productos, DetalleProducto, Carrito, Contacto } from './pages'
-import { Navbar, Footer } from './components'
+import { CheckoutForm, Navbar, Footer } from './components'
 import { productos } from './data/productos'
 
 function leerCarrito() {
@@ -26,6 +26,66 @@ function leerCarrito() {
     console.error('No se pudo leer el carrito guardado.', error)
     return []
   }
+}
+
+function InterfazAplicacion({
+  cart,
+  setCart,
+  isLightMode,
+  toggleTheme,
+  eyeRestMode,
+  toggleEyeRestMode,
+  agregarAlCarrito,
+  actualizarCantidad,
+  eliminarDelCarrito,
+  cantidadProductos,
+}) {
+  const { pathname } = useLocation()
+  const esCheckout = pathname === '/checkout'
+
+  return (
+    <div className={`site-shell flex min-h-screen flex-col bg-gamer-bg${eyeRestMode ? ' eye-rest-mode' : ''}`}>
+      <Navbar
+        cartCount={cantidadProductos}
+        isLightMode={isLightMode}
+        onToggleTheme={toggleTheme}
+        eyeRestMode={eyeRestMode}
+        onToggleEyeRestMode={toggleEyeRestMode}
+        hideCart={esCheckout}
+      />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<Inicio isLightMode={isLightMode} />} />
+          <Route path="/productos" element={<Productos onAddToCart={agregarAlCarrito} />} />
+          <Route
+            path="/producto/:id"
+            element={<DetalleProducto onAddToCart={agregarAlCarrito} />}
+          />
+          <Route
+            path="/productos/:id"
+            element={<DetalleProducto onAddToCart={agregarAlCarrito} />}
+          />
+          <Route
+            path="/carrito"
+            element={
+              <Carrito
+                cart={cart}
+                onUpdateQuantity={actualizarCantidad}
+                onRemoveProduct={eliminarDelCarrito}
+              />
+            }
+          />
+          <Route
+            path="/checkout"
+            element={<CheckoutForm cart={cart} onClearCart={() => setCart([])} />}
+          />
+          <Route path="/contacto" element={<Contacto />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </main>
+      {!esCheckout && <Footer isLightMode={isLightMode} />}
+    </div>
+  )
 }
 
 function App() {
@@ -122,43 +182,18 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className={`site-shell flex min-h-screen flex-col bg-gamer-bg${eyeRestMode ? ' eye-rest-mode' : ''}`}>
-        <Navbar
-          cartCount={cantidadProductos}
-          isLightMode={isLightMode}
-          onToggleTheme={toggleTheme}
-          eyeRestMode={eyeRestMode}
-          onToggleEyeRestMode={toggleEyeRestMode}
-        />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<Inicio isLightMode={isLightMode} />} />
-            <Route path="/productos" element={<Productos onAddToCart={agregarAlCarrito} />} />
-            <Route
-              path="/producto/:id"
-              element={<DetalleProducto onAddToCart={agregarAlCarrito} />}
-            />
-            <Route
-              path="/productos/:id"
-              element={<DetalleProducto onAddToCart={agregarAlCarrito} />}
-            />
-            <Route
-              path="/carrito"
-              element={
-                <Carrito
-                  cart={cart}
-                  onUpdateQuantity={actualizarCantidad}
-                  onRemoveProduct={eliminarDelCarrito}
-                  onClearCart={() => setCart([])}
-                />
-              }
-            />
-            <Route path="/contacto" element={<Contacto />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </main>
-        <Footer isLightMode={isLightMode} />
-      </div>
+      <InterfazAplicacion
+        cart={cart}
+        setCart={setCart}
+        isLightMode={isLightMode}
+        toggleTheme={toggleTheme}
+        eyeRestMode={eyeRestMode}
+        toggleEyeRestMode={toggleEyeRestMode}
+        agregarAlCarrito={agregarAlCarrito}
+        actualizarCantidad={actualizarCantidad}
+        eliminarDelCarrito={eliminarDelCarrito}
+        cantidadProductos={cantidadProductos}
+      />
     </BrowserRouter>
   )
 }
