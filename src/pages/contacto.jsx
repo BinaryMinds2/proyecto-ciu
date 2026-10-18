@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 const motivos = ['Producto', 'Garantía', 'Mi pedido', 'Otro']
+const whatsappHref = 'https://wa.me/5491112345678?text=Hola%20Nexus%20Gaming%2C%20quiero%20hacer%20una%20consulta.'
 const formularioInicial = {
   nombre: '',
   email: '',
@@ -100,10 +101,20 @@ function Contactos() {
         </p>
 
         <div className="contacto-cards">
-          <article className="contacto-info-card">
-            <span aria-hidden="true">◉</span>
+          <a
+            className="contacto-info-card contacto-whatsapp-card"
+            href={whatsappHref}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Contactar a Nexus Gaming por WhatsApp"
+          >
+            <span className="contacto-whatsapp-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" role="img">
+                <path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.5 0 .1 5.4.1 12c0 2.1.6 4.2 1.7 6L0 24l6.1-1.8a12 12 0 0 0 6 1.6h.1c6.6 0 11.9-5.4 11.9-12 0-3.2-1.3-6.1-3.6-8.3Zm-8.4 18.3h-.1c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-3.6 1.1 1.1-3.5-.2-.4A9.8 9.8 0 0 1 2 12C2 6.5 6.5 2 12.1 2c2.7 0 5.2 1 7.1 3 1.9 1.9 2.9 4.4 2.9 7.1 0 5.5-4.5 10-10 10Zm5.5-7.5c-.3-.2-1.8-.9-2.1-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-1.5-.7-2.5-1.3-3.5-3-.3-.5.3-.5.8-1.7.1-.2 0-.4-.1-.6-.1-.2-.7-1.7-1-2.3-.3-.6-.6-.5-.7-.5h-.6c-.2 0-.6.2-.9.5-.3.3-1.2 1.2-1.2 2.8s1.2 3.3 1.4 3.5c.2.2 2.3 3.5 5.6 4.9.8.3 1.4.5 1.8.6.8.3 1.6.2 2.2.1.7-.1 1.8-.7 2.1-1.4.3-.7.3-1.3.2-1.4-.1-.1-.3-.2-.6-.3Z" />
+              </svg>
+            </span>
             <div><h2>WhatsApp</h2><p>+54 9 11 1234-5678</p></div>
-          </article>
+          </a>
           <article className="contacto-info-card">
             <span aria-hidden="true">✉</span>
             <div><h2>Email</h2><p>contactanos@nexusgaming.com</p></div>
