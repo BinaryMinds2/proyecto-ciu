@@ -4,12 +4,14 @@ import ProductoCard from '../components/ProductoCard'
 import { productos } from '../data/productos'
 
 const categorias = ['Todas', 'Periféricos', 'Hardware', 'Setup']
+const productosPorPagina = 12
 
 function Productos({ onAddToCart }) {
   const [busqueda, setBusqueda] = useState('')
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('Todas')
   const [soloConStock, setSoloConStock] = useState(false)
   const [ordenPrecio, setOrdenPrecio] = useState('sin-orden')
+  const [pagina, setPagina] = useState(1)
 
   const productosFiltrados = useMemo(() => {
     const textoBuscado = busqueda.trim().toLowerCase()
@@ -53,6 +55,10 @@ function Productos({ onAddToCart }) {
     },
   };
 
+  const cantidadPaginas = Math.ceil(productosFiltrados.length / productosPorPagina)
+  const indiceInicial = (pagina - 1) * productosPorPagina
+  const productosPagina = productosFiltrados.slice(indiceInicial, indiceInicial + productosPorPagina)
+
   return (
     <section className="bg-gamer-bg px-4 py-12 text-gamer-textMain sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -73,7 +79,10 @@ function Productos({ onAddToCart }) {
               <input
                 type="search"
                 value={busqueda}
-                onChange={(event) => setBusqueda(event.target.value)}
+                onChange={(event) => {
+                  setBusqueda(event.target.value)
+                  setPagina(1)
+                }}
                 placeholder="Ej. teclado, mouse..."
                 className="rounded-lg border border-gamer-primary/30 bg-gamer-bg px-4 py-3 font-normal text-gamer-textMain outline-none transition placeholder:text-gamer-textMain/50 focus:border-gamer-accent focus:ring-2 focus:ring-gamer-accent/30"
               />
@@ -83,7 +92,10 @@ function Productos({ onAddToCart }) {
               Ordenar por precio
               <select
                 value={ordenPrecio}
-                onChange={(event) => setOrdenPrecio(event.target.value)}
+                onChange={(event) => {
+                  setOrdenPrecio(event.target.value)
+                  setPagina(1)
+                }}
                 className="rounded-lg border border-gamer-primary/30 bg-gamer-bg px-4 py-3 font-normal text-gamer-textMain outline-none focus:border-gamer-accent focus:ring-2 focus:ring-gamer-accent/30"
               >
                 <option value="sin-orden">Orden predeterminado</option>
@@ -99,7 +111,10 @@ function Productos({ onAddToCart }) {
                 <button
                   key={categoria}
                   type="button"
-                  onClick={() => setCategoriaSeleccionada(categoria)}
+                  onClick={() => {
+                    setCategoriaSeleccionada(categoria)
+                    setPagina(1)
+                  }}
                   className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                     categoriaSeleccionada === categoria
                       ? 'bg-gamer-accent text-gamer-bg'
@@ -115,7 +130,10 @@ function Productos({ onAddToCart }) {
               <input
                 type="checkbox"
                 checked={soloConStock}
-                onChange={(event) => setSoloConStock(event.target.checked)}
+                onChange={(event) => {
+                  setSoloConStock(event.target.checked)
+                  setPagina(1)
+                }}
                 className="h-4 w-4 accent-gamer-accent"
               />
               Solo productos con stock disponible
@@ -123,8 +141,10 @@ function Productos({ onAddToCart }) {
           </div>
         </div>
 
-        <p className="mb-5 text-sm text-gamer-textMain/70">
-          {productosFiltrados.length} {productosFiltrados.length === 1 ? 'producto encontrado' : 'productos encontrados'}
+        <p className="mb-5 text-sm text-gamer-textMain/70" aria-live="polite">
+          {productosFiltrados.length > 0
+            ? `Mostrando ${indiceInicial + 1}–${Math.min(indiceInicial + productosPorPagina, productosFiltrados.length)} de ${productosFiltrados.length} productos`
+            : '0 productos encontrados'}
         </p>
 
         {productosFiltrados.length > 0 ? (
@@ -134,7 +154,7 @@ function Productos({ onAddToCart }) {
             initial="hidden"
             animate="visible"
           >
-            {productosFiltrados.map((producto) => (
+            {productosPagina.map((producto) => (
               <motion.div
                 key={producto.id}
                 variants={tarjetaVariants}
@@ -163,6 +183,47 @@ function Productos({ onAddToCart }) {
             <h2 className="text-xl font-bold text-gamer-textMain">No encontramos productos</h2>
             <p className="mt-2 text-gamer-textMain/70">Probá cambiar la búsqueda o los filtros seleccionados.</p>
           </motion.div>
+        )}
+
+        {cantidadPaginas > 1 && (
+          <nav className="mt-10 flex items-center justify-center gap-2" aria-label="Paginación de productos">
+            <button
+              type="button"
+              onClick={() => setPagina((paginaActual) => Math.max(1, paginaActual - 1))}
+              disabled={pagina === 1}
+              aria-label="Ir a la página anterior"
+              className="h-10 rounded-lg border border-gamer-primary/30 px-3 text-sm font-semibold text-gamer-textMain transition hover:border-gamer-accent hover:text-gamer-accent disabled:cursor-not-allowed disabled:opacity-40 sm:px-4"
+            >
+              <span className="sm:hidden" aria-hidden="true">‹</span>
+              <span className="hidden sm:inline">Anterior</span>
+            </button>
+            {Array.from({ length: cantidadPaginas }, (_, indice) => indice + 1).map((numeroPagina) => (
+              <button
+                key={numeroPagina}
+                type="button"
+                onClick={() => setPagina(numeroPagina)}
+                aria-label={`Ir a la página ${numeroPagina}`}
+                aria-current={pagina === numeroPagina ? 'page' : undefined}
+                className={`h-10 min-w-10 rounded-lg px-3 text-sm font-semibold transition ${
+                  pagina === numeroPagina
+                    ? 'bg-gamer-accent text-gamer-bg'
+                    : 'border border-gamer-primary/30 text-gamer-textMain hover:border-gamer-accent hover:text-gamer-accent'
+                }`}
+              >
+                {numeroPagina}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setPagina((paginaActual) => Math.min(cantidadPaginas, paginaActual + 1))}
+              disabled={pagina === cantidadPaginas}
+              aria-label="Ir a la página siguiente"
+              className="h-10 rounded-lg border border-gamer-primary/30 px-3 text-sm font-semibold text-gamer-textMain transition hover:border-gamer-accent hover:text-gamer-accent disabled:cursor-not-allowed disabled:opacity-40 sm:px-4"
+            >
+              <span className="sm:hidden" aria-hidden="true">›</span>
+              <span className="hidden sm:inline">Siguiente</span>
+            </button>
+          </nav>
         )}
       </div>
     </section>
