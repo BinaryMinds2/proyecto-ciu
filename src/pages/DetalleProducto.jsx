@@ -1,9 +1,15 @@
+import { useEffect, useRef, useState } from 'react'
+import { motion } from 'motion/react'
 import { Link, useParams } from 'react-router-dom'
 import { productos } from '../data/productos'
 
 function DetalleProducto({ onAddToCart }) {
   const { id } = useParams()
   const producto = productos.find((item) => item.id === Number(id))
+  const [agregado, setAgregado] = useState(false)
+  const timeoutRef = useRef(null)
+
+  useEffect(() => () => clearTimeout(timeoutRef.current), [])
 
   if (!producto) {
     return (
@@ -30,6 +36,13 @@ function DetalleProducto({ onAddToCart }) {
     currency: 'ARS',
     maximumFractionDigits: 0,
   }).format(producto.precio)
+
+  const manejarAgregarAlCarrito = () => {
+    onAddToCart(producto)
+    setAgregado(true)
+    clearTimeout(timeoutRef.current)
+    timeoutRef.current = setTimeout(() => setAgregado(false), 1000)
+  }
 
   return (
     <section className="bg-gamer-bg text-gamer-textMain">
@@ -59,10 +72,27 @@ function DetalleProducto({ onAddToCart }) {
             <button
               type="button"
               disabled={sinStock}
-              onClick={() => onAddToCart(producto)}
-              className="rounded-lg bg-gamer-primary px-5 py-3 font-semibold text-white transition hover:bg-gamer-primary/80 disabled:cursor-not-allowed disabled:opacity-40"
+              onClick={manejarAgregarAlCarrito}
+              className={`cursor-pointer rounded-lg px-5 py-3 font-semibold text-white transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-40 ${
+                agregado
+                  ? 'bg-green-500 hover:bg-green-500'
+                  : 'bg-gamer-primary hover:bg-gamer-primary/80'
+              }`}
             >
-              {sinStock ? 'Sin stock' : 'Agregar al carrito'}
+              {sinStock ? (
+                'Sin stock'
+              ) : agregado ? (
+                <motion.span
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  aria-live="polite"
+                >
+                  ✓
+                </motion.span>
+              ) : (
+                'Agregar al carrito'
+              )}
             </button>
             <Link
               to="/productos"

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { motion } from "motion/react"
 import ProductoCard from '../components/ProductoCard'
 import { productos } from '../data/productos'
 
@@ -31,6 +32,26 @@ function Productos({ onAddToCart }) {
 
     return resultado
   }, [busqueda, categoriaSeleccionada, ordenPrecio, soloConStock])
+
+  const contenedorGridVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1, 
+      },
+    },
+  };
+
+  const tarjetaVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: { duration: 0.4, ease: "easeOut" }
+    },
+  };
 
   return (
     <section className="bg-gamer-bg px-4 py-12 text-gamer-textMain sm:px-6 lg:px-8">
@@ -107,20 +128,41 @@ function Productos({ onAddToCart }) {
         </p>
 
         {productosFiltrados.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <motion.div 
+            className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+            variants={contenedorGridVariants}
+            initial="hidden"
+            animate="visible"
+          >
             {productosFiltrados.map((producto) => (
-              <ProductoCard
+              <motion.div
                 key={producto.id}
-                producto={producto}
-                onAddToCart={onAddToCart}
-              />
+                variants={tarjetaVariants}
+                whileHover={{ 
+                  y: -8, 
+                  boxShadow: "0px 0px 20px rgba(127, 82, 255, 0.4)",
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ scale: 0.98 }}
+                className="h-full rounded-2xl overflow-hidden bg-gamer-card border border-gamer-primary/20 hover:border-gamer-accent/60 transition-colors duration-300"
+              >
+                <ProductoCard
+                  producto={producto}
+                  onAddToCart={onAddToCart}
+                />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         ) : (
-          <div className="rounded-xl border border-dashed border-gamer-primary/30 bg-gamer-card p-10 text-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="rounded-xl border border-dashed border-gamer-primary/30 bg-gamer-card p-10 text-center"
+          >
             <h2 className="text-xl font-bold text-gamer-textMain">No encontramos productos</h2>
             <p className="mt-2 text-gamer-textMain/70">Probá cambiar la búsqueda o los filtros seleccionados.</p>
-          </div>
+          </motion.div>
         )}
       </div>
     </section>

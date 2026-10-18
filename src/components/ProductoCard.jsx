@@ -1,13 +1,26 @@
+import { useEffect, useRef, useState } from 'react'
+import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
 
 function ProductoCard({ producto, onAddToCart }) {
   const sinStock = producto.stock === 0
+  const [agregado, setAgregado] = useState(false)
+  const timeoutRef = useRef(null)
 
   const precioFormateado = new Intl.NumberFormat('es-AR', {
     style: 'currency',
     currency: 'ARS',
     maximumFractionDigits: 0,
   }).format(producto.precio)
+
+  useEffect(() => () => clearTimeout(timeoutRef.current), [])
+
+  const manejarAgregarAlCarrito = () => {
+    onAddToCart(producto)
+    setAgregado(true)
+    clearTimeout(timeoutRef.current)
+    timeoutRef.current = setTimeout(() => setAgregado(false), 1000)
+  }
 
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-xl border border-gamer-primary/20 bg-gamer-card shadow-lg shadow-black/10">
@@ -41,10 +54,25 @@ function ProductoCard({ producto, onAddToCart }) {
           <button
             type="button"
             disabled={sinStock}
-            onClick={() => onAddToCart(producto)}
-            className="rounded-lg bg-gamer-primary px-4 py-2 font-semibold text-white transition hover:bg-gamer-primary/80 disabled:cursor-not-allowed disabled:opacity-40"
+            onClick={manejarAgregarAlCarrito}
+            className={`cursor-pointer rounded-lg px-4 py-2 font-semibold text-white transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-40 ${
+              agregado
+                ? 'bg-green-500 hover:bg-green-500'
+                : 'bg-gamer-primary hover:bg-gamer-primary/80'
+            }`}
           >
-            Agregar al carrito
+            {agregado ? (
+              <motion.span
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+                aria-live="polite"
+              >
+                ✓
+              </motion.span>
+            ) : (
+              'Agregar al carrito'
+            )}
           </button>
           <Link
             to={`/producto/${producto.id}`}
