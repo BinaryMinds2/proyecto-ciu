@@ -64,6 +64,16 @@ function DetalleProducto({ onAddToCart }) {
           </h1>
           <p className="mb-6 text-3xl font-bold text-gamer-accent">{precioFormateado}</p>
           <p className="mb-6 leading-relaxed text-gamer-textMain/75">{producto.descripcion}</p>
+          {producto.caracteristicas?.length > 0 && (
+            <div className="mb-6 w-full">
+              <h2 className="mb-3 text-lg font-bold text-gamer-textMain">Características</h2>
+              <ul className="list-inside list-disc space-y-2 text-gamer-textMain/75">
+                {producto.caracteristicas.map((caracteristica) => (
+                  <li key={caracteristica}>{caracteristica}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <p className={`mb-8 font-semibold ${sinStock ? 'text-red-400' : 'text-gamer-textMain/80'}`}>
             {sinStock ? 'Producto agotado' : `${producto.stock} unidades disponibles`}
           </p>
