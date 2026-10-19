@@ -6,6 +6,12 @@ export const productos = [
     precio: 45000,
     imagen: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?q=80&w=600&auto=format&fit=crop",
     descripcion: "Teclado mecánico compacto con switches red, iluminación RGB personalizable y estructura de aluminio.",
+    caracteristicas: [
+      "Formato compacto del 65%",
+      "Switches mecánicos red",
+      "Iluminación RGB personalizable",
+      "Estructura de aluminio"
+    ],
     stock: 12
   },
   {
@@ -15,6 +21,12 @@ export const productos = [
     precio: 28000,
     imagen: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?q=80&w=600&auto=format&fit=crop",
     descripcion: "Sensor óptico de alta precisión, diseño ultraligero y conectividad de ultra baja latencia.",
+    caracteristicas: [
+      "Sensor óptico de alta precisión",
+      "Diseño ultraligero",
+      "Conectividad inalámbrica",
+      "Conexión de ultra baja latencia"
+    ],
     stock: 8
   },
   {
@@ -24,6 +36,12 @@ export const productos = [
     precio: 35000,
     imagen: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=600&auto=format&fit=crop",
     descripcion: "Sonido envolvente posicional, almohadillas de memoria viscoelástica y micrófono con cancelación de ruido.",
+    caracteristicas: [
+      "Sonido envolvente 7.1",
+      "Audio posicional",
+      "Almohadillas de memoria viscoelástica",
+      "Micrófono con cancelación de ruido"
+    ],
     stock: 0 // Sin stock para probar validación
   },
   {
@@ -33,6 +51,12 @@ export const productos = [
     precio: 52000,
     imagen: "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?q=80&w=600&auto=format&fit=crop",
     descripcion: "Patrón polar cardioide, control de ganancia directo y soporte antivibración incluido.",
+    caracteristicas: [
+      "Conexión USB",
+      "Patrón polar cardioide",
+      "Control de ganancia directo",
+      "Soporte antivibración incluido"
+    ],
     stock: 5
   },
   {
@@ -42,6 +66,12 @@ export const productos = [
     precio: 480000,
     imagen: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?q=80&w=600&auto=format&fit=crop",
     descripcion: "Potencia gráfica extrema con trazado de rayos avanzado y DLSS para gaming en 4K.",
+    caracteristicas: [
+      "Serie RTX",
+      "Trazado de rayos avanzado",
+      "Tecnología DLSS",
+      "Diseñada para gaming en 4K"
+    ],
     stock: 3
   },
   {
@@ -51,6 +81,12 @@ export const productos = [
     precio: 32000,
     imagen: "https://images.unsplash.com/photo-1562976540-1e02c5144c5c?q=80&w=600&auto=format&fit=crop",
     descripcion: "Módulo de alto rendimiento con disipador térmico de perfil bajo y soporte XMP.",
+    caracteristicas: [
+      "Capacidad de 16 GB",
+      "Memoria DDR4",
+      "Disipador térmico de perfil bajo",
+      "Soporte XMP"
+    ],
     stock: 15
   },
   {
@@ -60,6 +96,12 @@ export const productos = [
     precio: 65000,
     imagen: "https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?q=80&w=600&auto=format&fit=crop",
     descripcion: "Velocidades de lectura de hasta 3500 MB/s para reducir los tiempos de carga al mínimo.",
+    caracteristicas: [
+      "Capacidad de 1 TB",
+      "Formato M.2",
+      "Interfaz NVMe",
+      "Velocidad de lectura de hasta 3500 MB/s"
+    ],
     stock: 0 // Sin stock
   },
   {
@@ -69,6 +111,12 @@ export const productos = [
     precio: 24000,
     imagen: "https://images.unsplash.com/photo-1610438235354-a6ae5528385c?q=80&w=600&auto=format&fit=crop",
     descripcion: "Disipador de alta eficiencia con heatpipes de cobre y ventilador silencioso de 120mm.",
+    caracteristicas: [
+      "Refrigeración por aire para CPU",
+      "Iluminación RGB",
+      "Heatpipes de cobre",
+      "Ventilador silencioso de 120 mm"
+    ],
     stock: 7
   },
   {
@@ -78,6 +126,12 @@ export const productos = [
     precio: 195000,
     imagen: "https://images.unsplash.com/photo-1598550476439-6847785fcea6?q=80&w=600&auto=format&fit=crop",
     descripcion: "Reclinable 180°, almohadones lumbares y cervicales ajustables, reposabrazos 4D.",
+    caracteristicas: [
+      "Respaldo reclinable hasta 180°",
+      "Almohadón lumbar ajustable",
+      "Almohadón cervical ajustable",
+      "Reposabrazos 4D"
+    ],
     stock: 4
   },
   {
@@ -87,6 +141,12 @@ export const productos = [
     precio: 15000,
     imagen: "https://images.unsplash.com/photo-1616440347437-b1c73416efc2?q=80&w=600&auto=format&fit=crop",
     descripcion: "Superficie de tela microtexturizada optimizada para sensores láser y ópticos, bordes RGB.",
+    caracteristicas: [
+      "Formato XXL",
+      "Superficie de tela microtexturizada",
+      "Compatible con sensores láser y ópticos",
+      "Iluminación LED RGB en los bordes"
+    ],
     stock: 20
   },
   {
@@ -96,6 +156,11 @@ export const productos = [
     precio: 38000,
     imagen: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=600&auto=format&fit=crop",
     descripcion: "Soporte de pistón a gas compatible con pantallas de 17 a 32 pulgadas y gestión de cables.",
+    caracteristicas: [
+      "Brazo articulado con pistón a gas",
+      "Compatible con monitores de 17 a 32 pulgadas",
+      "Sistema de gestión de cables"
+    ],
     stock: 6
   },
   {
@@ -105,6 +170,12 @@ export const productos = [
     precio: 18000,
     imagen: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&auto=format&fit=crop",
     descripcion: "Iluminación ambiental sincronizable por aplicación y control remoto para tu escritorio.",
+    caracteristicas: [
+      "Iluminación LED RGB",
+      "Sincronización mediante aplicación",
+      "Control remoto",
+      "Diseñada para iluminación ambiental"
+    ],
     stock: 10
   }, {
   id: 13,
