@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import nexusWordmark from '../assets/nexus-wordmark.png'
 import nexusWordmarkLight from '../assets/nexus-wordmark-light.jpg'
+import { productos } from '../data/productos'
 
-const quickLinks = [
-  { label: 'Inicio', to: '/' },
-  { label: 'Productos', to: '/productos' },
-  { label: 'Carrito', to: '/carrito' },
+const categorias = [...new Set(productos.map((producto) => producto.categoria))]
+const enlacesInformacion = [
+  { label: 'Nosotros', to: '/nosotros' },
   { label: 'Contacto', to: '/contacto' },
 ]
 
@@ -83,9 +83,9 @@ const socialLinks = [
 function Footer({ isLightMode = false }) {
   return (
     <footer className="border-t border-gamer-accent/20 bg-gamer-bg text-gamer-textMain">
-      <div className="mx-auto grid max-w-7xl items-start gap-8 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div className="mx-auto grid max-w-7xl items-start gap-8 px-4 py-8 sm:px-6 md:grid-cols-4 lg:px-8">
         
-        {/* Columna 1: Logo y texto en 1 sola línea */}
+        {/* Logo y presentación de la tienda */}
         <div>
           <Link
             to="/"
@@ -98,22 +98,39 @@ function Footer({ isLightMode = false }) {
               className="aspect-[7/4] w-40 rounded-lg object-cover shadow-[0_0_18px_rgba(127,82,255,0.16)]"
             />
           </Link>
-          <p className="mt-3 text-xs whitespace-nowrap text-gamer-textMain/65">
+          <p className="small-label mt-3 text-gamer-textMuted">
             Tu próximo nivel empieza con el equipo indicado.
           </p>
         </div>
 
-        {/* Columna 2: Enlaces Rápidos en una sola línea horizontal */}
         <div>
-          <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-gamer-accent mb-3">
-            Enlaces rápidos
+          <h2 className="eyebrow mb-3">
+            Categorías
           </h2>
-          <ul className="flex flex-wrap items-center gap-4 sm:gap-6">
-            {quickLinks.map(({ label, to }) => (
+          <ul className="flex flex-col gap-2">
+            {categorias.map((categoria) => (
+              <li key={categoria}>
+                <Link
+                  to={`/productos?categoria=${encodeURIComponent(categoria)}`}
+                  className="small-label font-medium text-gamer-textMuted transition-colors duration-200 hover:text-gamer-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
+                >
+                  {categoria}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <h2 className="eyebrow mb-3">
+            Información
+          </h2>
+          <ul className="flex flex-col gap-2">
+            {enlacesInformacion.map(({ label, to }) => (
               <li key={to}>
                 <Link
                   to={to}
-                  className="text-xs font-medium text-gamer-textMain/75 transition-colors duration-200 hover:text-gamer-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
+                  className="small-label font-medium text-gamer-textMuted transition-colors duration-200 hover:text-gamer-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
                 >
                   {label}
                 </Link>
@@ -122,9 +139,8 @@ function Footer({ isLightMode = false }) {
           </ul>
         </div>
 
-        {/* Columna 3: Comunidad */}
         <div className="md:justify-self-end md:text-right">
-          <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-gamer-accent mb-3">
+          <h2 className="eyebrow mb-3">
             Comunidad
           </h2>
           <ul className="flex flex-wrap gap-3 md:justify-end">
@@ -146,7 +162,7 @@ function Footer({ isLightMode = false }) {
 
       </div>
 
-      <div className="border-t border-gamer-textMain/10 px-4 py-4 text-center text-xs text-gamer-textMain/60 sm:px-6">
+      <div className="small-label border-t border-gamer-textMain/10 px-4 py-4 text-center text-gamer-textMuted sm:px-6">
         © {new Date().getFullYear()} BINARY MINDS. Todos los derechos reservados.
       </div>
     </footer>

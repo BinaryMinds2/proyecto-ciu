@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import nexusSymbol from '../assets/nexus-symbol.png'
+import { precioARS } from '../utils/format'
 
 const entregas = ['Envío a domicilio', 'Retiro en sucursal', 'Punto de entrega']
 const pagos = [
@@ -23,13 +24,7 @@ const formularioInicial = {
   cvv: '',
 }
 
-const precioARS = (importe) =>
-  new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    maximumFractionDigits: 0,
-  }).format(importe)
-
+// Centraliza las reglas para que la validación en pantalla y al enviar sean iguales.
 function validar(formulario, carrito) {
   const erroresNuevos = {}
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -41,7 +36,12 @@ function validar(formulario, carrito) {
     erroresNuevos.email = 'Ingresá un email válido.'
   }
   if (!formulario.telefono.trim()) erroresNuevos.telefono = 'Ingresá tu teléfono.'
-  if (!formulario.direccion.trim()) erroresNuevos.direccion = 'Ingresá tu dirección o localidad.'
+  if (
+    formulario.entrega !== 'Retiro en sucursal' &&
+    !formulario.direccion.trim()
+  ) {
+    erroresNuevos.direccion = 'Ingresá tu dirección o localidad.'
+  }
   if (!formulario.entrega) erroresNuevos.entrega = 'Elegí un método de entrega.'
   if (!formulario.pago) erroresNuevos.pago = 'Elegí un método de pago.'
   if (
@@ -66,17 +66,24 @@ function validar(formulario, carrito) {
   return erroresNuevos
 }
 
-function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
+function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
   const [formulario, setFormulario] = useState(formularioInicial)
   const [errores, setErrores] = useState({})
   const [tocados, setTocados] = useState({})
   const [intentoEnvio, setIntentoEnvio] = useState(false)
   const [pedidoFinalizado, setPedidoFinalizado] = useState(null)
+  const [resumenAbierto, setResumenAbierto] = useState(false)
+  const camposRef = useRef({})
+  const confirmacionRef = useRef(null)
   const carritoValido = Array.isArray(cart) ? cart : []
   const carritoEstaVacio = carritoValido.length === 0 && !pedidoFinalizado
   const articulosPedido = pedidoFinalizado?.cart || carritoValido
   const subtotal = articulosPedido.reduce(
     (total, producto) => total + producto.precio * producto.cantidad,
+    0,
+  )
+  const cantidadTotal = articulosPedido.reduce(
+    (total, producto) => total + producto.cantidad,
     0,
   )
   const pagoAlRecibirDisponible = ['Envío a domicilio', 'Retiro en sucursal'].includes(
@@ -87,6 +94,13 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
     errores[campo] && (tocados[campo] || intentoEnvio),
   )
   const pagoResumen = pedidoFinalizado?.pago || formulario.pago
+
+  useEffect(() => {
+    if (!pedidoFinalizado) return
+
+    confirmacionRef.current?.focus()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [pedidoFinalizado])
 
   const actualizarCampo = (evento) => {
     const { name, value } = evento.target
@@ -118,6 +132,7 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
   }
 
   const tocarCampo = (campo) => {
+    // Registra la interacción para mostrar errores sin interrumpir mientras se completa el formulario.
     setTocados((actuales) => ({ ...actuales, [campo]: true }))
     setErrores((actuales) => ({
       ...actuales,
@@ -129,12 +144,14 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
     const pagoActualizado =
       entrega === 'Punto de entrega' && formulario.pago === 'Pago al recibir' ? '' : formulario.pago
     const actualizado = { ...formulario, entrega, pago: pagoActualizado }
+    const erroresActualizados = validar(actualizado, carritoValido)
     setFormulario(actualizado)
     setTocados((actuales) => ({ ...actuales, entrega: true }))
     setErrores((actuales) => ({
       ...actuales,
       entrega: undefined,
-      pago: validar(actualizado, carritoValido).pago,
+      pago: erroresActualizados.pago,
+      direccion: erroresActualizados.direccion,
     }))
   }
 
@@ -162,8 +179,27 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
       cvv: true,
     })
 
-    if (Object.keys(erroresNuevos).length > 0) return
+    const ordenVisual = [
+      'nombre',
+      'email',
+      'telefono',
+      'direccion',
+      'entrega',
+      'pago',
+      'numeroTarjeta',
+      'vencimiento',
+      'cvv',
+    ]
+    const primerCampoInvalido = ordenVisual.find((campo) => erroresNuevos[campo])
 
+    if (primerCampoInvalido) {
+      const elemento = camposRef.current[primerCampoInvalido]
+      elemento?.focus({ preventScroll: true })
+      elemento?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      return
+    }
+
+    // Copia el pedido antes de limpiar el carrito para conservar el resumen de confirmación.
     const pedido = {
       nombre: formulario.nombre.trim(),
       pago: formulario.pago,
@@ -186,6 +222,15 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
         id={`checkout-${nombre}`}
         name={nombre}
         type={tipo}
+        autoComplete={{
+          nombre: 'name',
+          email: 'email',
+          telefono: 'tel',
+          direccion: 'street-address',
+        }[nombre]}
+        ref={(elemento) => {
+          camposRef.current[nombre] = elemento
+        }}
         value={formulario[nombre]}
         onChange={actualizarCampo}
         onBlur={() => tocarCampo(nombre)}
@@ -205,7 +250,7 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
     <section className="checkout-page" aria-labelledby="checkout-title">
       <header className="checkout-header">
         <div>
-          <p className="checkout-eyebrow">Nexus Gaming Store</p>
+          <p className="eyebrow">Nexus Gaming Store</p>
           <h1 className="checkout-title" id="checkout-title">Finalizar pedido</h1>
         </div>
         <Link className="checkout-back" to="/carrito">← Volver al carrito</Link>
@@ -215,8 +260,10 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
         {pedidoFinalizado ? (
           <section className="checkout-confirmation" role="status" aria-live="polite">
             <img src={nexusSymbol} alt="Logo de Nexus Gaming" />
-            <p className="checkout-eyebrow">Pedido confirmado</p>
-            <h2>¡Gracias por tu compra, {pedidoFinalizado.nombre}!</h2>
+            <p className="eyebrow">Pedido confirmado</p>
+            <h2 ref={confirmacionRef} tabIndex={-1}>
+              ¡Gracias por tu compra, {pedidoFinalizado.nombre}!
+            </h2>
             <p>Preparamos el resumen de tu pedido y te contactaremos para coordinar la entrega.</p>
             <dl>
               <div><dt>Método de entrega</dt><dd>{pedidoFinalizado.entrega}</dd></div>
@@ -235,7 +282,14 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
                 {campo('nombre', 'Nombre y apellido *', 'text', 'Ej. Diego Gómez')}
                 {campo('email', 'Email *', 'email', 'tuemail@ejemplo.com')}
                 {campo('telefono', 'Teléfono *', 'tel', 'Ej. 11 1234-5678')}
-                {campo('direccion', 'Dirección o localidad *', 'text', 'Ej. CABA')}
+                {campo(
+                  'direccion',
+                  formulario.entrega === 'Retiro en sucursal'
+                    ? 'Dirección o localidad (opcional)'
+                    : 'Dirección o localidad *',
+                  'text',
+                  'Ej. CABA',
+                )}
                 <div className="checkout-field checkout-field--message">
                   <label htmlFor="checkout-mensaje">Mensaje o aclaración (opcional)</label>
                   <textarea
@@ -261,6 +315,9 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
                       key={entrega}
                     >
                       <input
+                        ref={(elemento) => {
+                          if (entrega === entregas[0]) camposRef.current.entrega = elemento
+                        }}
                         type="radio"
                         name="entrega"
                         value={entrega}
@@ -292,6 +349,9 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
                         key={pago}
                       >
                         <input
+                          ref={(elemento) => {
+                            if (pago === pagos[0]) camposRef.current.pago = elemento
+                          }}
                           type="radio"
                           name="pago"
                           value={pago}
@@ -325,8 +385,11 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
                       name="numeroTarjeta"
                       type="text"
                       inputMode="numeric"
-                      autoComplete="off"
-                      value={formulario.numeroTarjeta}
+                      autoComplete="cc-number"
+                      ref={(elemento) => {
+                        camposRef.current.numeroTarjeta = elemento
+                      }}
+                      value={formulario.numeroTarjeta.replace(/(\d{4})(?=\d)/g, '$1 ').trim()}
                       onChange={actualizarTarjeta}
                       onBlur={() => tocarCampo('numeroTarjeta')}
                       placeholder="16 dígitos"
@@ -342,7 +405,10 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
                       name="vencimiento"
                       type="text"
                       inputMode="numeric"
-                      autoComplete="off"
+                      autoComplete="cc-exp"
+                      ref={(elemento) => {
+                        camposRef.current.vencimiento = elemento
+                      }}
                       value={formulario.vencimiento}
                       onChange={actualizarTarjeta}
                       onBlur={() => tocarCampo('vencimiento')}
@@ -359,7 +425,10 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
                       name="cvv"
                       type="text"
                       inputMode="numeric"
-                      autoComplete="off"
+                      autoComplete="cc-csc"
+                      ref={(elemento) => {
+                        camposRef.current.cvv = elemento
+                      }}
                       value={formulario.cvv}
                       onChange={actualizarTarjeta}
                       onBlur={() => tocarCampo('cvv')}
@@ -377,39 +446,57 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
 
         <aside className="checkout-summary" aria-labelledby="checkout-summary">
           <h2 id="checkout-summary">Resumen del pedido</h2>
-          {carritoEstaVacio && (
-            <p className="checkout-notice" role="status">
-              Tu carrito está vacío. <Link to="/productos">Explorá los productos</Link> antes de confirmar.
-            </p>
-          )}
-          <div className="checkout-items">
-            {articulosPedido.map((producto) => (
-              <article className="checkout-item" key={producto.id}>
-                <img src={producto.imagen} alt="" />
-                <div>
-                  <h3>{producto.nombre}</h3>
-                  <p>Cantidad: {producto.cantidad}</p>
-                </div>
-                <strong>{precioARS(producto.precio * producto.cantidad)}</strong>
-              </article>
-            ))}
-            {articulosPedido.length === 0 && <p className="checkout-empty">Todavía no hay productos.</p>}
+          <button
+            type="button"
+            className="checkout-summary-toggle"
+            aria-expanded={resumenAbierto}
+            aria-controls="checkout-summary-content"
+            onClick={() => setResumenAbierto((abierto) => !abierto)}
+          >
+            <span>
+              {cantidadTotal} {cantidadTotal === 1 ? 'producto' : 'productos'}
+            </span>
+            <strong>{precioARS(subtotal)}</strong>
+            <span aria-hidden="true">{resumenAbierto ? '−' : '+'}</span>
+          </button>
+          <div
+            id="checkout-summary-content"
+            className={`checkout-summary-content${resumenAbierto ? ' is-open' : ''}`}
+          >
+            {carritoEstaVacio && (
+              <p className="checkout-notice" role="status">
+                Tu carrito está vacío. <Link to="/productos">Explorá los productos</Link> antes de confirmar.
+              </p>
+            )}
+            <div className="checkout-items">
+              {articulosPedido.map((producto) => (
+                <article className="checkout-item" key={producto.id}>
+                  <img src={producto.imagen} alt="" />
+                  <div>
+                    <h3>{producto.nombre}</h3>
+                    <p>Cantidad: {producto.cantidad}</p>
+                  </div>
+                  <strong>{precioARS(producto.precio * producto.cantidad)}</strong>
+                </article>
+              ))}
+              {articulosPedido.length === 0 && <p className="checkout-empty">Todavía no hay productos.</p>}
+            </div>
+            <dl className="checkout-totals">
+              <div><dt>Subtotal</dt><dd>{precioARS(subtotal)}</dd></div>
+              <div><dt>Envío</dt><dd>A coordinar</dd></div>
+              {pagoResumen && <div><dt>Pago</dt><dd>{pagoResumen}</dd></div>}
+              <div className="checkout-total"><dt>Total</dt><dd>{precioARS(subtotal)}</dd></div>
+            </dl>
+            {!pedidoFinalizado && (
+              <button className="checkout-submit" type="submit" disabled={carritoEstaVacio}>
+                Confirmar pedido
+              </button>
+            )}
           </div>
-          <dl className="checkout-totals">
-            <div><dt>Subtotal</dt><dd>{precioARS(subtotal)}</dd></div>
-            <div><dt>Envío</dt><dd>A coordinar</dd></div>
-            {pagoResumen && <div><dt>Pago</dt><dd>{pagoResumen}</dd></div>}
-            <div className="checkout-total"><dt>Total</dt><dd>{precioARS(subtotal)}</dd></div>
-          </dl>
-          {!pedidoFinalizado && (
-            <button className="checkout-submit" type="submit" disabled={carritoEstaVacio}>
-              Confirmar pedido
-            </button>
-          )}
         </aside>
       </form>
     </section>
   )
 }
 
-export default CheckoutForm
+export default FormularioCompra

@@ -1,4 +1,5 @@
 export { default as Navbar } from './Navbar';
 export { default as Footer } from './Footer';
 export { default as ProductoCard } from './ProductoCard';
-export { default as CheckoutForm } from './FormularioCompra';
+export { default as FormularioCompra } from './FormularioCompra';
+export { default as Toast } from './Toast';

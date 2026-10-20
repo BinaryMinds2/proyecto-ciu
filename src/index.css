@@ -1,26 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@config '../tailwind.config.cjs';
 @import 'tailwindcss';
+@config '../tailwind.config.cjs';
 
 :root {
   --text: #9ca3af;
   --text-h: #f3f4f6;
   --bg: #0f0e17;
-  --border: #2e303a;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: 'Plus Jakarta Sans', sans-serif;
-  --heading: 'Plus Jakarta Sans', sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
 
   --gamer-bg: 15 14 23;
   --gamer-card: 26 24 41;
@@ -30,8 +14,6 @@
   --gamer-textMain: 243 244 246;
   --gamer-textMuted: 156 163 175;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
   color-scheme: dark;
   color: var(--text);
   background: var(--bg);
@@ -40,23 +22,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 :root[data-theme='light'] {
   --text: #596174;
   --text-h: #242536;
   --bg: #f6f7fb;
-  --border: #dfe2eb;
-  --code-bg: #eceef5;
-  --accent: #6847d9;
-  --accent-bg: rgba(104, 71, 217, 0.1);
-  --accent-border: rgba(104, 71, 217, 0.45);
-  --social-bg: rgba(31, 35, 51, 0.08);
-  --shadow:
-    rgba(31, 35, 51, 0.1) 0 10px 15px -3px, rgba(31, 35, 51, 0.05) 0 4px 6px -2px;
 
   --gamer-bg: 246 247 251;
   --gamer-card: 255 255 255;
@@ -71,31 +44,23 @@
   background: var(--bg);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
   background: var(--bg);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+}
+
+.cart-count-pop {
+  animation: cart-count-pop 300ms ease-out;
+}
+
+@keyframes cart-count-pop {
+  0% { transform: scale(0.8); }
+  65% { transform: scale(1.18); }
+  100% { transform: scale(1); }
 }
 
 .site-shell > header,
@@ -121,54 +86,68 @@ body {
   box-sizing: border-box;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
+@layer base {
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
 
-.home-title {
-  font-family: 'Chakra Petch', sans-serif;
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  h1,
+  h2,
+  h3 {
+    color: rgb(var(--gamer-textMain));
+    font-family: 'Chakra Petch', sans-serif;
+    font-weight: 700;
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+
+@layer components {
+  .eyebrow {
+    @apply text-xs font-bold uppercase tracking-[0.24em] text-gamer-accent sm:text-sm;
+  }
+
+  .page-title {
+    @apply font-display text-3xl font-bold tracking-tight text-gamer-textMain sm:text-4xl lg:text-5xl;
+  }
+
+  .hero-title {
+    @apply font-display text-4xl font-bold tracking-tight text-gamer-textMain sm:text-5xl lg:text-6xl;
+  }
+
+  .section-title {
+    @apply font-display text-2xl font-bold text-gamer-textMain sm:text-3xl;
+  }
+
+  .card-title {
+    @apply font-sans text-lg font-bold text-gamer-textMain;
+  }
+
+  .lead {
+    @apply text-base text-gamer-textMuted sm:text-lg;
+  }
+
+  .body-copy {
+    @apply text-base;
+  }
+
+  .secondary-copy {
+    @apply text-sm;
+  }
+
+  .small-label {
+    @apply text-xs;
+  }
+
+  .price-display {
+    @apply font-display text-2xl font-bold text-gamer-accent sm:text-3xl;
+  }
+
+  .primary-cta {
+    @apply font-display font-bold;
   }
 }
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
-}
-
 
 /* ===== Checkout ===== */
 .checkout-page {
@@ -196,18 +175,11 @@ code {
 
 .checkout-eyebrow {
   color: var(--checkout-turquoise);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  line-height: 1.2;
-  text-transform: uppercase;
 }
 
 .checkout-title {
+  @apply font-display text-2xl font-bold tracking-tight text-gamer-textMain sm:text-3xl;
   margin: 2px 0 0;
-  font-size: 23px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
   line-height: 1.15;
 }
 
@@ -220,7 +192,7 @@ code {
   border-radius: 9px;
   padding: 8px 12px;
   color: var(--checkout-turquoise);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   text-decoration: none;
   transition: background 150ms ease, border-color 150ms ease;
@@ -256,14 +228,13 @@ code {
 }
 
 .checkout-section-title {
+  @apply font-display text-lg font-bold text-gamer-textMain;
   display: flex;
   align-items: center;
   gap: 9px;
   margin: 0 0 12px;
   padding: 0;
   color: rgb(var(--gamer-textMain));
-  font-size: 14px;
-  font-weight: 800;
 }
 
 .checkout-section-title > span {
@@ -302,7 +273,7 @@ code {
 .checkout-field label,
 .checkout-card-fields label {
   color: rgb(var(--gamer-textMain) / 0.88);
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.25;
 }
@@ -320,7 +291,7 @@ code {
   background: rgb(var(--gamer-bg));
   color: rgb(var(--gamer-textMain));
   font: inherit;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .checkout-field input::placeholder,
@@ -361,7 +332,7 @@ code {
 .checkout-error {
   margin: 0;
   color: #f87171;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.25;
 }
 
@@ -410,7 +381,7 @@ code {
   background: rgb(var(--gamer-bg) / 0.55);
   color: rgb(var(--gamer-textMain) / 0.9);
   cursor: pointer;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   line-height: 1.25;
   transition: border-color 150ms ease, background 150ms ease;
@@ -445,7 +416,7 @@ code {
 
 .checkout-option small {
   color: rgb(var(--gamer-textMuted));
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -461,7 +432,7 @@ code {
   padding: 7px 9px;
   background: rgb(var(--gamer-accent) / 0.08);
   color: var(--checkout-turquoise);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.3;
 }
 
@@ -488,9 +459,16 @@ code {
 }
 
 .checkout-summary > h2 {
+  @apply font-display text-xl font-bold text-gamer-textMain;
   margin: 0 0 10px;
-  font-size: 16px;
-  font-weight: 800;
+}
+
+.checkout-summary-toggle {
+  display: none;
+}
+
+.checkout-summary-content {
+  display: contents;
 }
 
 .checkout-items {
@@ -519,7 +497,8 @@ code {
 
 .checkout-item h3 {
   margin: 0;
-  font-size: 11px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.3;
 }
@@ -527,12 +506,12 @@ code {
 .checkout-item p,
 .checkout-empty {
   color: rgb(var(--gamer-textMuted));
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .checkout-item strong {
   color: var(--checkout-turquoise);
-  font-size: 10px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
@@ -541,7 +520,7 @@ code {
   gap: 8px;
   margin: auto 0 0;
   padding-top: 12px;
-  font-size: 11px;
+  font-size: 14px;
 }
 
 .checkout-totals > div {
@@ -561,10 +540,12 @@ code {
 }
 
 .checkout-total {
+  font-family: 'Chakra Petch', sans-serif;
+  color: var(--checkout-turquoise);
   border-top: 1px solid rgb(var(--gamer-textMain) / 0.15);
   padding-top: 9px;
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .checkout-total dd {
@@ -581,8 +562,9 @@ code {
   color: #fff;
   cursor: pointer;
   font: inherit;
-  font-size: 13px;
-  font-weight: 800;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
   transition: filter 150ms ease, opacity 150ms ease;
 }
 
@@ -627,13 +609,13 @@ code {
 }
 
 .checkout-confirmation h2 {
+  @apply font-display text-2xl font-bold tracking-tight text-gamer-textMain sm:text-3xl;
   margin: 0;
-  font-size: clamp(20px, 2.2vw, 30px);
 }
 
 .checkout-confirmation > p:not(.checkout-eyebrow) {
   color: rgb(var(--gamer-textMuted));
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .checkout-confirmation dl {
@@ -647,7 +629,7 @@ code {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .checkout-confirmation dt {
@@ -673,8 +655,45 @@ code {
 
   .checkout-summary {
     position: static;
-    min-height: 220px;
+    min-height: 0;
     grid-row: 1;
+  }
+
+  .checkout-summary > h2 {
+    display: none;
+  }
+
+  .checkout-summary-toggle {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: rgb(var(--gamer-textMain));
+    cursor: pointer;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .checkout-summary-toggle strong {
+    margin-left: auto;
+    color: var(--checkout-turquoise);
+    white-space: nowrap;
+  }
+
+  .checkout-summary-content {
+    display: none;
+  }
+
+  .checkout-summary-content.is-open {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .checkout-items {
@@ -700,13 +719,9 @@ code {
     align-items: flex-start;
   }
 
-  .checkout-title {
-    font-size: 21px;
-  }
-
   .checkout-back {
     padding: 7px 9px;
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .checkout-panel {
@@ -744,24 +759,14 @@ code {
 .contacto-intro { padding-top: 8px; }
 .contacto-eyebrow {
   color: var(--contacto-turquoise);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
 }
 
 .contacto-intro h1 {
   margin: 8px 0 12px;
-  color: rgb(var(--gamer-textMain));
-  font-size: clamp(38px, 5vw, 56px);
-  font-weight: 800;
-  letter-spacing: -0.06em;
 }
 
 .contacto-description {
   max-width: 410px;
-  color: rgb(var(--gamer-textMain) / 0.7);
-  font-size: 14px;
   line-height: 1.7;
 }
 
@@ -817,8 +822,8 @@ code {
   font-size: 18px;
 }
 
-.contacto-info-card h2 { margin: 0 0 3px; font-size: 13px; font-weight: 800; }
-.contacto-info-card p { color: rgb(var(--gamer-textMain) / 0.68); font-size: 11px; line-height: 1.45; }
+.contacto-info-card h2 { margin: 0 0 3px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 700; }
+.contacto-info-card p { color: rgb(var(--gamer-textMuted)); font-size: 14px; line-height: 1.45; }
 .contacto-form {
   display: grid;
   gap: 18px;
@@ -835,7 +840,7 @@ code {
 .contacto-field label {
   margin-bottom: 7px;
   color: rgb(var(--gamer-textMain) / 0.9);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
 }
 
@@ -849,7 +854,7 @@ code {
   color: rgb(var(--gamer-textMain) / 0.8);
   cursor: pointer;
   font: inherit;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
   transition: border-color 150ms ease, background 150ms ease;
 }
@@ -883,7 +888,7 @@ code {
   background: rgb(var(--gamer-bg));
   color: rgb(var(--gamer-textMain));
   font: inherit;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .contacto-field input::placeholder,
@@ -892,8 +897,8 @@ code {
 .contacto-field textarea[aria-invalid='true'] { border-color: #ef4444; }
 .contacto-field textarea { min-height: 118px; resize: vertical; }
 .contacto-message-meta { display: flex; min-height: 16px; justify-content: space-between; gap: 12px; }
-.contacto-message-meta > p:last-child { margin-left: auto; color: rgb(var(--gamer-textMuted)); font-size: 10px; text-align: right; }
-.contacto-error { color: #f87171; font-size: 11px; }
+.contacto-message-meta > p:last-child { margin-left: auto; color: rgb(var(--gamer-textMuted)); font-size: 12px; text-align: right; }
+.contacto-error { color: #f87171; font-size: 12px; }
 .contacto-submit {
   min-height: 44px;
   border: 0;
@@ -902,8 +907,9 @@ code {
   color: #fff;
   cursor: pointer;
   font: inherit;
-  font-size: 13px;
-  font-weight: 800;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
   transition: filter 150ms ease;
 }
 
@@ -914,7 +920,7 @@ code {
   padding: 11px 13px;
   background: rgb(34 197 94 / 0.1);
   color: #4ade80;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 @media (max-width: 760px) {

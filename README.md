@@ -1,9 +1,8 @@
 # Nexus Gaming
 
-Tienda online de tecnología y productos gamer desarrollada con React. La
-aplicación permite explorar un catálogo de hardware, periféricos y artículos
-para setup, buscar y filtrar productos, cambiar la apariencia de la interfaz y
-completar un formulario de compra simulada.
+Tienda online de tecnología y productos gamer desarrollada con React. Permite
+explorar un catálogo de hardware, periféricos y artículos para setup, consultar
+detalles, administrar un carrito y completar un flujo de compra simulado.
 
 > Proyecto académico realizado para la materia Construcción de Interfaces de
 > Usuario. No procesa pagos ni envía pedidos a un servidor.
@@ -27,25 +26,25 @@ completar un formulario de compra simulada.
 
 ## Características
 
-- Página de inicio con identidad visual de Nexus Gaming, banner y acceso al
-  catálogo.
-- Catálogo de 30 productos ficticios organizados en tarjetas con imagen,
-  categoría, precio, descripción y disponibilidad.
-- Búsqueda de productos por nombre.
-- Filtros por categoría y disponibilidad de stock.
-- Ordenamiento por precio, de menor a mayor o de mayor a menor.
-- Paginación de 12 productos por página, que se reinicia al cambiar la búsqueda
-  o los filtros.
-- Página de detalle por producto, con imagen, descripción, precio, categoría,
-  disponibilidad y acción para agregarlo al carrito.
-- Carrito persistente con cantidades, subtotales, total, controles para
-  aumentar o disminuir unidades y opción para quitar productos.
-- Flujo de checkout simulado con datos de contacto, entrega y método de pago,
-  validación de campos y resumen del pedido.
-- Indicador del carrito actualizado en la navegación.
-- Formulario de contacto con validación y confirmación en pantalla.
-- Modo claro/oscuro y modo de descanso visual.
-- Diseño adaptable a pantallas de celular, tablet y escritorio.
+- Inicio con banner, enlaces a categorías derivadas del catálogo y hasta cuatro
+  productos destacados con acceso al detalle y acción para agregarlos.
+- Catálogo con búsqueda, filtros por categoría y stock, ordenamiento por precio
+  y paginación de 12 productos. Los filtros y la página actual se representan
+  en los parámetros de la URL.
+- Detalle de producto con breadcrumb, selector de cantidad limitado por stock,
+  características disponibles y productos relacionados de la misma categoría.
+- Carrito con cantidades, subtotales, total, controles de stock y opción
+  **Deshacer** al quitar un artículo.
+- Checkout simulado con validación, opciones de entrega y pago, resumen del
+  pedido plegable en pantallas de hasta 1099 px y confirmación en pantalla.
+- Páginas de Nosotros y Contacto; esta última incluye validación y confirmación
+  local del formulario.
+- Notificaciones toast para agregar o quitar productos y para informar límites
+  de stock.
+- Navbar adaptable, enlaces de categorías e información en el footer, tema claro
+  y oscuro, y modo de descanso visual.
+- Formato de precios en pesos argentinos, diseño adaptable y tipografías
+  Chakra Petch y Plus Jakarta Sans con una escala tipográfica compartida.
 
 ## Tecnologías
 
@@ -53,17 +52,17 @@ completar un formulario de compra simulada.
 | --- | --- |
 | Interfaz | React 19 |
 | Lenguaje | JavaScript con módulos ES |
-| Enrutamiento | React Router 7 |
+| Enrutamiento | React Router DOM 7 |
 | Estilos | Tailwind CSS 4 y CSS |
 | Animaciones | Motion |
 | Herramienta de desarrollo y build | Vite 8 |
 | Calidad de código | ESLint |
-| Imágenes de productos | Unsplash |
+| Tipografías | Chakra Petch y Plus Jakarta Sans (Google Fonts) |
+| Imágenes de productos | Unsplash y recursos locales de marca |
 
 El catálogo se carga desde un array local de objetos. La aplicación no requiere
-una API ni una base de datos para iniciarse. Algunas imágenes de productos y
-las tipografías se obtienen de servicios externos, por lo que necesitan
-conexión a Internet para cargarse.
+una API ni una base de datos. Las imágenes de productos y las tipografías
+remotas necesitan conexión a Internet para cargarse.
 
 ## Requisitos
 
@@ -108,62 +107,69 @@ No se requiere configurar variables de entorno.
 
 | Ruta | Página | Descripción |
 | --- | --- | --- |
-| `/` | Inicio | Presentación de la tienda y enlace al catálogo. |
-| `/productos` | Productos | Catálogo, filtros, ordenamiento y paginación. |
-| `/producto/:id` | Detalle | Detalle dinámico del producto seleccionado. |
-| `/productos/:id` | Detalle | Ruta alternativa para el mismo detalle dinámico. |
-| `/carrito` | Carrito | Productos, cantidades, subtotales y resumen del pedido. |
-| `/checkout` | Checkout | Formulario para completar y confirmar una compra simulada. |
-| `/contacto` | Contacto | Formulario de contacto con validaciones y confirmación. |
+| `/` | Inicio | Banner, categorías y productos destacados. |
+| `/productos` | Productos | Catálogo con búsqueda, filtros, ordenamiento y paginación. |
+| `/producto/:id` | Detalle | Información, cantidad, breadcrumb y productos relacionados. |
+| `/productos/:id` | Redirección | Redirige al formato `/producto/:id`. |
+| `/carrito` | Carrito | Artículos, cantidades y resumen de compra. |
+| `/checkout` | Checkout | Formulario y confirmación de una compra simulada. |
+| `/nosotros` | Nosotros | Presentación, categorías y motivos para elegir la tienda. |
+| `/contacto` | Contacto | Canales de contacto y formulario con validación. |
 
 La navegación se implementa con React Router DOM. Las rutas no reconocidas
-redirigen a la página de inicio.
+redirigen a Inicio. El carrito se abre desde el ícono de la navegación.
 
 ## Flujo de compra
 
-1. Explorá el catálogo y usá la búsqueda, los filtros o el ordenamiento para
-   encontrar productos.
-2. Abrí el detalle para consultar la imagen, descripción, categoría, precio y
-   disponibilidad. Desde el catálogo o el detalle podés agregar al carrito los
-   productos que tengan stock.
-3. En el carrito podés revisar el precio unitario y subtotal de cada artículo,
-   cambiar cantidades dentro del stock disponible o quitar productos. El
-   resumen actualiza la cantidad de unidades y el total.
-4. Seleccioná **Continuar con la compra** para ir a `/checkout`. Completá tus
-   datos de contacto y elegí método de entrega y pago.
-5. Confirmá el pedido para ver el resumen y el mensaje de confirmación. Al
-   finalizar, el carrito se vacía.
+1. Explorá Inicio o el catálogo. En `/productos`, buscá por nombre, filtrá por
+   categoría o disponibilidad, ordená por precio y navegá las páginas.
+2. Los parámetros `categoria`, `q`, `orden`, `stock` y `pagina` reflejan los
+   filtros y la paginación en la URL. Al cambiar un filtro, la página vuelve a
+   la primera.
+3. Agregá un producto con stock desde una tarjeta o su detalle. El toast ofrece
+   un acceso al carrito. En el detalle podés elegir la cantidad disponible.
+4. En el carrito podés cambiar cantidades, quitar productos y deshacer una
+   eliminación desde el toast. El resumen muestra unidades y total.
+5. Seleccioná **Continuar con la compra**, completá los datos requeridos,
+   elegí entrega y pago, y confirmá para ver el resumen final. El carrito se
+   vacía al confirmar.
 
 El checkout ofrece envío a domicilio, retiro en sucursal o punto de entrega.
-Los medios de pago son tarjeta, transferencia bancaria, Mercado Pago o pago al
-recibir; esta última opción no está disponible para punto de entrega. La opción
-de tarjeta solo valida datos de ejemplo en el navegador: no se realiza ni se
-guarda ninguna transacción.
+Solicita nombre, email y teléfono; la dirección es opcional para el retiro en
+sucursal. Los medios de pago son tarjeta, transferencia bancaria, Mercado Pago
+o pago al recibir; esta última opción no está disponible para punto de entrega.
+La tarjeta solo valida datos ingresados en el navegador y estos no se guardan.
+No se procesa ningún pago ni se envía una orden.
 
 ## Catálogo y datos
 
 Los productos se definen en `src/data/productos.js`. Cada objeto incluye
 identificador, nombre, categoría, precio, imagen, descripción y stock; algunos
-productos también incluyen características técnicas.
+también incluyen características técnicas o la marca `destacado`. Las
+categorías se obtienen de esos datos y se reutilizan en Inicio, Nosotros y el
+footer.
 
 En la página de productos se puede:
 
-1. Buscar por texto incluido en el nombre.
-2. Filtrar por las categorías disponibles en la interfaz: **Todas**,
-   **Periféricos**, **Hardware** y **Setup**.
-3. Mostrar únicamente productos con stock disponible.
-4. Ordenar el resultado por precio ascendente o descendente.
-5. Recorrer los resultados en páginas de hasta 12 productos.
+1. Buscar por texto incluido en el nombre (`q`).
+2. Filtrar por categoría (`categoria`) o mostrar solo productos disponibles
+   (`stock=true`).
+3. Ordenar por precio ascendente (`orden=menor-mayor`) o descendente
+   (`orden=mayor-menor`).
+4. Recorrer los resultados en páginas de hasta 12 productos (`pagina`).
 
-Los filtros y el ordenamiento se aplican antes de paginar los resultados. Los
-productos sin stock se identifican visualmente y no se pueden agregar al
-carrito. La página de detalle también valida el identificador de la ruta y
-ofrece un enlace al catálogo cuando el producto no existe.
+Los filtros y el ordenamiento se aplican antes de paginar. Al modificar los
+filtros se reinicia la página y los parámetros se conservan al navegar entre
+páginas; los valores no válidos vuelven a sus valores predeterminados. Los
+productos sin stock se identifican visualmente y no se pueden agregar. El
+detalle valida el identificador y ofrece volver al catálogo si no encuentra
+el producto.
 
 El carrito se administra en el estado de React de la aplicación. Agregar un
 producto existente incrementa su cantidad; no se permite superar el stock
-disponible. La cantidad se mantiene al menos en una unidad mientras el producto
-permanece en el carrito; para quitarlo se usa la acción correspondiente.
+disponible. La cantidad mínima es una unidad. Al quitar un producto, el toast
+permite restaurarlo en su posición anterior mientras la notificación está
+visible.
 
 ## Persistencia local
 
@@ -181,18 +187,22 @@ dispositivos ni se envían a un servidor. Al restaurar el carrito, se comprueba
 que los productos sigan existiendo y que las cantidades sean válidas para el
 stock actual. Si el navegador bloquea el acceso al almacenamiento local, las
 preferencias visuales siguen funcionando durante la sesión, pero no se
-conservan al volver a cargar la página.
+conservan al volver a cargar la página. Los filtros y la página del catálogo
+se conservan en la URL, no en `localStorage`; los toast son temporales.
 
 ## Diseño y accesibilidad
 
 - Estética gamer con paleta violeta y cian, superficies diferenciadas y
-  tipografías Plus Jakarta Sans y Chakra Petch.
+  tipografía definida por dos familias: Chakra Petch para títulos, precios y
+  acciones principales; Plus Jakarta Sans para el resto del contenido.
+- Escala y clases tipográficas compartidas para rótulos, títulos de página y
+  sección, tarjetas, introducciones y texto secundario.
 - Tema claro y oscuro, con colores definidos mediante variables CSS.
-- Layouts y controles adaptables a distintos anchos de pantalla.
-- Navegación móvil desplegable.
-- Etiquetas accesibles para navegación, controles de paginación y estados del
-  formulario.
-- Estados visuales para foco, disponibilidad y controles deshabilitados.
+- Layouts y controles adaptables; navegación móvil desplegable y resumen del
+  checkout plegable en pantallas angostas.
+- Etiquetas accesibles, breadcrumbs, estados de foco visibles, anuncios de
+  cambios de carrito y notificaciones, y errores vinculados a sus campos.
+- Estados visuales para disponibilidad de stock y controles deshabilitados.
 
 ## Estructura del proyecto
 
@@ -202,27 +212,36 @@ conservan al volver a cargar la página.
 ├── src/
 │   ├── assets/               # Logos, símbolos y banners de la marca
 │   ├── components/
-│   │   ├── CheckoutForm.jsx  # Formulario y resumen del checkout simulado
-│   │   ├── Footer.jsx        # Pie de página y enlaces
-│   │   ├── Navbar.jsx        # Navegación, tema y accesos principales
-│   │   └── ProductoCard.jsx  # Tarjeta de producto y acción de carrito
+│   │   ├── CarritoItem.jsx       # Artículo y controles del carrito
+│   │   ├── Footer.jsx            # Categorías, información y comunidad
+│   │   ├── FormularioCompra.jsx  # Checkout y confirmación simulada
+│   │   ├── Navbar.jsx            # Navegación, temas y accesos
+│   │   ├── ProductoCard.jsx      # Tarjeta y acción de carrito
+│   │   ├── Toast.jsx             # Notificaciones y acciones
+│   │   └── index.js              # Exportaciones de componentes
 │   ├── data/
-│   │   └── productos.js      # Catálogo de productos de ejemplo
+│   │   └── productos.js          # Catálogo local de productos
 │   ├── pages/
-│   │   ├── indexs.jsx        # Página de inicio
-│   │   ├── productos.jsx     # Catálogo, filtros y paginación
-│   │   ├── DetalleProducto.jsx # Detalle de un producto
-│   │   ├── carrito.jsx       # Carrito y gestión de cantidades
-│   │   └── contacto.jsx      # Formulario de contacto
-│   ├── App.jsx               # Rutas y estado global de carrito y apariencia
-│   ├── App.css               # Estilos complementarios
-│   ├── index.css             # Estilos base y variables de tema
-│   └── main.jsx              # Punto de entrada de React
-├── index.html                # Documento HTML base
-├── package.json              # Dependencias y scripts npm
-├── tailwind.config.cjs        # Colores de la identidad visual
-└── vite.config.js            # Configuración de Vite y plugins
+│   │   ├── Carrito.jsx           # Carrito y resumen
+│   │   ├── Contacto.jsx          # Formulario de contacto
+│   │   ├── DetalleProducto.jsx   # Detalle y recomendaciones
+│   │   ├── Inicio.jsx            # Banner, categorías y destacados
+│   │   ├── Nosotros.jsx          # Información de la tienda
+│   │   ├── Productos.jsx         # Catálogo, filtros y paginación
+│   │   └── index.js              # Exportaciones de páginas
+│   ├── utils/
+│   │   └── format.js             # Formato de precios en ARS
+│   ├── App.jsx                   # Rutas, carrito, persistencia y apariencia
+│   ├── index.css                 # Estilos, temas y escala tipográfica
+│   └── main.jsx                  # Punto de entrada de React
+├── index.html                    # Fuentes y documento HTML
+├── package.json                  # Dependencias y scripts npm
+├── tailwind.config.cjs           # Familias tipográficas y colores
+└── vite.config.js                # Configuración de Vite y plugins
 ```
+
+El archivo de estilos de plantilla `src/App.css` fue eliminado; los estilos
+globales y componentes están en `src/index.css` y en las clases de Tailwind.
 
 ## Scripts disponibles
 
@@ -235,12 +254,12 @@ conservan al volver a cargar la página.
 
 ## Alcance actual
 
-El catálogo, sus filtros, ordenamiento y paginación, las vistas de detalle y
-carrito, la persistencia local, el checkout y el formulario de contacto están
-implementados. Es una experiencia de compra simulada: los datos y la
-confirmación del pedido no se envían a un servidor, no se crea una orden real y
-no se procesan pagos. Los datos del formulario y de tarjeta se utilizan solo
-para validar y mostrar la confirmación en la sesión.
+Las páginas, el catálogo local, la búsqueda, los filtros y la paginación en
+URL, el carrito persistido, el checkout y el formulario de contacto están
+implementados en el cliente. La compra es una simulación: no se envía el pedido
+a un servidor, no se genera una orden real y no se procesa ningún pago. El
+formulario de contacto también muestra una confirmación local y no envía los
+datos.
 
 ## Integrantes
 

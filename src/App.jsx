@@ -1,8 +1,13 @@
-import { useEffect, useLayoutEffect, useState } from 'react'
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
-import { Inicio, Productos, DetalleProducto, Carrito, Contacto } from './pages'
-import { CheckoutForm, Navbar, Footer } from './components'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom'
+import { Inicio, Productos, DetalleProducto, Carrito, Contacto, Nosotros } from './pages'
+import { FormularioCompra, Navbar, Footer, Toast } from './components'
 import { productos } from './data/productos'
+
+function RedireccionProducto() {
+  const { id } = useParams()
+  return <Navigate to={`/producto/${id}`} replace />
+}
 
 function leerCarrito() {
   try {
@@ -30,7 +35,9 @@ function leerCarrito() {
 
 function InterfazAplicacion({
   cart,
-  setCart,
+  vaciarCarrito,
+  toast,
+  cerrarToast,
   isLightMode,
   toggleTheme,
   eyeRestMode,
@@ -55,16 +62,16 @@ function InterfazAplicacion({
       />
       <main className="flex-1">
         <Routes>
-          <Route path="/" element={<Inicio isLightMode={isLightMode} />} />
+          <Route
+            path="/"
+            element={<Inicio isLightMode={isLightMode} onAddToCart={agregarAlCarrito} />}
+          />
           <Route path="/productos" element={<Productos onAddToCart={agregarAlCarrito} />} />
           <Route
             path="/producto/:id"
-            element={<DetalleProducto onAddToCart={agregarAlCarrito} />}
+            element={<DetalleProducto key={pathname} onAddToCart={agregarAlCarrito} />}
           />
-          <Route
-            path="/productos/:id"
-            element={<DetalleProducto onAddToCart={agregarAlCarrito} />}
-          />
+          <Route path="/productos/:id" element={<RedireccionProducto />} />
           <Route
             path="/carrito"
             element={
@@ -75,21 +82,24 @@ function InterfazAplicacion({
               />
             }
           />
-          <Route
-            path="/checkout"
-            element={<CheckoutForm cart={cart} onClearCart={() => setCart([])} />}
-          />
+          <Route path="/checkout" element={<FormularioCompra cart={cart} onClearCart={vaciarCarrito} />} />
           <Route path="/contacto" element={<Contacto />} />
+          <Route path="/nosotros" element={<Nosotros />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
       {!esCheckout && <Footer isLightMode={isLightMode} />}
+      <Toast toast={toast} onClose={cerrarToast} />
     </div>
   )
 }
 
 function App() {
   const [cart, setCart] = useState(leerCarrito)
+  // Mantiene sincronizados los clics sucesivos antes del siguiente render de React.
+  const cartRef = useRef(cart)
+  const [toast, setToast] = useState(null)
+  const toastIdRef = useRef(0)
   const [isLightMode, setIsLightMode] = useState(() => {
     try {
       return window.localStorage.getItem('nexus-theme') === 'light'
@@ -146,25 +156,70 @@ function App() {
     }
   }, [cart])
 
-  const agregarAlCarrito = (producto) => {
-    setCart((carritoActual) => {
-      const productoExistente = carritoActual.find((item) => item.id === producto.id)
+  const mostrarToast = (mensaje, tipo = 'exito', accion) => {
+    toastIdRef.current += 1
+    setToast({ id: toastIdRef.current, mensaje, tipo, accion })
+  }
 
-      if (producto.stock < 1 || productoExistente?.cantidad >= producto.stock) {
-        return carritoActual
-      }
+  const agregarAlCarrito = (producto, cantidad = 1) => {
+    if (producto.stock < 1) return 'sin-stock'
 
-      if (productoExistente) {
-        return carritoActual.map((item) =>
-          item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item,
+    if (!Number.isInteger(cantidad) || cantidad < 1) return 'maximo'
+
+    const carritoActual = cartRef.current
+    const productoExistente = carritoActual.find((item) => item.id === producto.id)
+    const cantidadExistente = productoExistente?.cantidad ?? 0
+    const cantidadDisponible = Math.max(0, producto.stock - cantidadExistente)
+    const cantidadAAgregar = Math.min(cantidad, cantidadDisponible)
+
+    if (cantidadAAgregar === 0) {
+      mostrarToast(`Ya tenés el máximo disponible de ${producto.nombre}`, 'aviso')
+      return 'maximo'
+    }
+
+    const carritoActualizado = productoExistente
+      ? carritoActual.map((item) =>
+          item.id === producto.id
+            ? { ...item, cantidad: item.cantidad + cantidadAAgregar }
+            : item,
         )
-      }
+      : [...carritoActual, { ...producto, cantidad: cantidadAAgregar }]
+    cartRef.current = carritoActualizado
 
-      return [...carritoActual, { ...producto, cantidad: 1 }]
+    // La actualización funcional vuelve a comprobar el stock ante clics rápidos.
+    setCart((carritoPrevio) => {
+      const existente = carritoPrevio.find((item) => item.id === producto.id)
+      const cantidadQuePuedeAgregar = Math.max(0, producto.stock - (existente?.cantidad ?? 0))
+      const agregar = Math.min(cantidad, cantidadQuePuedeAgregar)
+
+      if (agregar === 0) return carritoPrevio
+
+      return existente
+        ? carritoPrevio.map((item) =>
+            item.id === producto.id ? { ...item, cantidad: item.cantidad + agregar } : item,
+          )
+        : [...carritoPrevio, { ...producto, cantidad: agregar }]
     })
+
+    const resultado = cantidadAAgregar < cantidad ? 'maximo' : 'agregado'
+    if (resultado === 'agregado') {
+      mostrarToast(`Agregaste ${producto.nombre} al carrito`, 'exito', {
+        label: 'Ver carrito',
+        to: '/carrito',
+      })
+    } else {
+      mostrarToast(`Ya tenés el máximo disponible de ${producto.nombre}`, 'aviso')
+    }
+
+    return resultado
   }
 
   const actualizarCantidad = (productoId, cantidad) => {
+    cartRef.current = cartRef.current.map((item) =>
+      item.id === productoId
+        ? { ...item, cantidad: Math.max(1, Math.min(cantidad, item.stock)) }
+        : item,
+    )
     setCart((carritoActual) =>
       carritoActual.map((item) =>
         item.id === productoId
@@ -175,8 +230,39 @@ function App() {
   }
 
   const eliminarDelCarrito = (productoId) => {
+    const indice = cartRef.current.findIndex((item) => item.id === productoId)
+    if (indice < 0) return
+
+    const productoQuitado = cartRef.current[indice]
+    cartRef.current = cartRef.current.filter((item) => item.id !== productoId)
     setCart((carritoActual) => carritoActual.filter((item) => item.id !== productoId))
+
+    mostrarToast(`Quitaste ${productoQuitado.nombre}`, 'aviso', {
+      label: 'Deshacer',
+      onClick: () => {
+        if (cartRef.current.some((item) => item.id === productoId)) return
+
+        const carritoRestaurado = [...cartRef.current]
+        carritoRestaurado.splice(indice, 0, productoQuitado)
+        cartRef.current = carritoRestaurado
+        setCart((carritoActual) => {
+          if (carritoActual.some((item) => item.id === productoId)) return carritoActual
+          const carritoActualizado = [...carritoActual]
+          carritoActualizado.splice(indice, 0, productoQuitado)
+          return carritoActualizado
+        })
+      },
+    })
   }
+
+  const vaciarCarrito = () => {
+    cartRef.current = []
+    setCart([])
+  }
+
+  const cerrarToast = useCallback(() => {
+    setToast(null)
+  }, [])
 
   const cantidadProductos = cart.reduce((total, item) => total + item.cantidad, 0)
 
@@ -184,7 +270,9 @@ function App() {
     <BrowserRouter>
       <InterfazAplicacion
         cart={cart}
-        setCart={setCart}
+        vaciarCarrito={vaciarCarrito}
+        toast={toast}
+        cerrarToast={cerrarToast}
         isLightMode={isLightMode}
         toggleTheme={toggleTheme}
         eyeRestMode={eyeRestMode}

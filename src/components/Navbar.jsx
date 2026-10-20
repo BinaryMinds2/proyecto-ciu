@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import nexusSymbol from '../assets/nexus-symbol.png'
 import nexusSymbolLight from '../assets/nexus-symbol-light.png'
@@ -7,6 +7,7 @@ const navLinks = [
   { label: 'Inicio', to: '/' },
   { label: 'Productos', to: '/productos' },
   { label: 'Contacto', to: '/contacto' },
+  { label: 'Nosotros', to: '/nosotros' },
 ]
 
 function Navbar({
@@ -22,6 +23,27 @@ function Navbar({
   const itemCount = Math.max(0, Number(cartCount) || 0)
   const isCartPage = pathname === '/carrito'
   const mostrarCarrito = !hideCart && pathname !== '/checkout'
+
+  useEffect(() => {
+    // También cierra el menú cuando la ruta cambia por navegación externa o historial.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMenuOpen(false)
+  }, [pathname])
+
+  useEffect(() => {
+    if (!menuOpen) return undefined
+
+    const cerrarConEscape = (evento) => {
+      if (evento.key === 'Escape') setMenuOpen(false)
+    }
+    window.addEventListener('keydown', cerrarConEscape)
+    return () => window.removeEventListener('keydown', cerrarConEscape)
+  }, [menuOpen])
+
+  const enlaceActivo = (to) =>
+    to === '/productos'
+      ? pathname === '/productos' || pathname.startsWith('/producto/')
+      : pathname === to
 
   return (
     <header className="sticky top-0 z-50 border-b border-gamer-primary/20 bg-gamer-bg/95 shadow-[0_8px_30px_rgba(127,82,255,0.08)] backdrop-blur">
@@ -39,10 +61,10 @@ function Navbar({
             className="size-10 rounded-xl border border-gamer-primary/50 object-cover shadow-[0_0_18px_rgba(127,82,255,0.25)] transition group-hover:shadow-[0_0_24px_rgba(127,82,255,0.45)]"
           />
           <span className="leading-tight">
-            <span className="block text-sm font-black tracking-[0.14em] text-gamer-textMain">
+            <span className="font-display block text-sm font-bold tracking-[0.14em] text-gamer-textMain">
               NEXUS
             </span>
-            <span className="block text-[0.65rem] font-semibold tracking-[0.24em] text-gamer-accent">
+            <span className="font-display block text-xs font-bold tracking-[0.24em] text-gamer-accent">
               GAMING
             </span>
           </span>
@@ -56,7 +78,12 @@ function Navbar({
             <Link
               key={to}
               to={to}
-              className="text-sm font-medium text-gamer-textMain/75 transition duration-200 hover:-translate-y-0.5 hover:scale-105 hover:text-gamer-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
+              aria-current={enlaceActivo(to) ? 'page' : undefined}
+              className={`relative py-2 text-sm font-medium transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-left after:scale-x-0 after:bg-gamer-accent after:transition-transform hover:text-gamer-accent hover:after:scale-x-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent ${
+                enlaceActivo(to)
+                  ? 'text-gamer-accent after:scale-x-100'
+                  : 'text-gamer-textMain/75'
+              }`}
             >
               {label}
             </Link>
@@ -102,32 +129,50 @@ function Navbar({
             )}
           </button>
 
-          <button
-            type="button"
-            role="switch"
-            aria-checked={eyeRestMode}
-            aria-label={
-              eyeRestMode
-                ? 'Desactivar modo descanso visual'
-                : 'Activar modo descanso visual'
-            }
-            title={eyeRestMode ? 'Desactivar modo descanso visual' : 'Activar modo descanso visual'}
-            onClick={onToggleEyeRestMode}
-            className={`eye-rest-toggle relative h-7 w-12 rounded-full border p-0.5 transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gamer-accent ${
-              eyeRestMode
-                ? 'border-amber-200/60 bg-amber-100/30'
-                : 'border-gamer-accent/30 bg-gamer-card'
-            }`}
-          >
-            <span
-              aria-hidden="true"
-              className={`block size-5 rounded-full shadow transition-transform ${
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              role="switch"
+              aria-checked={eyeRestMode}
+              aria-label={
                 eyeRestMode
-                  ? 'translate-x-5 bg-amber-100'
-                  : 'translate-x-0 bg-gamer-accent'
+                  ? 'Desactivar modo descanso visual'
+                  : 'Activar modo descanso visual'
+              }
+              title={eyeRestMode ? 'Desactivar modo descanso visual' : 'Activar modo descanso visual'}
+              onClick={onToggleEyeRestMode}
+              className={`eye-rest-toggle relative h-7 w-12 rounded-full border p-0.5 transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gamer-accent ${
+                eyeRestMode
+                  ? 'border-amber-200/60 bg-amber-100/30'
+                  : 'border-gamer-accent/30 bg-gamer-card'
               }`}
-            />
-          </button>
+            >
+              <span
+                aria-hidden="true"
+                className={`grid size-5 place-items-center rounded-full shadow transition-transform ${
+                  eyeRestMode
+                    ? 'translate-x-5 bg-amber-100 text-amber-900'
+                    : 'translate-x-0 bg-gamer-accent text-gamer-bg'
+                }`}
+              >
+                <svg
+                  className="size-3"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </span>
+            </button>
+            <span className="hidden text-xs font-semibold text-gamer-textMuted md:inline">
+              Descanso visual
+            </span>
+          </div>
 
           {mostrarCarrito && <Link
             to="/carrito"
@@ -154,8 +199,9 @@ function Navbar({
               <circle cx="18" cy="20" r="1" />
             </svg>
             <span
-              className={`absolute -right-2 -top-2 grid min-h-5 min-w-5 place-items-center rounded-full border border-gamer-bg bg-gamer-primary px-1 text-[0.65rem] font-bold leading-none text-white shadow-[0_0_10px_rgba(127,82,255,0.55)] transition-all ${
-                itemCount > 0 ? 'animate-pulse scale-100' : 'scale-90'
+              key={itemCount}
+              className={`cart-count-pop absolute -right-2 -top-2 grid min-h-5 min-w-5 place-items-center rounded-full border border-gamer-bg bg-gamer-primary px-1 text-xs font-bold leading-none text-white shadow-[0_0_10px_rgba(127,82,255,0.55)] ${
+                itemCount > 0 ? 'scale-100' : 'scale-90'
               }`}
             >
               {itemCount > 99 ? '99+' : itemCount}
@@ -196,13 +242,18 @@ function Navbar({
           className="border-t border-gamer-primary/20 bg-gamer-card px-4 py-3 md:hidden"
         >
           <div className="mx-auto flex max-w-7xl flex-col">
-            {[...navLinks.slice(0, 2), { label: 'Carrito', to: '/carrito' }, navLinks[2]].map(
+            {[...navLinks.slice(0, 2), { label: 'Carrito', to: '/carrito' }, ...navLinks.slice(2)].map(
               ({ label, to }) => (
                 <Link
                   key={to}
                   to={to}
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center justify-between border-b border-gamer-textMain/10 py-3 text-sm font-medium text-gamer-textMain/85 transition duration-200 last:border-0 hover:translate-x-1 hover:text-gamer-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gamer-accent"
+                  aria-current={enlaceActivo(to) || (to === '/carrito' && isCartPage) ? 'page' : undefined}
+                  className={`flex items-center justify-between border-b border-gamer-textMain/10 py-3 text-sm font-medium transition-colors last:border-0 hover:text-gamer-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gamer-accent ${
+                    enlaceActivo(to) || (to === '/carrito' && isCartPage)
+                      ? 'text-gamer-accent'
+                      : 'text-gamer-textMain/85'
+                  }`}
                 >
                   <span>{label}</span>
                   {to === '/carrito' && itemCount > 0 && (
