@@ -80,7 +80,7 @@ export const productos = [
     nombre: "Memoria RAM 16GB DDR4",
     categoria: "Hardware",
     precio: 32000,
-    imagen: "https://images.unsplash.com/photo-1562976540-1e02c5144c5c?q=80&w=600&auto=format&fit=crop",
+    imagen: "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?q=80&w=600&auto=format&fit=crop",
     descripcion: "Módulo de alto rendimiento con disipador térmico de perfil bajo y soporte XMP.",
     caracteristicas: [
       "Capacidad de 16 GB",
