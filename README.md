@@ -41,6 +41,8 @@ detalles, administrar un carrito y completar un flujo de compra simulado.
   local del formulario.
 - Notificaciones toast para agregar o quitar productos y para informar límites
   de stock.
+- Feedback visual temporal al agregar productos y aviso de unidades limitadas
+  en las tarjetas de producto.
 - Navbar adaptable, enlaces de categorías e información en el footer, tema claro
   y oscuro, y modo de descanso visual.
 - Formato de precios en pesos argentinos, diseño adaptable y tipografías
@@ -135,8 +137,8 @@ redirigen a Inicio. El carrito se abre desde el ícono de la navegación.
    vacía al confirmar.
 
 El checkout ofrece envío a domicilio, retiro en sucursal o punto de entrega.
-Solicita nombre, email y teléfono; la dirección es opcional para el retiro en
-sucursal. Los medios de pago son tarjeta, transferencia bancaria, Mercado Pago
+Solicita nombre, email, teléfono y dirección o localidad para todos los métodos
+de entrega. Los medios de pago son tarjeta, transferencia bancaria, Mercado Pago
 o pago al recibir; esta última opción no está disponible para punto de entrega.
 La tarjeta solo valida datos ingresados en el navegador y estos no se guardan.
 No se procesa ningún pago ni se envía una orden.

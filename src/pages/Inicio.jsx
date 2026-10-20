@@ -110,6 +110,7 @@ function Inicio({ isLightMode = false, onAddToCart }) {
               <div className="flex items-center justify-between gap-3 p-4">
                 <div>
                   <h3 className="card-title">{categoria}</h3>
+                  <p className="mt-1 text-sm text-gamer-textMuted">{producto.nombre}</p>
                 </div>
                 <span className="text-xl text-gamer-accent" aria-hidden="true">→</span>
               </div>

@@ -36,10 +36,7 @@ function validar(formulario, carrito) {
     erroresNuevos.email = 'Ingresá un email válido.'
   }
   if (!formulario.telefono.trim()) erroresNuevos.telefono = 'Ingresá tu teléfono.'
-  if (
-    formulario.entrega !== 'Retiro en sucursal' &&
-    !formulario.direccion.trim()
-  ) {
+  if (!formulario.direccion.trim()) {
     erroresNuevos.direccion = 'Ingresá tu dirección o localidad.'
   }
   if (!formulario.entrega) erroresNuevos.entrega = 'Elegí un método de entrega.'

@@ -42,7 +42,9 @@ function Navbar({
 
   const enlaceActivo = (to) =>
     to === '/productos'
-      ? pathname === '/productos' || pathname.startsWith('/producto/')
+      ? pathname === '/productos' ||
+        pathname.startsWith('/producto/') ||
+        pathname.startsWith('/productos/')
       : pathname === to
 
   return (

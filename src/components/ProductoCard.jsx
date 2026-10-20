@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
-import { precioARS } from '../utils/format'
+
+const precioARS = (importe) =>
+  new Intl.NumberFormat('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+    maximumFractionDigits: 0,
+  }).format(importe)
 
 function ProductoCard({ producto, onAddToCart }) {
   const sinStock = producto.stock === 0
@@ -14,12 +20,10 @@ function ProductoCard({ producto, onAddToCart }) {
   useEffect(() => () => clearTimeout(timeoutRef.current), [])
 
   const manejarAgregarAlCarrito = () => {
-    const resultado = onAddToCart(producto)
-    if (resultado !== 'agregado') return
-
+    onAddToCart(producto)
     setAgregado(true)
     clearTimeout(timeoutRef.current)
-    timeoutRef.current = setTimeout(() => setAgregado(false), 1500)
+    timeoutRef.current = setTimeout(() => setAgregado(false), 1000)
   }
 
   return (
