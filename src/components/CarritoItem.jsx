@@ -1,8 +1,13 @@
+import { AnimatePresence, motion } from 'motion/react'
 import { precioARS } from '../utils/format'
 
 function CarritoItem({ item, onUpdateQuantity, onRemoveProduct }) {
   return (
-    <article
+    <motion.article
+      layout
+      initial={false}
+      exit={{ opacity: 0, x: 24 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
       className="grid gap-4 rounded-xl border border-gamer-primary/20 bg-gamer-card p-4 shadow-lg shadow-black/10 sm:grid-cols-[7rem_minmax(0,1fr)_auto]"
     >
       <img
@@ -29,7 +34,20 @@ function CarritoItem({ item, onUpdateQuantity, onRemoveProduct }) {
             >
               −
             </button>
-            <span className="min-w-8 text-center font-semibold">{item.cantidad}</span>
+            <span className="inline-flex min-w-8 justify-center overflow-hidden text-center font-semibold">
+              <AnimatePresence mode="popLayout">
+                <motion.span
+                  key={item.cantidad}
+                  className="inline-block w-full"
+                  initial={{ y: 15, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -15, opacity: 0 }}
+                  transition={{ duration: 0.2, ease: 'easeOut' }}
+                >
+                  {item.cantidad}
+                </motion.span>
+              </AnimatePresence>
+            </span>
             <button
               type="button"
               aria-label={`Aumentar cantidad de ${item.nombre}`}
@@ -45,10 +63,29 @@ function CarritoItem({ item, onUpdateQuantity, onRemoveProduct }) {
           )}
           <button
             type="button"
+            aria-label={`Quitar ${item.nombre} del carrito`}
             onClick={() => onRemoveProduct(item.id)}
-            className="secondary-copy font-semibold text-red-400 transition hover:text-red-300"
+            className="cursor-pointer rounded-full bg-red-500 p-1 transition-transform duration-200 hover:scale-[1.25] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-400 mx-3"
           >
-            Quitar
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M4 7l16 0" />
+              <path d="M10 11l0 6" />
+              <path d="M14 11l0 6" />
+              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+            </svg>
           </button>
         </div>
       </div>
@@ -58,7 +95,7 @@ function CarritoItem({ item, onUpdateQuantity, onRemoveProduct }) {
           {precioARS(item.precio * item.cantidad)}
         </span>
       </div>
-    </article>
+    </motion.article>
   )
 }
 

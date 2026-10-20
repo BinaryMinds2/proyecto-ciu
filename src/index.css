@@ -807,7 +807,7 @@ body {
 .contacto-whatsapp-icon svg {
  width: 23px;
  height: 23px;
- fill: currentColor;
+ fill: none;
 }
 
 .contacto-info-card > span {

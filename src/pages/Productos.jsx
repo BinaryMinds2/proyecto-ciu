@@ -1,5 +1,5 @@
 import { useMemo, useRef } from 'react'
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useSearchParams } from 'react-router-dom'
 import ProductoCard from '../components/ProductoCard'
 import { productos } from '../data/productos'
@@ -83,26 +83,6 @@ function Productos({ onAddToCart }) {
     return resultado
   }, [busqueda, categoriaSeleccionada, ordenPrecio, soloConStock])
 
-  const contenedorGridVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.04,
-      },
-    },
-  }
-
-  const tarjetaVariants = {
-    hidden: { opacity: 0, y: 30, scale: 0.95 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      scale: 1,
-      transition: { duration: 0.4, ease: 'easeOut' },
-    },
-  }
-
   const cantidadPaginas = Math.ceil(productosFiltrados.length / productosPorPagina)
   const pagina =
     paginaSolicitada <= Math.max(1, cantidadPaginas) ? paginaSolicitada : 1
@@ -117,13 +97,6 @@ function Productos({ onAddToCart }) {
     ordenPrecio !== 'sin-orden' ||
     soloConStock
   const limpiarFiltros = () => setSearchParams(new URLSearchParams(), { replace: true })
-  const claveResultados = [
-    categoriaSeleccionada,
-    busqueda,
-    ordenPrecio,
-    soloConStock,
-    pagina,
-  ].join('|')
 
   return (
     <section className="bg-gamer-bg px-4 py-8 text-gamer-textMain sm:px-6 sm:py-10 lg:px-8">
@@ -223,32 +196,36 @@ function Productos({ onAddToCart }) {
         </p>
 
         {productosFiltrados.length > 0 ? (
-          <motion.div
-            key={claveResultados}
-            className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-            variants={contenedorGridVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {productosPagina.map((producto) => (
-              <motion.div
-                key={producto.id}
-                variants={tarjetaVariants}
-                whileHover={{
-                  y: -8,
-                  boxShadow: '0px 0px 20px rgba(127, 82, 255, 0.4)',
-                  transition: { duration: 0.2 },
-                }}
-                whileTap={{ scale: 0.98 }}
-                className="h-full rounded-xl"
-              >
-                <ProductoCard
-                  producto={producto}
-                  onAddToCart={onAddToCart}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <AnimatePresence mode="popLayout">
+              {productosPagina.map((producto, indice) => (
+                <motion.div
+                  key={producto.id}
+                  layout
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.3, ease: 'easeOut', delay: indice * 0.03 },
+                  }}
+                  exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
+                  transition={{ layout: { type: 'spring', stiffness: 350, damping: 30 } }}
+                  whileHover={{
+                    y: -8,
+                    boxShadow: '0px 0px 20px rgba(127, 82, 255, 0.4)',
+                    transition: { duration: 0.2 },
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                  className="h-full rounded-xl"
+                >
+                  <ProductoCard
+                    producto={producto}
+                    onAddToCart={onAddToCart}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
         ) : (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}

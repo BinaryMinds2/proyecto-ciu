@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { AnimatePresence } from 'motion/react'
 import CarritoItem from '../components/CarritoItem'
 import { precioARS } from '../utils/format'
 
@@ -34,14 +35,16 @@ function Carrito({ cart, onUpdateQuantity, onRemoveProduct }) {
           <>
             <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
               <div className="space-y-4">
-                {cart.map((item) => (
-                  <CarritoItem
-                    key={item.id}
-                    item={item}
-                    onUpdateQuantity={onUpdateQuantity}
-                    onRemoveProduct={onRemoveProduct}
-                  />
-                ))}
+                <AnimatePresence initial={false}>
+                  {cart.map((item) => (
+                    <CarritoItem
+                      key={item.id}
+                      item={item}
+                      onUpdateQuantity={onUpdateQuantity}
+                      onRemoveProduct={onRemoveProduct}
+                    />
+                  ))}
+                </AnimatePresence>
               </div>
 
               <aside className="rounded-xl border border-gamer-primary/20 bg-gamer-card p-5 lg:sticky lg:top-24">

@@ -12,7 +12,7 @@ const enlacesInformacion = [
 const socialLinks = [
   {
     label: 'Instagram',
-    href: 'https://instagram.com/nexusgaming',
+    href: 'https://instagram.com',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +59,7 @@ const socialLinks = [
   },
   {
     label: 'Facebook',
-    href: 'https://facebook.com/nexusgaming',
+    href: 'https://facebook.com',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

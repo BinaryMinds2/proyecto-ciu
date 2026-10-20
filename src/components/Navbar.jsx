@@ -169,7 +169,7 @@ function Navbar({
                 </svg>
               </span>
             </button>
-            <span className="hidden text-xs font-semibold text-gamer-textMuted md:inline">
+            <span className="hidden text-xs font-semibold text-gamer-textMuted lg:inline">
               Descanso visual
             </span>
           </div>

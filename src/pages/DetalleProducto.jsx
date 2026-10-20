@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'motion/react'
+import { AnimatePresence, motion } from 'motion/react'
 import { Link, useParams } from 'react-router-dom'
 import ProductoCard from '../components/ProductoCard'
 import { productos } from '../data/productos'
@@ -133,8 +133,19 @@ function DetalleProducto({ onAddToCart }) {
               >
                 −
               </button>
-              <span className="min-w-10 text-center font-semibold" aria-live="polite">
-                {cantidad}
+              <span className="inline-flex min-w-10 justify-center overflow-hidden text-center font-semibold" aria-live="polite">
+                <AnimatePresence mode="popLayout">
+                  <motion.span
+                    key={cantidad}
+                    className="inline-block w-full"
+                    initial={{ y: 15, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -15, opacity: 0 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                  >
+                    {cantidad}
+                  </motion.span>
+                </AnimatePresence>
               </span>
               <button
                 type="button"
@@ -148,7 +159,7 @@ function DetalleProducto({ onAddToCart }) {
             </div>
           </div>
 
-          <div className="flex w-full flex-col gap-3 sm:flex-row">
+          <div className="flex w-full flex-col gap-3 sm:flex-row mt-4">
             <button
               type="button"
               disabled={sinStock}
