@@ -16,8 +16,8 @@ function CarritoItem({ item, onUpdateQuantity, onRemoveProduct }) {
         className="h-28 w-full rounded-lg object-cover sm:w-28"
       />
       <div className="flex flex-col justify-center gap-2">
-        <h2 className="text-lg font-bold text-gamer-textMain">{item.nombre}</h2>
-        <p className="text-sm text-gamer-textMain/70">
+        <h3 className="card-title">{item.nombre}</h3>
+        <p className="secondary-copy text-gamer-textMuted">
           Precio unitario: {precioARS(item.precio)}
         </p>
         <div className="flex flex-wrap items-center gap-3">
@@ -30,7 +30,7 @@ function CarritoItem({ item, onUpdateQuantity, onRemoveProduct }) {
               aria-label={`Disminuir cantidad de ${item.nombre}`}
               disabled={item.cantidad <= 1}
               onClick={() => onUpdateQuantity(item.id, item.cantidad - 1)}
-              className="px-3 py-1.5 text-lg font-bold text-gamer-accent disabled:cursor-not-allowed disabled:opacity-40"
+              className="font-display px-3 py-1.5 text-lg font-bold text-gamer-accent disabled:cursor-not-allowed disabled:opacity-40"
             >
               −
             </button>
@@ -40,23 +40,29 @@ function CarritoItem({ item, onUpdateQuantity, onRemoveProduct }) {
               aria-label={`Aumentar cantidad de ${item.nombre}`}
               disabled={item.cantidad >= item.stock}
               onClick={() => onUpdateQuantity(item.id, item.cantidad + 1)}
-              className="px-3 py-1.5 text-lg font-bold text-gamer-accent disabled:cursor-not-allowed disabled:opacity-40"
+              className="font-display px-3 py-1.5 text-lg font-bold text-gamer-accent disabled:cursor-not-allowed disabled:opacity-40"
             >
               +
             </button>
           </div>
+          {item.cantidad >= item.stock && (
+            <span className="small-label font-medium text-gamer-textMuted">Máximo disponible</span>
+          )}
           <button
             type="button"
             onClick={() => onRemoveProduct(item.id)}
-            className="text-sm font-semibold text-red-400 transition hover:text-red-300"
+            className="secondary-copy font-semibold text-red-400 transition hover:text-red-300"
           >
             Quitar
           </button>
         </div>
       </div>
-      <p className="self-center text-lg font-bold text-gamer-accent sm:text-right">
-        Subtotal: {precioARS(item.precio * item.cantidad)}
-      </p>
+      <div className="self-center sm:text-right">
+        <span className="small-label block font-medium text-gamer-textMuted">Subtotal</span>
+        <span className="price-display">
+          {precioARS(item.precio * item.cantidad)}
+        </span>
+      </div>
     </article>
   )
 }

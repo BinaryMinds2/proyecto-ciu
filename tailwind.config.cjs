@@ -6,6 +6,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        display: ['Chakra Petch', 'sans-serif'],
+        sans: ['Plus Jakarta Sans', 'sans-serif'],
+      },
       colors: {
         gamer: {
           bg: 'rgb(var(--gamer-bg) / <alpha-value>)',

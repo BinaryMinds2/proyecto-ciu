@@ -72,11 +72,16 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
   const [tocados, setTocados] = useState({})
   const [intentoEnvio, setIntentoEnvio] = useState(false)
   const [pedidoFinalizado, setPedidoFinalizado] = useState(null)
+  const [resumenAbierto, setResumenAbierto] = useState(false)
   const carritoValido = Array.isArray(cart) ? cart : []
   const carritoEstaVacio = carritoValido.length === 0 && !pedidoFinalizado
   const articulosPedido = pedidoFinalizado?.cart || carritoValido
   const subtotal = articulosPedido.reduce(
     (total, producto) => total + producto.precio * producto.cantidad,
+    0,
+  )
+  const cantidadTotal = articulosPedido.reduce(
+    (total, producto) => total + producto.cantidad,
     0,
   )
   const pagoAlRecibirDisponible = ['Envío a domicilio', 'Retiro en sucursal'].includes(
@@ -186,6 +191,12 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
         id={`checkout-${nombre}`}
         name={nombre}
         type={tipo}
+        autoComplete={{
+          nombre: 'name',
+          email: 'email',
+          telefono: 'tel',
+          direccion: 'street-address',
+        }[nombre]}
         value={formulario[nombre]}
         onChange={actualizarCampo}
         onBlur={() => tocarCampo(nombre)}
@@ -325,7 +336,7 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
                       name="numeroTarjeta"
                       type="text"
                       inputMode="numeric"
-                      autoComplete="off"
+                      autoComplete="cc-number"
                       value={formulario.numeroTarjeta}
                       onChange={actualizarTarjeta}
                       onBlur={() => tocarCampo('numeroTarjeta')}
@@ -342,7 +353,7 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
                       name="vencimiento"
                       type="text"
                       inputMode="numeric"
-                      autoComplete="off"
+                      autoComplete="cc-exp"
                       value={formulario.vencimiento}
                       onChange={actualizarTarjeta}
                       onBlur={() => tocarCampo('vencimiento')}
@@ -359,7 +370,7 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
                       name="cvv"
                       type="text"
                       inputMode="numeric"
-                      autoComplete="off"
+                      autoComplete="cc-csc"
                       value={formulario.cvv}
                       onChange={actualizarTarjeta}
                       onBlur={() => tocarCampo('cvv')}
@@ -377,6 +388,21 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
 
         <aside className="checkout-summary" aria-labelledby="checkout-summary">
           <h2 id="checkout-summary">Resumen del pedido</h2>
+          <button
+            type="button"
+            className="checkout-summary-toggle"
+            aria-expanded={resumenAbierto}
+            aria-controls="checkout-summary-content"
+            onClick={() => setResumenAbierto((abierto) => !abierto)}
+          >
+            <span>{cantidadTotal} {cantidadTotal === 1 ? 'producto' : 'productos'}</span>
+            <strong>{precioARS(subtotal)}</strong>
+            <span aria-hidden="true">{resumenAbierto ? '−' : '+'}</span>
+          </button>
+          <div
+            id="checkout-summary-content"
+            className={`checkout-summary-content${resumenAbierto ? ' is-open' : ''}`}
+          >
           {carritoEstaVacio && (
             <p className="checkout-notice" role="status">
               Tu carrito está vacío. <Link to="/productos">Explorá los productos</Link> antes de confirmar.
@@ -406,6 +432,7 @@ function CheckoutForm({ cart = [], onClearCart, onPurchaseConfirmed }) {
               Confirmar pedido
             </button>
           )}
+          </div>
         </aside>
       </form>
     </section>

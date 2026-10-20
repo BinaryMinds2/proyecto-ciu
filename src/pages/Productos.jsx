@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { motion } from "motion/react"
+import { useSearchParams } from 'react-router-dom'
 import ProductoCard from '../components/ProductoCard'
 import { productos } from '../data/productos'
 
@@ -7,8 +8,12 @@ const categorias = ['Todas', 'Periféricos', 'Hardware', 'Setup']
 const productosPorPagina = 12
 
 function Productos({ onAddToCart }) {
+  const [searchParams] = useSearchParams()
   const [busqueda, setBusqueda] = useState('')
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('Todas')
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState(() => {
+    const categoriaInicial = searchParams.get('categoria')
+    return categorias.includes(categoriaInicial) ? categoriaInicial : 'Todas'
+  })
   const [soloConStock, setSoloConStock] = useState(false)
   const [ordenPrecio, setOrdenPrecio] = useState('sin-orden')
   const [pagina, setPagina] = useState(1)
@@ -40,7 +45,7 @@ function Productos({ onAddToCart }) {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1, 
+        staggerChildren: 0.04,
       },
     },
   };
@@ -58,23 +63,36 @@ function Productos({ onAddToCart }) {
   const cantidadPaginas = Math.ceil(productosFiltrados.length / productosPorPagina)
   const indiceInicial = (pagina - 1) * productosPorPagina
   const productosPagina = productosFiltrados.slice(indiceInicial, indiceInicial + productosPorPagina)
+  const hayFiltrosActivos = categoriaSeleccionada !== 'Todas' ||
+    busqueda.trim() !== '' ||
+    soloConStock ||
+    ordenPrecio !== 'sin-orden'
+  const limpiarFiltros = () => {
+    setBusqueda('')
+    setCategoriaSeleccionada('Todas')
+    setSoloConStock(false)
+    setOrdenPrecio('sin-orden')
+    setPagina(1)
+  }
 
   return (
     <section className="bg-gamer-bg px-4 py-12 text-gamer-textMain sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-10">
-          <p className="mb-2 text-sm font-bold uppercase tracking-[0.25em] text-gamer-accent">
+        <div className="mb-7">
+          <p className="eyebrow mb-2">
             Nexus Gaming Store
           </p>
-          <h1 className="mb-4 text-4xl font-bold text-gamer-textMain sm:text-5xl">Todos los productos</h1>
-          <p className="max-w-2xl text-gamer-textMain/70">
+          <h1 className="page-title mb-4">
+            {categoriaSeleccionada === 'Todas' ? 'Todos los productos' : categoriaSeleccionada}
+          </h1>
+          <p className="lead max-w-2xl">
             Encontrá el equipamiento que necesitás para llevar tu setup al siguiente nivel.
           </p>
         </div>
 
-        <div className="mb-10 rounded-xl border border-gamer-primary/20 bg-gamer-card p-5">
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(220px,1fr)]">
-            <label className="flex flex-col gap-2 text-sm font-semibold text-gamer-textMain">
+        <div className="mb-7 rounded-xl border border-gamer-primary/20 bg-gamer-card p-4 sm:p-5">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-[minmax(0,1.5fr)_minmax(220px,1fr)_auto] lg:items-end">
+            <label className="secondary-copy flex flex-col gap-2 font-semibold text-gamer-textMain">
               Buscar por nombre
               <input
                 type="search"
@@ -88,7 +106,7 @@ function Productos({ onAddToCart }) {
               />
             </label>
 
-            <label className="flex flex-col gap-2 text-sm font-semibold text-gamer-textMain">
+            <label className="secondary-copy flex flex-col gap-2 font-semibold text-gamer-textMain">
               Ordenar por precio
               <select
                 value={ordenPrecio}
@@ -103,14 +121,27 @@ function Productos({ onAddToCart }) {
                 <option value="mayor-menor">Mayor a menor</option>
               </select>
             </label>
+            <label className="secondary-copy flex cursor-pointer items-center gap-3 pb-3 font-semibold text-gamer-textMain">
+              <input
+                type="checkbox"
+                checked={soloConStock}
+                onChange={(event) => {
+                  setSoloConStock(event.target.checked)
+                  setPagina(1)
+                }}
+                className="h-4 w-4 accent-gamer-accent"
+              />
+              Solo con stock
+            </label>
           </div>
 
-          <div className="mt-5 flex flex-col gap-5 border-t border-gamer-primary/20 pt-5 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex flex-wrap gap-2" aria-label="Filtrar por categoría">
+          <div className="mt-4 flex flex-col gap-4 border-t border-gamer-primary/20 pt-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar por categoría">
               {categorias.map((categoria) => (
                 <button
                   key={categoria}
                   type="button"
+                  aria-pressed={categoriaSeleccionada === categoria}
                   onClick={() => {
                     setCategoriaSeleccionada(categoria)
                     setPagina(1)
@@ -126,22 +157,19 @@ function Productos({ onAddToCart }) {
               ))}
             </div>
 
-            <label className="flex cursor-pointer items-center gap-3 text-sm font-semibold text-gamer-textMain">
-              <input
-                type="checkbox"
-                checked={soloConStock}
-                onChange={(event) => {
-                  setSoloConStock(event.target.checked)
-                  setPagina(1)
-                }}
-                className="h-4 w-4 accent-gamer-accent"
-              />
-              Solo productos con stock disponible
-            </label>
+            {hayFiltrosActivos && (
+              <button
+                type="button"
+                onClick={limpiarFiltros}
+                className="self-start text-sm font-semibold text-gamer-accent underline underline-offset-4 sm:self-center"
+              >
+                Limpiar filtros
+              </button>
+            )}
           </div>
         </div>
 
-        <p className="mb-5 text-sm text-gamer-textMain/70" aria-live="polite">
+        <p className="secondary-copy mb-5 text-gamer-textMuted" aria-live="polite">
           {productosFiltrados.length > 0
             ? `Mostrando ${indiceInicial + 1}–${Math.min(indiceInicial + productosPorPagina, productosFiltrados.length)} de ${productosFiltrados.length} productos`
             : '0 productos encontrados'}
@@ -164,7 +192,7 @@ function Productos({ onAddToCart }) {
                   transition: { duration: 0.2 }
                 }}
                 whileTap={{ scale: 0.98 }}
-                className="h-full rounded-2xl overflow-hidden bg-gamer-card border border-gamer-primary/20 hover:border-gamer-accent/60 transition-colors duration-300"
+                className="h-full rounded-xl"
               >
                 <ProductoCard
                   producto={producto}
@@ -180,8 +208,15 @@ function Productos({ onAddToCart }) {
             transition={{ duration: 0.3 }}
             className="rounded-xl border border-dashed border-gamer-primary/30 bg-gamer-card p-10 text-center"
           >
-            <h2 className="text-xl font-bold text-gamer-textMain">No encontramos productos</h2>
-            <p className="mt-2 text-gamer-textMain/70">Probá cambiar la búsqueda o los filtros seleccionados.</p>
+            <h2 className="section-title">No encontramos productos</h2>
+            <p className="body-copy mt-2 text-gamer-textMuted">Probá cambiar la búsqueda o los filtros seleccionados.</p>
+            <button
+              type="button"
+              onClick={limpiarFiltros}
+              className="primary-cta mt-5 rounded-lg bg-gamer-primary px-4 py-2 text-sm text-white transition hover:bg-gamer-primary/80"
+            >
+              Limpiar filtros
+            </button>
           </motion.div>
         )}
 

@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
-import { Inicio, Productos, DetalleProducto, Carrito, Contacto } from './pages'
+import { Inicio, Productos, DetalleProducto, Carrito, Contactos, Nosotros } from './pages'
 import { CheckoutForm, Navbar, Footer } from './components'
 import { productos } from './data/productos'
 
@@ -55,7 +55,10 @@ function InterfazAplicacion({
       />
       <main className="flex-1">
         <Routes>
-          <Route path="/" element={<Inicio isLightMode={isLightMode} />} />
+          <Route
+            path="/"
+            element={<Inicio isLightMode={isLightMode} onAddToCart={agregarAlCarrito} />}
+          />
           <Route path="/productos" element={<Productos onAddToCart={agregarAlCarrito} />} />
           <Route
             path="/producto/:id"
@@ -79,7 +82,8 @@ function InterfazAplicacion({
             path="/checkout"
             element={<CheckoutForm cart={cart} onClearCart={() => setCart([])} />}
           />
-          <Route path="/contacto" element={<Contacto />} />
+          <Route path="/contacto" element={<Contactos />} />
+          <Route path="/nosotros" element={<Nosotros />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>

@@ -94,9 +94,9 @@ function Contactos() {
   return (
     <section className="contacto-page" aria-labelledby="contacto-title">
       <div className="contacto-intro">
-        <p className="contacto-eyebrow">Nexus Gaming Store</p>
-        <h1 id="contacto-title">Hablemos</h1>
-        <p className="contacto-description">
+        <p className="eyebrow">Nexus Gaming Store</p>
+        <h1 className="page-title" id="contacto-title">Hablemos</h1>
+        <p className="lead contacto-description">
           ¿Tenés dudas sobre un producto o tu pedido? Escribinos y te ayudamos a encontrar lo que necesitás.
         </p>
 

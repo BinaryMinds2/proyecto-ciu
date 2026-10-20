@@ -27,7 +27,8 @@ export const productos = [
       "Conectividad inalámbrica",
       "Conexión de ultra baja latencia"
     ],
-    stock: 8
+    stock: 8,
+    destacado: true
   },
   {
     id: 3,
@@ -87,7 +88,8 @@ export const productos = [
       "Disipador térmico de perfil bajo",
       "Soporte XMP"
     ],
-    stock: 15
+    stock: 15,
+    destacado: true
   },
   {
     id: 7,
@@ -147,7 +149,8 @@ export const productos = [
       "Compatible con sensores láser y ópticos",
       "Iluminación LED RGB en los bordes"
     ],
-    stock: 20
+    stock: 20,
+    destacado: true
   },
   {
     id: 11,
@@ -213,6 +216,7 @@ export const productos = [
   precio: 185000,
   categoria: "Hardware",
   stock: 12,
+  destacado: true,
   imagen: "https://images.unsplash.com/photo-1562976540-1502c2145186?w=800&auto=format&fit=crop&q=60",
   descripcion: "Velocidades ultra rápidas y perfiles EXPO/XMP 3.0 con iluminación RGB dinámica direccionable por software.",
   caracteristicas: [

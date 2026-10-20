@@ -1,38 +1,51 @@
 import { Link } from 'react-router-dom'
 import bannerImage from '../assets/banner.png'
 import bannerImageLight from '../assets/banner-light.jpg'
+import ProductoCard from '../components/ProductoCard'
+import { productos } from '../data/productos'
 
-function Inicio({ isLightMode = false }) {
+const categorias = [...new Set(productos.map((producto) => producto.categoria))]
+const productosDestacados = productos.filter((producto) => producto.destacado && producto.stock > 0)
+
+function Inicio({ isLightMode = false, onAddToCart }) {
+  const categoriasRepresentadas = categorias
+    .map((categoria) => ({
+      categoria,
+      producto: productos.find((producto) => producto.categoria === categoria && producto.stock > 0),
+    }))
+    .filter(({ producto }) => producto)
+
   return (
-    <section className="relative isolate flex-1 overflow-hidden bg-gamer-bg">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-32 top-1/2 size-96 -translate-y-1/2 rounded-full bg-gamer-primary/15 blur-3xl"
-      />
+    <div className="bg-gamer-bg">
+      <section className="relative isolate overflow-hidden bg-gamer-bg">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-32 top-1/2 size-96 -translate-y-1/2 rounded-full bg-gamer-primary/15 blur-3xl"
+        />
 
-      <div className="relative mx-auto grid max-w-7xl items-center gap-6 px-4 py-4 sm:px-6 md:min-h-[calc(100svh-22rem)] md:grid-cols-2 md:gap-8 md:py-6 lg:px-8">
-        <div className="max-w-2xl">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-gamer-accent sm:text-sm">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-6 px-4 py-4 sm:px-6 md:min-h-[calc(100svh-22rem)] md:grid-cols-2 md:gap-8 md:py-6 lg:px-8">
+          <div className="max-w-2xl">
+          <p className="eyebrow mb-3">
             Nexus Gaming
           </p>
-          <h1 className="home-title text-3xl font-bold leading-tight tracking-tight text-gamer-textMain sm:text-4xl">
+          <h1 className="hero-title leading-tight">
             Equipate con la mejor tecnología{' '}
             <span className="text-gamer-primary">gaming</span>
           </h1>
-          <p className="mt-4 max-w-xl text-sm leading-6 text-gamer-textMuted sm:text-base sm:leading-7">
+          <p className="lead mt-4 max-w-xl">
             En Nexus Gaming ofrecemos componentes y periféricos de alto rendimiento
             para llevar tu experiencia de juego al siguiente nivel.
           </p>
           <Link
             to="/productos"
-            className="mt-6 inline-flex items-center gap-3 rounded-lg border border-gamer-primary bg-gamer-primary px-5 py-2.5 text-sm font-bold text-white shadow-[0_0_24px_rgba(127,82,255,0.3)] transition duration-300 hover:-translate-y-0.5 hover:scale-105 hover:border-gamer-accent hover:bg-gamer-primary/90 hover:shadow-[0_0_30px_rgba(127,82,255,0.5)] active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
+            className="primary-cta mt-6 inline-flex items-center gap-3 rounded-lg border border-gamer-primary bg-gamer-primary px-5 py-2.5 text-sm text-white shadow-[0_0_24px_rgba(127,82,255,0.3)] transition duration-300 hover:-translate-y-0.5 hover:scale-105 hover:border-gamer-accent hover:bg-gamer-primary/90 hover:shadow-[0_0_30px_rgba(127,82,255,0.5)] active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
           >
             Ver catálogo
             <span aria-hidden="true">→</span>
           </Link>
           <ul
             aria-label="Beneficios de la tienda"
-            className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs text-gamer-textMuted sm:text-sm"
+            className="secondary-copy mt-5 flex flex-wrap gap-x-5 gap-y-2 text-gamer-textMuted"
           >
             <li className="inline-flex items-center gap-1.5">
               <svg aria-hidden="true" className="size-4 shrink-0 text-gamer-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -57,21 +70,83 @@ function Inicio({ isLightMode = false }) {
               Pagos seguros
             </li>
           </ul>
-        </div>
+          </div>
 
-        <div className="relative mx-auto flex w-full max-w-2xl items-center justify-center">
-          <div
-            aria-hidden="true"
-            className="absolute inset-8 rounded-full bg-gamer-primary/20 blur-3xl"
-          />
-          <img
-            src={isLightMode ? bannerImageLight : bannerImage}
-            alt="Teclado, mouse y tarjeta gráfica gamer con iluminación violeta y celeste"
-            className="relative aspect-video w-full rounded-2xl border border-gamer-primary/25 object-cover shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
-          />
+          <div className="relative mx-auto flex w-full max-w-2xl items-center justify-center">
+            <div
+              aria-hidden="true"
+              className="absolute inset-8 rounded-full bg-gamer-primary/20 blur-3xl"
+            />
+            <img
+              src={isLightMode ? bannerImageLight : bannerImage}
+              alt="Teclado, mouse y tarjeta gráfica gamer con iluminación violeta y celeste"
+              className="relative aspect-video w-full rounded-2xl border border-gamer-primary/25 object-cover shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
+            />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="mb-7">
+          <p className="eyebrow mb-2">
+            Encontrá lo que buscás
+          </p>
+          <h2 className="section-title">Explorá por categoría</h2>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {categoriasRepresentadas.map(({ categoria, producto }) => (
+            <Link
+              key={categoria}
+              to={`/productos?${new URLSearchParams({ categoria })}`}
+              className="group overflow-hidden rounded-xl border border-gamer-primary/20 bg-gamer-card transition hover:border-gamer-accent/60 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
+            >
+              <img
+                src={producto.imagen}
+                alt={producto.nombre}
+                loading="lazy"
+                decoding="async"
+                className="aspect-[16/9] w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+              />
+              <div className="flex items-center justify-between gap-3 p-4">
+                <div>
+                  <h3 className="card-title">{categoria}</h3>
+                  <p className="mt-1 text-sm text-gamer-textMuted">{producto.nombre}</p>
+                </div>
+                <span className="text-xl text-gamer-accent" aria-hidden="true">→</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="border-y border-gamer-primary/15 bg-gamer-card/40">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="eyebrow mb-2">
+                Selección Nexus
+              </p>
+              <h2 className="section-title">Productos destacados</h2>
+            </div>
+            <Link
+              to="/productos"
+              className="secondary-copy font-semibold text-gamer-accent underline underline-offset-4 hover:text-gamer-textMain"
+            >
+              Ver todos los productos →
+            </Link>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {productosDestacados.slice(0, 4).map((producto) => (
+              <ProductoCard
+                key={producto.id}
+                producto={producto}
+                onAddToCart={onAddToCart}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
   )
 }
 
