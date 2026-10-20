@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import CarritoItem from '../components/CarritoItem'
 
 const precioARS = (importe) =>
   new Intl.NumberFormat('es-AR', {
@@ -40,58 +41,12 @@ function Carrito({ cart, onUpdateQuantity, onRemoveProduct }) {
             <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_20rem]">
               <div className="space-y-4">
                 {cart.map((item) => (
-                  <article
+                  <CarritoItem
                     key={item.id}
-                    className="grid gap-4 rounded-xl border border-gamer-primary/20 bg-gamer-card p-4 shadow-lg shadow-black/10 sm:grid-cols-[7rem_minmax(0,1fr)_auto]"
-                  >
-                    <img
-                      src={item.imagen}
-                      alt={item.nombre}
-                      className="h-28 w-full rounded-lg object-cover sm:w-28"
-                    />
-                    <div className="flex flex-col justify-center gap-2">
-                      <h2 className="text-lg font-bold text-gamer-textMain">{item.nombre}</h2>
-                      <p className="text-sm text-gamer-textMain/70">
-                        Precio unitario: {precioARS(item.precio)}
-                      </p>
-                      <div className="flex flex-wrap items-center gap-3">
-                        <div
-                          className="inline-flex items-center rounded-lg border border-gamer-primary/30"
-                          aria-label={`Cantidad de ${item.nombre}`}
-                        >
-                          <button
-                            type="button"
-                            aria-label={`Disminuir cantidad de ${item.nombre}`}
-                            disabled={item.cantidad <= 1}
-                            onClick={() => onUpdateQuantity(item.id, item.cantidad - 1)}
-                            className="px-3 py-1.5 text-lg font-bold text-gamer-accent disabled:cursor-not-allowed disabled:opacity-40"
-                          >
-                            −
-                          </button>
-                          <span className="min-w-8 text-center font-semibold">{item.cantidad}</span>
-                          <button
-                            type="button"
-                            aria-label={`Aumentar cantidad de ${item.nombre}`}
-                            disabled={item.cantidad >= item.stock}
-                            onClick={() => onUpdateQuantity(item.id, item.cantidad + 1)}
-                            className="px-3 py-1.5 text-lg font-bold text-gamer-accent disabled:cursor-not-allowed disabled:opacity-40"
-                          >
-                            +
-                          </button>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => onRemoveProduct(item.id)}
-                          className="text-sm font-semibold text-red-400 transition hover:text-red-300"
-                        >
-                          Quitar
-                        </button>
-                      </div>
-                    </div>
-                    <p className="self-center text-lg font-bold text-gamer-accent sm:text-right">
-                      Subtotal: {precioARS(item.precio * item.cantidad)}
-                    </p>
-                  </article>
+                    item={item}
+                    onUpdateQuantity={onUpdateQuantity}
+                    onRemoveProduct={onRemoveProduct}
+                  />
                 ))}
               </div>
 
