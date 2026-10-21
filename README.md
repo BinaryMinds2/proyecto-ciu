@@ -154,18 +154,35 @@ otro cupón.
 
 ## Catálogo y datos
 
-Los productos se definen en `src/data/productos.js` y los cupones de prueba en
-`src/data/cupones.js`. Cada producto incluye
+Los productos se definen en `src/data/productos.js`. Cada producto incluye
 identificador, nombre, categoría, precio, imagen, descripción y stock; algunos
 también incluyen características técnicas o la marca `destacado`. Las
 categorías se obtienen de esos datos y se reutilizan en Inicio, Nosotros y el
 footer.
 
-Los cupones contienen un código, porcentaje de descuento y subtotal mínimo.
-El checkout valida el código y el mínimo en el navegador, permite aplicar uno
-por compra y muestra el descuento y el total actualizado en el resumen y en la
-confirmación. Al ser una simulación cliente, no hay validación de cupones en un
-servidor ni control de uso único.
+### Favoritos
+
+Se pueden agregar o quitar productos como favoritos desde las tarjetas del
+catálogo, Inicio, productos relacionados y la página de detalle. La ruta
+`/favoritos` muestra los productos guardados y permite quitarlos o agregarlos al
+carrito. Esta selección es independiente del carrito.
+
+### Cupones de descuento
+
+Los cupones de prueba se definen en `src/data/cupones.js`. Cada cupón contiene
+un código, porcentaje de descuento y subtotal mínimo:
+
+| Código | Descuento | Subtotal mínimo |
+| --- | ---: | ---: |
+| `NEXUS10` | 10% | $50.000 |
+| `NEXUS25` | 25% | $300.000 |
+| `NEXUS75` | 75% | $1.500.000 |
+
+En el checkout se puede seleccionar un cupón disponible o ingresar su código.
+Se permite aplicar uno por compra; el descuento se calcula sobre el subtotal de
+los productos y se muestra en el resumen y en la confirmación. No se aplica al
+envío. Como la compra es una simulación del lado del cliente, no hay validación
+en un servidor ni control de uso único.
 
 En la página de productos se puede:
 
@@ -297,4 +314,4 @@ Grupo: Binary Minds
 
 ## Deploy
 
-INSERTAR URL
+[Nexus Gaming](https://nexus-gaming-blond.vercel.app/)
