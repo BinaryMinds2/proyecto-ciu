@@ -297,4 +297,4 @@ Grupo: Binary Minds
 
 ## Deploy
 
-INSERTAR URL
+[Nexus Gaming](https://nexus-gaming-blond.vercel.app/)
