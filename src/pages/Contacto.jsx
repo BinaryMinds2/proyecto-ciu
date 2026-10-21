@@ -128,11 +128,11 @@ function Contacto() {
             </span>
             <div><h2>WhatsApp</h2><p>+54 9 11 1234-5678</p></div>
           </a>
-          <article className="contacto-info-card">
+          <article className="contacto-info-card contacto-email-card">
             <span aria-hidden="true">✉</span>
             <div><h2>Email</h2><p>contactanos@nexusgaming.com</p></div>
           </article>
-          <article className="contacto-info-card">
+          <article className="contacto-info-card contacto-horarios-card">
             <span aria-hidden="true">◷</span>
             <div><h2>Horarios</h2><p>Lunes a viernes, 9 a 18 hs. Avenida Corrientes 1234, San Nicolás, CABA</p></div>
           </article>

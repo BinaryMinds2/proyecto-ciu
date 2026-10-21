@@ -836,6 +836,37 @@ body {
  outline-offset: 3px;
 }
 
+.contacto-email-card,
+.contacto-horarios-card {
+ transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.contacto-email-card:hover,
+.contacto-email-card:focus-within {
+ border-color: #3b82f6;
+ box-shadow: 0 0 0 3px rgb(59 130 246 / 0.16), 0 10px 24px rgb(59 130 246 / 0.14);
+ transform: translateY(-2px);
+}
+
+.contacto-email-card:hover > span,
+.contacto-email-card:focus-within > span {
+ background: #3b82f6;
+ color: #fff;
+}
+
+.contacto-horarios-card:hover,
+.contacto-horarios-card:focus-within {
+ border-color: #2dd4bf;
+ box-shadow: 0 0 0 3px rgb(45 212 191 / 0.16), 0 10px 24px rgb(45 212 191 / 0.14);
+ transform: translateY(-2px);
+}
+
+.contacto-horarios-card:hover > span,
+.contacto-horarios-card:focus-within > span {
+ background: #2dd4bf;
+ color: #0f172a;
+}
+
 .contacto-whatsapp-card .contacto-whatsapp-icon {
  background: #25d366;
  color: white;
