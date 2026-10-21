@@ -281,9 +281,7 @@ function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
                 {campo('telefono', 'Teléfono *', 'tel', 'Ej. 11 1234-5678')}
                 {campo(
                   'direccion',
-                  formulario.entrega === 'Retiro en sucursal'
-                    ? 'Dirección o localidad (opcional)'
-                    : 'Dirección o localidad *',
+                  'Dirección o localidad *',
                   'text',
                   'Ej. CABA',
                 )}
