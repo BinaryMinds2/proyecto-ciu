@@ -63,6 +63,8 @@ function Navbar({
             src={isLightMode ? nexusSymbolLight : nexusSymbol}
             alt=""
             aria-hidden="true"
+            loading="lazy"
+            decoding="async"
             className="size-10 rounded-xl border border-gamer-primary/50 object-cover shadow-[0_0_18px_rgba(127,82,255,0.25)] transition group-hover:shadow-[0_0_24px_rgba(127,82,255,0.45)]"
           />
           <span className="leading-tight">

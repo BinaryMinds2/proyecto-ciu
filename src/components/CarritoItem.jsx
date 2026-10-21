@@ -13,6 +13,8 @@ function CarritoItem({ item, onUpdateQuantity, onRemoveProduct }) {
       <img
         src={item.imagen}
         alt={item.nombre}
+        loading="lazy"
+        decoding="async"
         className="h-28 w-full rounded-lg object-cover sm:w-28"
       />
       <div className="flex flex-col justify-center gap-2">

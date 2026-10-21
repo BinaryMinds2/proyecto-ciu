@@ -908,15 +908,21 @@ body {
 
 /* ===== Contacto ===== */
 .contacto-page {
-  --contacto-purple: #7c5cbf;
-  --contacto-turquoise: #3fc6c9;
+  --contacto-purple: rgb(var(--gamer-primary));
+  --contacto-turquoise: rgb(var(--gamer-accent));
   display: grid;
   grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.2fr);
   align-items: start;
   gap: clamp(24px, 5vw, 64px);
   padding-top: var(--page-pt);
   padding-bottom: var(--page-pb);
+  background: rgb(var(--gamer-bg));
   color: rgb(var(--gamer-textMain));
+}
+
+.contacto-page--eye-rest {
+  --contacto-purple: rgb(var(--gamer-primary));
+  --contacto-turquoise: rgb(var(--gamer-accent));
 }
 
 .contacto-eyebrow {
@@ -1022,6 +1028,7 @@ body {
   border-radius: 16px;
   padding: clamp(18px, 3vw, 28px);
   background: rgb(var(--gamer-card));
+  color: rgb(var(--gamer-textMain));
   box-shadow: 0 14px 38px rgb(0 0 0 / 0.12);
 }
 

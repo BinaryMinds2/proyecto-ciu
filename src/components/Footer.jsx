@@ -95,6 +95,8 @@ function Footer({ isLightMode = false }) {
             <img
               src={isLightMode ? nexusWordmarkLight : nexusWordmark}
               alt="Nexus Gaming"
+              loading="lazy"
+              decoding="async"
               className="aspect-[7/4] w-40 rounded-lg object-cover shadow-[0_0_18px_rgba(127,82,255,0.16)]"
             />
           </Link>

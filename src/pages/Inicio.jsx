@@ -85,6 +85,8 @@ function Inicio({
             <img
               src={isLightMode ? bannerImageLight : bannerImage}
               alt="Teclado, mouse y tarjeta gráfica gamer con iluminación violeta y celeste"
+              loading="lazy"
+              decoding="async"
               className="relative aspect-video w-full rounded-2xl border border-gamer-primary/25 object-cover shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
             />
           </div>

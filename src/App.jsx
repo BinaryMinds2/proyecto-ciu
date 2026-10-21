@@ -85,7 +85,7 @@ function InterfazAplicacion({
         onToggleEyeRestMode={toggleEyeRestMode}
         hideCart={esCheckout}
       />
-      <main className="flex-1">
+      <main className="flex-1 bg-gamer-bg">
         <Routes>
           <Route
             path="/"
@@ -141,7 +141,10 @@ function InterfazAplicacion({
             }
           />
           <Route path="/checkout" element={<FormularioCompra cart={cart} onClearCart={vaciarCarrito} />} />
-          <Route path="/contacto" element={<Contacto />} />
+          <Route
+            path="/contacto"
+            element={<Contacto isLightMode={isLightMode} eyeRestMode={eyeRestMode} />}
+          />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

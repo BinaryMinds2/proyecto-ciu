@@ -299,7 +299,12 @@ function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
       <form className="checkout-layout" onSubmit={enviarPedido} noValidate>
         {pedidoFinalizado ? (
           <section className="checkout-confirmation" role="status" aria-live="polite">
-            <img src={nexusSymbol} alt="Logo de Nexus Gaming" />
+            <img
+              src={nexusSymbol}
+              alt="Logo de Nexus Gaming"
+              loading="lazy"
+              decoding="async"
+            />
             <p className="eyebrow">Pedido confirmado</p>
             <h2 ref={confirmacionRef} tabIndex={-1}>
               ¡Gracias por tu compra, {pedidoFinalizado.nombre}!
@@ -515,7 +520,12 @@ function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
             <div className="checkout-items">
               {articulosPedido.map((producto) => (
                 <article className="checkout-item" key={producto.id}>
-                  <img src={producto.imagen} alt="" />
+                  <img
+                    src={producto.imagen}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <div>
                     <h3>{producto.nombre}</h3>
                     <p>Cantidad: {producto.cantidad}</p>

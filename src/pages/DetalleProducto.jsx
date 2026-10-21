@@ -81,6 +81,8 @@ function DetalleProducto({ onAddToCart, favoriteIds, onToggleFavorite }) {
           <img
             src={producto.imagen}
             alt={producto.nombre}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full rounded-xl object-cover"
           />
         </div>
@@ -136,7 +138,7 @@ function DetalleProducto({ onAddToCart, favoriteIds, onToggleFavorite }) {
             </div>
           </div>
 
-          <div className="mt-4 flex w-full flex-col gap-3 min-[400px]:flex-row">
+          <div className="mt-4 flex w-full flex-col gap-3 min-[560px]:flex-row">
             <button
               type="button"
               aria-label={`${isFavorite ? 'Quitar' : 'Agregar'} ${producto.nombre} ${isFavorite ? 'de' : 'a'} favoritos`}

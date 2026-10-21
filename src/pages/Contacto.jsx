@@ -30,7 +30,7 @@ function validar(formulario) {
   return erroresNuevos
 }
 
-function Contacto() {
+function Contacto({ isLightMode = false, eyeRestMode = false }) {
   const [formulario, setFormulario] = useState(formularioInicial)
   const [motivo, setMotivo] = useState('')
   const [errores, setErrores] = useState({})
@@ -92,7 +92,10 @@ function Contacto() {
   )
 
   return (
-    <section className="contacto-page page-container" aria-labelledby="contacto-title">
+    <section
+      className={`contacto-page page-container${isLightMode ? ' contacto-page--light' : ''}${eyeRestMode ? ' contacto-page--eye-rest' : ''}`}
+      aria-labelledby="contacto-title"
+    >
       <div className="contacto-intro">
         <p className="eyebrow">Nexus Gaming Store</p>
         <h1 className="page-title" id="contacto-title">Hablemos</h1>
