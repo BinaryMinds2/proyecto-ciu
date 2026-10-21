@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import nexusSymbol from '../assets/nexus-symbol.png'
+import { cupones } from '../data/cupones'
 import { precioARS } from '../utils/format'
 
 const entregas = ['Envío a domicilio', 'Retiro en sucursal', 'Punto de entrega']
@@ -70,6 +71,9 @@ function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
   const [intentoEnvio, setIntentoEnvio] = useState(false)
   const [pedidoFinalizado, setPedidoFinalizado] = useState(null)
   const [resumenAbierto, setResumenAbierto] = useState(false)
+  const [codigoCupon, setCodigoCupon] = useState('')
+  const [cuponAplicado, setCuponAplicado] = useState(null)
+  const [mensajeCupon, setMensajeCupon] = useState(null)
   const camposRef = useRef({})
   const confirmacionRef = useRef(null)
   const carritoValido = Array.isArray(cart) ? cart : []
@@ -83,6 +87,11 @@ function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
     (total, producto) => total + producto.cantidad,
     0,
   )
+  const cuponPedido = pedidoFinalizado ? pedidoFinalizado.cupon : cuponAplicado
+  const descuentoCupon = cuponPedido
+    ? Math.round(subtotal * cuponPedido.descuento / 100)
+    : 0
+  const totalFinal = Math.max(0, subtotal - descuentoCupon)
   const pagoAlRecibirDisponible = ['Envío a domicilio', 'Retiro en sucursal'].includes(
     formulario.entrega,
   )
@@ -91,6 +100,39 @@ function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
     errores[campo] && (tocados[campo] || intentoEnvio),
   )
   const pagoResumen = pedidoFinalizado?.pago || formulario.pago
+
+  const aplicarCupon = (codigo = codigoCupon) => {
+    const codigoNormalizado = codigo.trim().toUpperCase()
+    const cupon = cupones.find((actual) => actual.codigo === codigoNormalizado)
+
+    if (!cupon) {
+      setCuponAplicado(null)
+      setMensajeCupon({ tipo: 'error', texto: 'Ese código de descuento no existe.' })
+      return
+    }
+
+    if (subtotal < cupon.minimoSubtotal) {
+      setCuponAplicado(null)
+      setMensajeCupon({
+        tipo: 'error',
+        texto: `Este cupón requiere un subtotal mínimo de ${precioARS(cupon.minimoSubtotal)}.`,
+      })
+      return
+    }
+
+    setCodigoCupon(cupon.codigo)
+    setCuponAplicado(cupon)
+    setMensajeCupon({
+      tipo: 'exito',
+      texto: `Cupón ${cupon.codigo} aplicado: ${cupon.descuento}% de descuento.`,
+    })
+  }
+
+  const quitarCupon = () => {
+    setCuponAplicado(null)
+    setCodigoCupon('')
+    setMensajeCupon({ tipo: 'exito', texto: 'Se quitó el cupón de descuento.' })
+  }
 
   useEffect(() => {
     if (!pedidoFinalizado) return
@@ -202,6 +244,7 @@ function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
       pago: formulario.pago,
       entrega: formulario.entrega,
       cart: carritoValido.map((producto) => ({ ...producto })),
+      cupon: cuponAplicado,
     }
     setPedidoFinalizado(pedido)
     setFormulario(formularioInicial)
@@ -265,7 +308,13 @@ function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
             <dl>
               <div><dt>Método de entrega</dt><dd>{pedidoFinalizado.entrega}</dd></div>
               <div><dt>Método de pago</dt><dd>{pedidoFinalizado.pago}</dd></div>
-              <div><dt>Total</dt><dd>{precioARS(subtotal)}</dd></div>
+              {pedidoFinalizado.cupon && (
+                <div>
+                  <dt>Descuento ({pedidoFinalizado.cupon.codigo})</dt>
+                  <dd>- {precioARS(descuentoCupon)}</dd>
+                </div>
+              )}
+              <div><dt>Total</dt><dd>{precioARS(totalFinal)}</dd></div>
             </dl>
             <Link to="/productos">Seguir explorando productos</Link>
           </section>
@@ -451,7 +500,7 @@ function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
             <span>
               {cantidadTotal} {cantidadTotal === 1 ? 'producto' : 'productos'}
             </span>
-            <strong>{precioARS(subtotal)}</strong>
+            <strong>{precioARS(totalFinal)}</strong>
             <span aria-hidden="true">{resumenAbierto ? '−' : '+'}</span>
           </button>
           <div
@@ -476,11 +525,74 @@ function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
               ))}
               {articulosPedido.length === 0 && <p className="checkout-empty">Todavía no hay productos.</p>}
             </div>
+            {!pedidoFinalizado && (
+              <section className="checkout-coupon" aria-labelledby="checkout-coupon-title">
+                <h3 id="checkout-coupon-title">Cupones disponibles</h3>
+                <ul className="checkout-coupon-list">
+                  {cupones.map((cupon) => (
+                    <li key={cupon.codigo}>
+                      <button
+                        type="button"
+                        onClick={() => aplicarCupon(cupon.codigo)}
+                        disabled={Boolean(cuponAplicado)}
+                        aria-label={`Aplicar ${cupon.codigo}, ${cupon.descuento}% de descuento desde ${precioARS(cupon.minimoSubtotal)}`}
+                      >
+                        <span>{cupon.codigo} · {cupon.descuento}%</span>
+                        <small>Desde {precioARS(cupon.minimoSubtotal)}</small>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <div className="checkout-coupon-entry">
+                  <label htmlFor="checkout-coupon-code">Ingresar código</label>
+                  <div>
+                    <input
+                      id="checkout-coupon-code"
+                      type="text"
+                      value={codigoCupon}
+                      onChange={(evento) => {
+                        setCodigoCupon(evento.target.value)
+                        setMensajeCupon(null)
+                      }}
+                      placeholder="Ej. NEXUS10"
+                      autoComplete="off"
+                      disabled={Boolean(cuponAplicado)}
+                    />
+                    {cuponAplicado ? (
+                      <button type="button" onClick={quitarCupon}>Quitar</button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => aplicarCupon()}
+                        disabled={carritoEstaVacio}
+                      >
+                        Aplicar
+                      </button>
+                    )}
+                  </div>
+                  {mensajeCupon && (
+                    <p
+                      className={`checkout-coupon-message is-${mensajeCupon.tipo}`}
+                      role="status"
+                      aria-live="polite"
+                    >
+                      {mensajeCupon.texto}
+                    </p>
+                  )}
+                </div>
+              </section>
+            )}
             <dl className="checkout-totals">
               <div><dt>Subtotal</dt><dd>{precioARS(subtotal)}</dd></div>
+              {cuponPedido && (
+                <div className="checkout-discount">
+                  <dt>Descuento ({cuponPedido.codigo} · {cuponPedido.descuento}%)</dt>
+                  <dd>- {precioARS(descuentoCupon)}</dd>
+                </div>
+              )}
               <div><dt>Envío</dt><dd>A coordinar</dd></div>
               {pagoResumen && <div><dt>Pago</dt><dd>{pagoResumen}</dd></div>}
-              <div className="checkout-total"><dt>Total</dt><dd>{precioARS(subtotal)}</dd></div>
+              <div className="checkout-total"><dt>Total</dt><dd>{precioARS(totalFinal)}</dd></div>
             </dl>
             {!pedidoFinalizado && (
               <button className="checkout-submit" type="submit" disabled={carritoEstaVacio}>

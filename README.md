@@ -39,6 +39,7 @@ detalles, administrar un carrito y completar un flujo de compra simulado.
   se conservan en el navegador entre recargas.
 - Checkout simulado con validación, opciones de entrega y pago, resumen del
   pedido plegable en pantallas de hasta 1099 px y confirmación en pantalla.
+- Cupones de prueba aplicables en checkout: 10%, 25% o 75% según el subtotal.
 - Páginas de Nosotros y Contacto; esta última incluye validación y confirmación
   local del formulario.
 - Notificaciones toast para agregar o quitar productos y para informar límites
@@ -145,15 +146,26 @@ Solicita nombre, email, teléfono y dirección o localidad para todos los métod
 de entrega. Los medios de pago son tarjeta, transferencia bancaria, Mercado Pago
 o pago al recibir; esta última opción no está disponible para punto de entrega.
 La tarjeta solo valida datos ingresados en el navegador y estos no se guardan.
-No se procesa ningún pago ni se envía una orden.
+No se procesa ningún pago ni se envía una orden. Se puede aplicar un cupón de
+prueba por pedido: `NEXUS10` descuenta 10% desde $50.000, `NEXUS25` descuenta
+25% desde $300.000 y `NEXUS75` descuenta 75% desde $1.500.000. El descuento se
+calcula sobre el subtotal de productos, no incluye el envío y no se acumula con
+otro cupón.
 
 ## Catálogo y datos
 
-Los productos se definen en `src/data/productos.js`. Cada objeto incluye
+Los productos se definen en `src/data/productos.js` y los cupones de prueba en
+`src/data/cupones.js`. Cada producto incluye
 identificador, nombre, categoría, precio, imagen, descripción y stock; algunos
 también incluyen características técnicas o la marca `destacado`. Las
 categorías se obtienen de esos datos y se reutilizan en Inicio, Nosotros y el
 footer.
+
+Los cupones contienen un código, porcentaje de descuento y subtotal mínimo.
+El checkout valida el código y el mínimo en el navegador, permite aplicar uno
+por compra y muestra el descuento y el total actualizado en el resumen y en la
+confirmación. Al ser una simulación cliente, no hay validación de cupones en un
+servidor ni control de uso único.
 
 En la página de productos se puede:
 
@@ -230,6 +242,7 @@ toast son temporales.
 │   │   ├── Toast.jsx             # Notificaciones y acciones
 │   │   └── index.js              # Exportaciones de componentes
 │   ├── data/
+│   │   ├── cupones.js           # Cupones de descuento de prueba
 │   │   └── productos.js          # Catálogo local de productos
 │   ├── pages/
 │   │   ├── Carrito.jsx           # Carrito y resumen

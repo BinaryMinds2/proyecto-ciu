@@ -557,6 +557,124 @@ body {
   white-space: nowrap;
 }
 
+.checkout-coupon {
+  display: grid;
+  gap: 8px;
+  padding: 10px 0;
+  border-top: 1px solid rgb(var(--gamer-textMain) / 0.1);
+  border-bottom: 1px solid rgb(var(--gamer-textMain) / 0.1);
+}
+
+.checkout-coupon h3,
+.checkout-coupon-entry label {
+  color: rgb(var(--gamer-textMain) / 0.9);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.checkout-coupon-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checkout-coupon-list button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid rgb(var(--gamer-primary) / 0.25);
+  border-radius: 7px;
+  padding: 6px 8px;
+  background: rgb(var(--gamer-bg) / 0.6);
+  color: var(--checkout-turquoise);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+}
+
+.checkout-coupon-list button:hover:not(:disabled) {
+  border-color: var(--checkout-turquoise);
+}
+
+.checkout-coupon-list button:focus-visible,
+.checkout-coupon-entry button:focus-visible {
+  outline: 2px solid var(--checkout-turquoise);
+  outline-offset: 2px;
+}
+
+.checkout-coupon-list small {
+  color: rgb(var(--gamer-textMuted));
+  font-size: 11px;
+  font-weight: 500;
+  text-align: right;
+}
+
+.checkout-coupon-entry {
+  display: grid;
+  gap: 5px;
+}
+
+.checkout-coupon-entry > div {
+  display: flex;
+  gap: 6px;
+}
+
+.checkout-coupon-entry input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  border: 1px solid rgb(var(--gamer-textMuted) / 0.45);
+  border-radius: 7px;
+  padding: 0 8px;
+  background: rgb(var(--gamer-bg));
+  color: rgb(var(--gamer-textMain));
+  font: inherit;
+  font-size: 14px;
+}
+
+.checkout-coupon-entry input:focus-visible {
+  outline: 2px solid var(--checkout-turquoise);
+  outline-offset: 2px;
+}
+
+.checkout-coupon-entry button {
+  flex: 0 0 auto;
+  border: 1px solid rgb(var(--gamer-primary) / 0.55);
+  border-radius: 7px;
+  padding: 0 10px;
+  background: var(--checkout-purple);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.checkout-coupon-entry button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.checkout-coupon-message {
+  margin: 0;
+  font-size: 11px;
+}
+
+.checkout-coupon-message.is-error {
+  color: #f87171;
+}
+
+.checkout-coupon-message.is-exito {
+  color: #4ade80;
+}
+
 .checkout-totals {
   display: grid;
   gap: 8px;
@@ -592,6 +710,10 @@ body {
 
 .checkout-total dd {
   color: var(--checkout-turquoise);
+}
+
+.checkout-discount dd {
+  color: #4ade80;
 }
 
 .checkout-submit {
