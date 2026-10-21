@@ -35,6 +35,8 @@ detalles, administrar un carrito y completar un flujo de compra simulado.
   características disponibles y productos relacionados de la misma categoría.
 - Carrito con cantidades, subtotales, total, controles de stock y opción
   **Deshacer** al quitar un artículo.
+- Favoritos con acceso desde las tarjetas, el detalle y una página propia;
+  se conservan en el navegador entre recargas.
 - Checkout simulado con validación, opciones de entrega y pago, resumen del
   pedido plegable en pantallas de hasta 1099 px y confirmación en pantalla.
 - Páginas de Nosotros y Contacto; esta última incluye validación y confirmación
@@ -114,12 +116,14 @@ No se requiere configurar variables de entorno.
 | `/producto/:id` | Detalle | Información, cantidad, breadcrumb y productos relacionados. |
 | `/productos/:id` | Redirección | Redirige al formato `/producto/:id`. |
 | `/carrito` | Carrito | Artículos, cantidades y resumen de compra. |
+| `/favoritos` | Favoritos | Productos guardados para consultar más tarde. |
 | `/checkout` | Checkout | Formulario y confirmación de una compra simulada. |
 | `/nosotros` | Nosotros | Presentación, categorías y motivos para elegir la tienda. |
 | `/contacto` | Contacto | Canales de contacto y formulario con validación. |
 
 La navegación se implementa con React Router DOM. Las rutas no reconocidas
-redirigen a Inicio. El carrito se abre desde el ícono de la navegación.
+redirigen a Inicio. El carrito y los favoritos tienen accesos directos en la
+navegación.
 
 ## Flujo de compra
 
@@ -181,16 +185,20 @@ entre recargas:
 | Clave | Contenido |
 | --- | --- |
 | `nexus-cart` | Array JSON de productos agregados, con su cantidad. Se restaura al iniciar la aplicación. |
+| `nexus-favorites` | Array JSON con los identificadores de los productos favoritos. |
 | `nexus-theme` | Preferencia de tema: `light` o `dark`. |
 | `nexus-eye-rest-mode` | Preferencia del modo de descanso visual (`true` o `false`). |
 
 Estos datos se guardan únicamente en el navegador y no se sincronizan entre
 dispositivos ni se envían a un servidor. Al restaurar el carrito, se comprueba
 que los productos sigan existiendo y que las cantidades sean válidas para el
-stock actual. Si el navegador bloquea el acceso al almacenamiento local, las
-preferencias visuales siguen funcionando durante la sesión, pero no se
-conservan al volver a cargar la página. Los filtros y la página del catálogo
-se conservan en la URL, no en `localStorage`; los toast son temporales.
+stock actual. Los favoritos se guardan como una lista de identificadores de
+productos y se descartan los que ya no existen en el catálogo. Si el navegador
+bloquea el acceso al almacenamiento local, el carrito y los favoritos siguen
+funcionando durante la sesión, pero no se conservan al volver a cargar la
+página. Las preferencias visuales también se limitan a la sesión; los filtros
+y la página del catálogo se conservan en la URL, no en `localStorage`; los
+toast son temporales.
 
 ## Diseño y accesibilidad
 
@@ -227,6 +235,7 @@ se conservan en la URL, no en `localStorage`; los toast son temporales.
 │   │   ├── Carrito.jsx           # Carrito y resumen
 │   │   ├── Contacto.jsx          # Formulario de contacto
 │   │   ├── DetalleProducto.jsx   # Detalle y recomendaciones
+│   │   ├── Favoritos.jsx         # Productos guardados por el usuario
 │   │   ├── Inicio.jsx            # Banner, categorías y destacados
 │   │   ├── Nosotros.jsx          # Información de la tienda
 │   │   ├── Productos.jsx         # Catálogo, filtros y paginación
@@ -257,11 +266,11 @@ globales y componentes están en `src/index.css` y en las clases de Tailwind.
 ## Alcance actual
 
 Las páginas, el catálogo local, la búsqueda, los filtros y la paginación en
-URL, el carrito persistido, el checkout y el formulario de contacto están
-implementados en el cliente. La compra es una simulación: no se envía el pedido
-a un servidor, no se genera una orden real y no se procesa ningún pago. El
-formulario de contacto también muestra una confirmación local y no envía los
-datos.
+URL, el carrito y los favoritos persistidos, el checkout y el formulario de
+contacto están implementados en el cliente. La compra es una simulación: no se
+envía el pedido a un servidor, no se genera una orden real y no se procesa
+ningún pago. El formulario de contacto también muestra una confirmación local y
+no envía los datos.
 
 ## Integrantes
 

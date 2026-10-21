@@ -8,7 +8,7 @@ const categorias = ['Todas', ...new Set(productos.map((producto) => producto.cat
 const productosPorPagina = 12
 const ordenesValidos = ['sin-orden', 'menor-mayor', 'mayor-menor']
 
-function Productos({ onAddToCart }) {
+function Productos({ onAddToCart, favoriteIds, onToggleFavorite }) {
   const [searchParams, setSearchParams] = useSearchParams()
   const resultadosRef = useRef(null)
   const categoriaURL = searchParams.get('categoria')
@@ -221,6 +221,8 @@ function Productos({ onAddToCart }) {
                   <ProductoCard
                     producto={producto}
                     onAddToCart={onAddToCart}
+                    isFavorite={favoriteIds.includes(producto.id)}
+                    onToggleFavorite={onToggleFavorite}
                   />
                 </motion.div>
               ))}

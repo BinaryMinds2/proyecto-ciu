@@ -5,3 +5,4 @@ export { default as Carrito } from './Carrito';
 export { default as Contacto } from './Contacto';
 export { default as Contactos } from './Contacto';
 export { default as Nosotros } from './Nosotros';
+export { default as Favoritos } from './Favoritos';

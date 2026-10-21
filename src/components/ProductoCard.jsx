@@ -9,7 +9,7 @@ const precioARS = (importe) =>
     maximumFractionDigits: 0,
   }).format(importe)
 
-function ProductoCard({ producto, onAddToCart }) {
+function ProductoCard({ producto, onAddToCart, isFavorite, onToggleFavorite }) {
   const sinStock = producto.stock === 0
   const pocasUnidades = producto.stock > 0 && producto.stock <= 3
   const [agregado, setAgregado] = useState(false)
@@ -48,6 +48,26 @@ function ProductoCard({ producto, onAddToCart }) {
             Sin Stock
           </span>
         )}
+        <button
+          type="button"
+          aria-label={`${isFavorite ? 'Quitar' : 'Agregar'} ${producto.nombre} ${isFavorite ? 'de' : 'a'} favoritos`}
+          aria-pressed={isFavorite}
+          onClick={() => onToggleFavorite(producto.id)}
+          className="absolute left-3 top-3 grid size-10 place-items-center rounded-full border border-gamer-primary/30 bg-gamer-card/90 text-gamer-accent shadow-lg transition hover:scale-105 hover:border-gamer-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gamer-accent"
+        >
+          <svg
+            aria-hidden="true"
+            className="size-5"
+            viewBox="0 0 24 24"
+            fill={isFavorite ? 'currentColor' : 'none'}
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" />
+          </svg>
+        </button>
       </div>
 
       <div className="flex flex-1 flex-col gap-4 p-5">

@@ -7,7 +7,12 @@ import { productos } from '../data/productos'
 const categorias = [...new Set(productos.map((producto) => producto.categoria))]
 const productosDestacados = productos.filter((producto) => producto.destacado && producto.stock > 0)
 
-function Inicio({ isLightMode = false, onAddToCart }) {
+function Inicio({
+  isLightMode = false,
+  onAddToCart,
+  favoriteIds,
+  onToggleFavorite,
+}) {
   const categoriasRepresentadas = categorias
     .map((categoria) => ({
       categoria,
@@ -140,6 +145,8 @@ function Inicio({ isLightMode = false, onAddToCart }) {
                 key={producto.id}
                 producto={producto}
                 onAddToCart={onAddToCart}
+                isFavorite={favoriteIds.includes(producto.id)}
+                onToggleFavorite={onToggleFavorite}
               />
             ))}
           </div>

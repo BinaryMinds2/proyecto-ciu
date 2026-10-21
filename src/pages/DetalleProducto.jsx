@@ -5,7 +5,7 @@ import ProductoCard from '../components/ProductoCard'
 import { productos } from '../data/productos'
 import { precioARS } from '../utils/format'
 
-function DetalleProducto({ onAddToCart }) {
+function DetalleProducto({ onAddToCart, favoriteIds, onToggleFavorite }) {
   const { id } = useParams()
   const producto = productos.find((item) => item.id === Number(id))
   const [cantidad, setCantidad] = useState(1)
@@ -34,6 +34,7 @@ function DetalleProducto({ onAddToCart }) {
   }
 
   const sinStock = producto.stock === 0
+  const isFavorite = favoriteIds.includes(producto.id)
   const precioFormateado = precioARS(producto.precio)
   const productosRelacionados = productos
     .filter((item) => item.id !== producto.id && item.categoria === producto.categoria)
@@ -138,6 +139,15 @@ function DetalleProducto({ onAddToCart }) {
           <div className="mt-4 flex w-full flex-col gap-3 min-[400px]:flex-row">
             <button
               type="button"
+              aria-label={`${isFavorite ? 'Quitar' : 'Agregar'} ${producto.nombre} ${isFavorite ? 'de' : 'a'} favoritos`}
+              aria-pressed={isFavorite}
+              onClick={() => onToggleFavorite(producto.id)}
+              className="primary-cta whitespace-nowrap rounded-lg border border-gamer-accent px-5 py-3 text-center text-gamer-accent transition hover:bg-gamer-accent hover:text-gamer-bg"
+            >
+              {isFavorite ? '♥ En favoritos' : '♡ Agregar a favoritos'}
+            </button>
+            <button
+              type="button"
               disabled={sinStock}
               onClick={manejarAgregarAlCarrito}
               className={`primary-cta cursor-pointer whitespace-nowrap rounded-lg px-5 py-3 text-white transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-40 ${
@@ -205,6 +215,8 @@ function DetalleProducto({ onAddToCart }) {
                 key={relacionado.id}
                 producto={relacionado}
                 onAddToCart={onAddToCart}
+                isFavorite={favoriteIds.includes(relacionado.id)}
+                onToggleFavorite={onToggleFavorite}
               />
             ))}
           </div>

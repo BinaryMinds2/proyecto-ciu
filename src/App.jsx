@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom'
-import { Inicio, Productos, DetalleProducto, Carrito, Contacto, Nosotros } from './pages'
+import { Inicio, Productos, DetalleProducto, Carrito, Contacto, Nosotros, Favoritos } from './pages'
 import { FormularioCompra, Navbar, Footer, Toast } from './components'
 import { productos } from './data/productos'
 
@@ -33,8 +33,26 @@ function leerCarrito() {
   }
 }
 
+function leerFavoritos() {
+  try {
+    const favoritosGuardados = JSON.parse(window.localStorage.getItem('nexus-favorites') || '[]')
+
+    if (!Array.isArray(favoritosGuardados)) {
+      throw new Error('El formato guardado no es una lista de favoritos.')
+    }
+
+    return [...new Set(favoritosGuardados.filter(
+      (id) => Number.isInteger(id) && productos.some((producto) => producto.id === id),
+    ))]
+  } catch (error) {
+    console.error('No se pudieron leer los favoritos guardados.', error)
+    return []
+  }
+}
+
 function InterfazAplicacion({
   cart,
+  favoriteIds,
   vaciarCarrito,
   toast,
   cerrarToast,
@@ -46,9 +64,11 @@ function InterfazAplicacion({
   actualizarCantidad,
   eliminarDelCarrito,
   cantidadProductos,
+  alternarFavorito,
 }) {
   const { pathname } = useLocation()
   const esCheckout = pathname === '/checkout'
+  const productosFavoritos = productos.filter((producto) => favoriteIds.includes(producto.id))
 
   useLayoutEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
@@ -58,6 +78,7 @@ function InterfazAplicacion({
     <div className={`site-shell flex min-h-screen flex-col bg-gamer-bg${eyeRestMode ? ' eye-rest-mode' : ''}`}>
       <Navbar
         cartCount={cantidadProductos}
+        favoritesCount={favoriteIds.length}
         isLightMode={isLightMode}
         onToggleTheme={toggleTheme}
         eyeRestMode={eyeRestMode}
@@ -68,12 +89,35 @@ function InterfazAplicacion({
         <Routes>
           <Route
             path="/"
-            element={<Inicio isLightMode={isLightMode} onAddToCart={agregarAlCarrito} />}
+            element={
+              <Inicio
+                isLightMode={isLightMode}
+                onAddToCart={agregarAlCarrito}
+                favoriteIds={favoriteIds}
+                onToggleFavorite={alternarFavorito}
+              />
+            }
           />
-          <Route path="/productos" element={<Productos onAddToCart={agregarAlCarrito} />} />
+          <Route
+            path="/productos"
+            element={
+              <Productos
+                onAddToCart={agregarAlCarrito}
+                favoriteIds={favoriteIds}
+                onToggleFavorite={alternarFavorito}
+              />
+            }
+          />
           <Route
             path="/producto/:id"
-            element={<DetalleProducto key={pathname} onAddToCart={agregarAlCarrito} />}
+            element={
+              <DetalleProducto
+                key={pathname}
+                onAddToCart={agregarAlCarrito}
+                favoriteIds={favoriteIds}
+                onToggleFavorite={alternarFavorito}
+              />
+            }
           />
           <Route path="/productos/:id" element={<RedireccionProducto />} />
           <Route
@@ -83,6 +127,16 @@ function InterfazAplicacion({
                 cart={cart}
                 onUpdateQuantity={actualizarCantidad}
                 onRemoveProduct={eliminarDelCarrito}
+              />
+            }
+          />
+          <Route
+            path="/favoritos"
+            element={
+              <Favoritos
+                productosFavoritos={productosFavoritos}
+                onAddToCart={agregarAlCarrito}
+                onToggleFavorite={alternarFavorito}
               />
             }
           />
@@ -100,6 +154,7 @@ function InterfazAplicacion({
 
 function App() {
   const [cart, setCart] = useState(leerCarrito)
+  const [favoriteIds, setFavoriteIds] = useState(leerFavoritos)
   // Mantiene sincronizados los clics sucesivos antes del siguiente render de React.
   const cartRef = useRef(cart)
   const [toast, setToast] = useState(null)
@@ -159,6 +214,22 @@ function App() {
       console.error('No se pudo guardar el carrito.', error)
     }
   }, [cart])
+
+  useEffect(() => {
+    try {
+      window.localStorage.setItem('nexus-favorites', JSON.stringify(favoriteIds))
+    } catch (error) {
+      console.error('No se pudieron guardar los favoritos.', error)
+    }
+  }, [favoriteIds])
+
+  const alternarFavorito = (productoId) => {
+    setFavoriteIds((actuales) =>
+      actuales.includes(productoId)
+        ? actuales.filter((id) => id !== productoId)
+        : [...actuales, productoId],
+    )
+  }
 
   const mostrarToast = (mensaje, tipo = 'exito', accion) => {
     toastIdRef.current += 1
@@ -274,6 +345,7 @@ function App() {
     <BrowserRouter>
       <InterfazAplicacion
         cart={cart}
+        favoriteIds={favoriteIds}
         vaciarCarrito={vaciarCarrito}
         toast={toast}
         cerrarToast={cerrarToast}
@@ -285,6 +357,7 @@ function App() {
         actualizarCantidad={actualizarCantidad}
         eliminarDelCarrito={eliminarDelCarrito}
         cantidadProductos={cantidadProductos}
+        alternarFavorito={alternarFavorito}
       />
     </BrowserRouter>
   )

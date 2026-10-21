@@ -12,6 +12,7 @@ const navLinks = [
 
 function Navbar({
   cartCount = 0,
+  favoritesCount = 0,
   isLightMode = false,
   onToggleTheme,
   eyeRestMode = false,
@@ -21,7 +22,9 @@ function Navbar({
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
   const itemCount = Math.max(0, Number(cartCount) || 0)
+  const favoriteCount = Math.max(0, Number(favoritesCount) || 0)
   const isCartPage = pathname === '/carrito'
+  const isFavoritesPage = pathname === '/favoritos'
   const mostrarCarrito = !hideCart && pathname !== '/checkout'
 
   useEffect(() => {
@@ -176,6 +179,33 @@ function Navbar({
             </span>
           </div>
 
+          <Link
+            to="/favoritos"
+            aria-label={`Favoritos, ${favoriteCount} ${favoriteCount === 1 ? 'producto' : 'productos'}`}
+            aria-current={isFavoritesPage ? 'page' : undefined}
+            className={`group relative hidden size-10 place-items-center rounded-xl border transition hover:shadow-[0_0_18px_rgba(0,240,255,0.25)] md:grid ${
+              isFavoritesPage
+                ? 'border-gamer-accent/70 bg-gamer-accent/10 text-gamer-accent'
+                : 'border-gamer-accent/25 bg-gamer-card text-gamer-accent hover:border-gamer-accent/70'
+            }`}
+          >
+            <svg
+              aria-hidden="true"
+              className="size-5 transition-transform group-hover:scale-110"
+              viewBox="0 0 24 24"
+              fill={favoriteCount > 0 ? 'currentColor' : 'none'}
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z" />
+            </svg>
+            <span className="absolute -right-2 -top-2 grid min-h-5 min-w-5 place-items-center rounded-full border border-gamer-bg bg-gamer-primary px-1 text-xs font-bold leading-none text-white shadow-[0_0_10px_rgba(127,82,255,0.55)]">
+              {favoriteCount > 99 ? '99+' : favoriteCount}
+            </span>
+          </Link>
+
           {mostrarCarrito && <Link
             to="/carrito"
             aria-label={`Carrito, ${itemCount} ${itemCount === 1 ? 'producto' : 'productos'}`}
@@ -244,7 +274,12 @@ function Navbar({
           className="border-t border-gamer-primary/20 bg-gamer-card px-4 py-3 md:hidden"
         >
           <div className="mx-auto flex max-w-7xl flex-col">
-            {[...navLinks.slice(0, 2), { label: 'Carrito', to: '/carrito' }, ...navLinks.slice(2)].map(
+            {[
+              ...navLinks.slice(0, 2),
+              { label: 'Carrito', to: '/carrito' },
+              { label: 'Favoritos', to: '/favoritos' },
+              ...navLinks.slice(2),
+            ].map(
               ({ label, to }) => (
                 <Link
                   key={to}
@@ -261,6 +296,11 @@ function Navbar({
                   {to === '/carrito' && itemCount > 0 && (
                     <span className="rounded-full border border-gamer-accent/30 bg-gamer-primary/30 px-2 py-0.5 text-xs font-bold text-gamer-accent">
                       {itemCount > 99 ? '99+' : itemCount}
+                    </span>
+                  )}
+                  {to === '/favoritos' && favoriteCount > 0 && (
+                    <span className="rounded-full border border-gamer-accent/30 bg-gamer-primary/30 px-2 py-0.5 text-xs font-bold text-gamer-accent">
+                      {favoriteCount > 99 ? '99+' : favoriteCount}
                     </span>
                   )}
                 </Link>
