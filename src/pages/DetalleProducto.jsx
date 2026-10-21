@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Link, useParams } from 'react-router-dom'
-import ProductoCard from '../components/ProductoCard'
+import { ProductoCard, ProductoNoEncontrado } from '../components'
 import { productos } from '../data/productos'
 import { precioARS } from '../utils/format'
 
@@ -15,22 +15,7 @@ function DetalleProducto({ onAddToCart, favoriteIds, onToggleFavorite }) {
   useEffect(() => () => clearTimeout(timeoutRef.current), [])
 
   if (!producto) {
-    return (
-      <section className="page-container page-top page-bottom bg-gamer-bg text-gamer-textMain">
-        <div className="mx-auto max-w-2xl rounded-2xl border border-gamer-primary/30 bg-gamer-card p-8 text-center">
-          <h1 className="page-title mb-4">Producto no encontrado</h1>
-          <p className="body-copy mb-6 text-gamer-textMuted">
-            No existe un producto con ese identificador. Volvé al catálogo para seguir explorando.
-          </p>
-          <Link
-            to="/productos"
-            className="primary-cta inline-flex rounded-lg bg-gamer-primary px-5 py-3 text-white transition hover:bg-gamer-primary/80"
-          >
-            Volver al catálogo
-          </Link>
-        </div>
-      </section>
-    )
+    return <ProductoNoEncontrado />
   }
 
   const sinStock = producto.stock === 0
