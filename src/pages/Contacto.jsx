@@ -134,7 +134,7 @@ function Contacto() {
           </article>
           <article className="contacto-info-card">
             <span aria-hidden="true">◷</span>
-            <div><h2>Horarios</h2><p>Lunes a viernes, 9 a 18 hs. Calle Falsa 123</p></div>
+            <div><h2>Horarios</h2><p>Lunes a viernes, 9 a 18 hs. Avenida Corrientes 1234, San Nicolás, CABA</p></div>
           </article>
         </div>
       </div>

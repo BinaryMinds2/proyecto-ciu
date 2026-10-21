@@ -961,6 +961,86 @@ body {
   font-size: 14px;
 }
 
+/* ===== Ubicación ===== */
+.nosotros-location {
+  --nosotros-turquoise: #3fc6c9;
+  display: grid;
+  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
+  gap: clamp(24px, 5vw, 56px);
+  align-items: stretch;
+  margin-bottom: 2.5rem;
+  border: 1px solid rgb(var(--gamer-primary) / 0.25);
+  border-radius: 16px;
+  padding: clamp(18px, 3vw, 28px);
+  background: rgb(var(--gamer-card));
+  overflow: hidden;
+}
+
+.nosotros-location-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nosotros-location-copy .eyebrow {
+  margin-bottom: 0.6rem;
+}
+
+.nosotros-location-copy .section-title {
+  margin-bottom: 0.75rem;
+}
+
+.nosotros-location-address {
+  display: grid;
+  gap: 3px;
+  margin: 1.25rem 0;
+  color: rgb(var(--gamer-textMuted));
+  font-size: 0.9rem;
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.nosotros-location-address strong {
+  color: rgb(var(--gamer-textMain));
+  font-size: 1rem;
+}
+
+.nosotros-location-link {
+  align-self: flex-start;
+  color: var(--nosotros-turquoise);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nosotros-location-link:hover,
+.nosotros-location-link:focus-visible {
+  color: rgb(var(--gamer-textMain));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.nosotros-location-link:focus-visible {
+  outline: 2px solid var(--nosotros-turquoise);
+  outline-offset: 4px;
+}
+
+.nosotros-map-frame {
+  min-height: 310px;
+  border: 1px solid rgb(var(--gamer-primary) / 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgb(var(--gamer-bg));
+}
+
+.nosotros-map-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 310px;
+  border: 0;
+}
+
 @media (max-width: 899px) {
   .contacto-page {
     grid-template-columns: 1fr;
@@ -968,6 +1048,10 @@ body {
   }
 
   .contacto-cards { grid-template-columns: 1fr; gap: 9px; margin-top: 20px; }
+
+  .nosotros-location {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 639px) {

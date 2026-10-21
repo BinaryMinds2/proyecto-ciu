@@ -74,6 +74,40 @@ function Nosotros() {
           </div>
         </section>
 
+        <section className="nosotros-location" aria-labelledby="nosotros-location-title">
+          <div className="nosotros-location-copy">
+            <p className="eyebrow">Encontranos</p>
+            <h2 id="nosotros-location-title" className="section-title">
+              Nuestra oficina
+            </h2>
+            <p className="body-copy text-gamer-textMuted">
+              Estamos cerca de la comunidad gamer, en una ubicación estratégica de la ciudad.
+              La dirección es ilustrativa y representa nuestro punto de atención.
+            </p>
+            <address className="nosotros-location-address">
+              <strong>Avenida Corrientes 1234</strong>
+              <span>San Nicolás, CABA</span>
+              <span>Buenos Aires, Argentina</span>
+            </address>
+            <a
+              className="nosotros-location-link"
+              href="https://www.google.com/maps/search/?api=1&query=Avenida%20Corrientes%201234%2C%20Buenos%20Aires%2C%20Argentina"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Ver en Google Maps <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <div className="nosotros-map-frame">
+            <iframe
+              title="Ubicación de la oficina de Nexus Gaming en Buenos Aires"
+              src="https://www.google.com/maps?q=Avenida%20Corrientes%201234%2C%20Buenos%20Aires%2C%20Argentina&output=embed"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </section>
+
         <Link
           to="/productos"
           className="primary-cta inline-flex items-center gap-2 rounded-lg bg-gamer-primary px-5 py-3 text-white transition hover:bg-gamer-primary/80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gamer-accent"
