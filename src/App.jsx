@@ -50,6 +50,10 @@ function InterfazAplicacion({
   const { pathname } = useLocation()
   const esCheckout = pathname === '/checkout'
 
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [pathname])
+
   return (
     <div className={`site-shell flex min-h-screen flex-col bg-gamer-bg${eyeRestMode ? ' eye-rest-mode' : ''}`}>
       <Navbar

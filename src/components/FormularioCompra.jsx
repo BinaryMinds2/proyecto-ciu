@@ -244,7 +244,7 @@ function FormularioCompra({ cart = [], onClearCart, onPurchaseConfirmed }) {
   )
 
   return (
-    <section className="checkout-page" aria-labelledby="checkout-title">
+    <section className="checkout-page page-container" aria-labelledby="checkout-title">
       <header className="checkout-header">
         <div>
           <p className="eyebrow">Nexus Gaming Store</p>

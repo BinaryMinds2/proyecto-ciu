@@ -16,7 +16,7 @@ function DetalleProducto({ onAddToCart }) {
 
   if (!producto) {
     return (
-      <section className="bg-gamer-bg px-4 py-16 text-gamer-textMain sm:px-6 lg:px-8">
+      <section className="page-container page-top page-bottom bg-gamer-bg text-gamer-textMain">
         <div className="mx-auto max-w-2xl rounded-2xl border border-gamer-primary/30 bg-gamer-card p-8 text-center">
           <h1 className="page-title mb-4">Producto no encontrado</h1>
           <p className="body-copy mb-6 text-gamer-textMuted">
@@ -50,8 +50,8 @@ function DetalleProducto({ onAddToCart }) {
   }
 
   return (
-    <section className="bg-gamer-bg pb-28 text-gamer-textMain md:pb-8">
-      <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 md:py-8">
+    <section className="detail-page bg-gamer-bg pb-28 text-gamer-textMain lg:pb-8">
+      <div className="page-container page-top">
         <nav aria-label="Breadcrumb" className="mb-6">
           <ol className="flex flex-wrap items-center gap-2 text-sm text-gamer-textMuted">
             <li><Link to="/" className="hover:text-gamer-accent">Inicio</Link></li>
@@ -75,8 +75,8 @@ function DetalleProducto({ onAddToCart }) {
           </ol>
         </nav>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-        <div className="aspect-square overflow-hidden rounded-2xl border border-gamer-primary/30 bg-gamer-card p-4">
+        <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
+        <div className="mx-auto aspect-[16/10] max-h-[420px] w-full max-w-3xl overflow-hidden rounded-2xl border border-gamer-primary/30 bg-gamer-card p-2 max-[359px]:-mx-4 max-[359px]:w-[calc(100%+2rem)] max-[359px]:p-0.5 sm:p-4 lg:aspect-[4/3]">
           <img
             src={producto.imagen}
             alt={producto.nombre}
@@ -84,8 +84,8 @@ function DetalleProducto({ onAddToCart }) {
           />
         </div>
 
-        <div className="flex flex-col items-start justify-center">
-          <p className="eyebrow mb-3">
+        <div className="flex min-w-0 flex-col items-start lg:justify-center">
+          <p className="eyebrow">
             {producto.categoria}
           </p>
           <h1 className="page-title mb-5">
@@ -93,30 +93,6 @@ function DetalleProducto({ onAddToCart }) {
           </h1>
           <p className="price-display mb-6">{precioFormateado}</p>
           <p className="body-copy mb-6 leading-relaxed text-gamer-textMuted">{producto.descripcion}</p>
-          {producto.caracteristicas?.length > 0 && (
-            <div className="mb-6 w-full">
-              <h2 className="section-title mb-3">Características</h2>
-              <ul className="secondary-copy grid grid-cols-1 gap-3 text-gamer-textMuted sm:grid-cols-2">
-                {producto.caracteristicas.map((caracteristica) => (
-                  <li key={caracteristica} className="flex items-start gap-2">
-                    <svg
-                      aria-hidden="true"
-                      className="mt-0.5 size-4 shrink-0 text-gamer-accent"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="m5 12 4 4L19 6" />
-                    </svg>
-                    {caracteristica}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
           <p className={`mb-8 font-semibold ${sinStock ? 'text-red-400' : 'text-gamer-textMain/80'}`}>
             {sinStock ? 'Producto agotado' : `${producto.stock} unidades disponibles`}
           </p>
@@ -159,12 +135,12 @@ function DetalleProducto({ onAddToCart }) {
             </div>
           </div>
 
-          <div className="flex w-full flex-col gap-3 sm:flex-row mt-4">
+          <div className="mt-4 flex w-full flex-col gap-3 min-[400px]:flex-row">
             <button
               type="button"
               disabled={sinStock}
               onClick={manejarAgregarAlCarrito}
-              className={`primary-cta cursor-pointer rounded-lg px-5 py-3 text-white transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-40 ${
+              className={`primary-cta cursor-pointer whitespace-nowrap rounded-lg px-5 py-3 text-white transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-40 ${
                 agregado
                   ? 'bg-green-500 hover:bg-green-500'
                   : 'bg-gamer-primary hover:bg-gamer-primary/80'
@@ -183,11 +159,35 @@ function DetalleProducto({ onAddToCart }) {
             </button>
             <Link
               to="/productos"
-              className="primary-cta rounded-lg border border-gamer-accent px-5 py-3 text-center text-gamer-accent transition hover:bg-gamer-accent hover:text-gamer-bg"
+              className="primary-cta whitespace-nowrap rounded-lg border border-gamer-accent px-5 py-3 text-center text-gamer-accent transition hover:bg-gamer-accent hover:text-gamer-bg"
             >
               Volver al catálogo
             </Link>
           </div>
+          {producto.caracteristicas?.length > 0 && (
+            <div className="mb-6 mt-6 w-full">
+              <h2 className="section-title mb-3">Características</h2>
+              <ul className="secondary-copy grid grid-cols-1 gap-3 text-gamer-textMuted lg:grid-cols-2">
+                {producto.caracteristicas.map((caracteristica) => (
+                  <li key={caracteristica} className="flex items-start gap-2">
+                    <svg
+                      aria-hidden="true"
+                      className="mt-0.5 size-4 shrink-0 text-gamer-accent"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="m5 12 4 4L19 6" />
+                    </svg>
+                    {caracteristica}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div className="secondary-copy mt-5 flex flex-wrap gap-x-6 gap-y-2 border-t border-gamer-primary/20 pt-4 text-gamer-textMuted">
             <span>Envíos a todo el país</span>
             <span>Garantía oficial</span>
@@ -197,9 +197,9 @@ function DetalleProducto({ onAddToCart }) {
       </div>
 
       {productosRelacionados.length > 0 && (
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+        <div className="page-container pt-8">
           <h2 className="mb-6 text-2xl font-bold text-gamer-textMain">También te puede interesar</h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 lg:grid-cols-3">
             {productosRelacionados.map((relacionado) => (
               <ProductoCard
                 key={relacionado.id}
@@ -211,7 +211,7 @@ function DetalleProducto({ onAddToCart }) {
         </div>
       )}
 
-      <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-4 border-t border-gamer-primary/25 bg-gamer-card/95 px-4 py-3 shadow-xl backdrop-blur md:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-4 border-t border-gamer-primary/25 bg-gamer-card/95 px-4 py-3 shadow-xl backdrop-blur lg:hidden">
         <p className="text-lg font-bold text-gamer-accent">{precioFormateado}</p>
         <button
           type="button"

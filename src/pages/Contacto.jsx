@@ -92,7 +92,7 @@ function Contacto() {
   )
 
   return (
-    <section className="contacto-page" aria-labelledby="contacto-title">
+    <section className="contacto-page page-container" aria-labelledby="contacto-title">
       <div className="contacto-intro">
         <p className="eyebrow">Nexus Gaming Store</p>
         <h1 className="page-title" id="contacto-title">Hablemos</h1>

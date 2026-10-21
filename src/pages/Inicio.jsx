@@ -23,12 +23,12 @@ function Inicio({ isLightMode = false, onAddToCart }) {
           className="pointer-events-none absolute -right-32 top-1/2 size-96 -translate-y-1/2 rounded-full bg-gamer-primary/15 blur-3xl"
         />
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-6 px-4 py-4 sm:px-6 md:min-h-[calc(100svh-22rem)] md:grid-cols-2 md:gap-8 md:py-6 lg:px-8">
+        <div className="page-container page-top relative grid items-start gap-6 pb-8 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
           <div className="max-w-2xl">
-          <p className="eyebrow mb-3">
+          <p className="eyebrow">
             Nexus Gaming
           </p>
-          <h1 className="hero-title leading-tight">
+          <h1 className="hero-title text-4xl sm:text-5xl xl:text-6xl">
             Equipate con la mejor tecnología{' '}
             <span className="text-gamer-primary">gaming</span>
           </h1>
@@ -45,7 +45,7 @@ function Inicio({ isLightMode = false, onAddToCart }) {
           </Link>
           <ul
             aria-label="Beneficios de la tienda"
-            className="secondary-copy mt-5 flex flex-wrap gap-x-5 gap-y-2 text-gamer-textMuted"
+            className="secondary-copy mt-5 flex flex-wrap gap-x-5 gap-y-2 text-gamer-textMuted md:flex-nowrap"
           >
             <li className="inline-flex items-center gap-1.5">
               <svg aria-hidden="true" className="size-4 shrink-0 text-gamer-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -72,7 +72,7 @@ function Inicio({ isLightMode = false, onAddToCart }) {
           </ul>
           </div>
 
-          <div className="relative mx-auto flex w-full max-w-2xl items-center justify-center">
+          <div className="relative mx-auto flex w-full max-w-3xl items-center justify-center self-center max-[359px]:-mx-4 max-[359px]:w-[calc(100%+2rem)] lg:self-center">
             <div
               aria-hidden="true"
               className="absolute inset-8 rounded-full bg-gamer-primary/20 blur-3xl"
@@ -86,14 +86,14 @@ function Inicio({ isLightMode = false, onAddToCart }) {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+      <section className="page-container page-section">
         <div className="mb-7">
-          <p className="eyebrow mb-2">
+          <p className="eyebrow">
             Encontrá lo que buscás
           </p>
           <h2 className="section-title">Explorá por categoría</h2>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-3">
           {categoriasRepresentadas.map(({ categoria, producto }) => (
             <Link
               key={categoria}
@@ -119,10 +119,10 @@ function Inicio({ isLightMode = false, onAddToCart }) {
       </section>
 
       <section className="border-y border-gamer-primary/15 bg-gamer-card/40">
-        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="page-container page-section">
           <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="eyebrow mb-2">
+              <p className="eyebrow">
                 Selección Nexus
               </p>
               <h2 className="section-title">Productos destacados</h2>
@@ -134,7 +134,7 @@ function Inicio({ isLightMode = false, onAddToCart }) {
               Ver todos los productos →
             </Link>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 lg:grid-cols-4">
             {productosDestacados.slice(0, 4).map((producto) => (
               <ProductoCard
                 key={producto.id}

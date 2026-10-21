@@ -8,9 +8,9 @@ function Carrito({ cart, onUpdateQuantity, onRemoveProduct }) {
   const total = cart.reduce((acumulado, item) => acumulado + item.precio * item.cantidad, 0)
 
   return (
-    <section className="bg-gamer-bg px-4 py-12 text-gamer-textMain sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <p className="eyebrow mb-2">
+    <section className="page-top page-bottom bg-gamer-bg text-gamer-textMain">
+      <div className="page-container">
+        <p className="eyebrow">
           Nexus Gaming Store
         </p>
         <h1 className="page-title mb-3">Tu carrito</h1>

@@ -28,7 +28,7 @@ function ProductoCard({ producto, onAddToCart }) {
 
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-xl border border-gamer-primary/20 bg-gamer-card shadow-lg shadow-black/10">
-      <div className="relative aspect-[4/3] overflow-hidden bg-gamer-bg">
+      <div className="relative aspect-[4/3] max-h-[420px] overflow-hidden bg-gamer-bg">
         <Link
           to={`/producto/${producto.id}`}
           tabIndex={-1}
@@ -52,7 +52,7 @@ function ProductoCard({ producto, onAddToCart }) {
 
       <div className="flex flex-1 flex-col gap-4 p-5">
         <div className="flex-1">
-          <p className="eyebrow mb-2">
+          <p className="eyebrow">
             {producto.categoria}
           </p>
           <h3 className="card-title">

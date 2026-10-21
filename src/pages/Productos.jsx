@@ -99,10 +99,10 @@ function Productos({ onAddToCart }) {
   const limpiarFiltros = () => setSearchParams(new URLSearchParams(), { replace: true })
 
   return (
-    <section className="bg-gamer-bg px-4 py-8 text-gamer-textMain sm:px-6 sm:py-10 lg:px-8">
-      <div className="mx-auto max-w-7xl">
+    <section className="page-top page-bottom bg-gamer-bg text-gamer-textMain">
+      <div className="page-container">
         <div className="mb-7">
-          <p className="eyebrow mb-2">
+          <p className="eyebrow">
             Nexus Gaming Store
           </p>
           <h1 className="page-title mb-4">
@@ -114,7 +114,7 @@ function Productos({ onAddToCart }) {
         </div>
 
         <div className="mb-7 rounded-xl border border-gamer-primary/20 bg-gamer-card p-4 sm:p-5">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-[minmax(0,1.5fr)_minmax(220px,1fr)_auto] lg:items-end">
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1.5fr)_minmax(220px,1fr)_auto] lg:items-end">
             <label className="secondary-copy flex flex-col gap-2 font-semibold text-gamer-textMain">
               Buscar por nombre
               <input
@@ -139,21 +139,10 @@ function Productos({ onAddToCart }) {
               </select>
             </label>
 
-            <label className="secondary-copy flex cursor-pointer items-center gap-3 pb-3 font-semibold text-gamer-textMain">
-              <input
-                type="checkbox"
-                checked={soloConStock}
-                onChange={(event) =>
-                  actualizarFiltro('stock', String(event.target.checked))
-                }
-                className="h-4 w-4 accent-gamer-accent"
-              />
-              Solo con stock
-            </label>
           </div>
 
           <div className="mt-4 flex flex-col gap-4 border-t border-gamer-primary/20 pt-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar por categoría">
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar por categoría">
               {categorias.map((categoria) => (
                 <button
                   key={categoria}
@@ -172,6 +161,17 @@ function Productos({ onAddToCart }) {
                   {categoria}
                 </button>
               ))}
+              <label className="secondary-copy flex cursor-pointer items-center gap-2 font-semibold text-gamer-textMain sm:ml-auto">
+                <input
+                  type="checkbox"
+                  checked={soloConStock}
+                  onChange={(event) =>
+                    actualizarFiltro('stock', String(event.target.checked))
+                  }
+                  className="h-4 w-4 shrink-0 accent-gamer-accent"
+                />
+                Solo con stock
+              </label>
             </div>
             {hayFiltrosActivos && (
               <button
@@ -196,7 +196,7 @@ function Productos({ onAddToCart }) {
         </p>
 
         {productosFiltrados.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-4">
             <AnimatePresence mode="popLayout">
               {productosPagina.map((producto, indice) => (
                 <motion.div

@@ -20,10 +20,10 @@ const motivosParaElegirnos = [
 
 function Nosotros() {
   return (
-    <section className="bg-gamer-bg px-4 py-12 text-gamer-textMain sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl">
-        <header className="mb-10 max-w-3xl">
-          <p className="eyebrow mb-2">
+    <section className="page-top page-bottom bg-gamer-bg text-gamer-textMain">
+      <div className="page-container">
+        <header className="mb-10 max-w-3xl text-left">
+          <p className="eyebrow">
             Nexus Gaming Store
           </p>
           <h1 className="page-title mb-4">Sobre Nexus Gaming</h1>
@@ -43,7 +43,7 @@ function Nosotros() {
           <h2 id="nosotros-categorias" className="section-title mb-5">
             Qué ofrecemos
           </h2>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-3">
             {categorias.map((categoria) => (
               <Link
                 key={categoria}
@@ -61,7 +61,7 @@ function Nosotros() {
           <h2 id="nosotros-motivos" className="section-title mb-5">
             Por qué elegir Nexus
           </h2>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-3">
             {motivosParaElegirnos.map(({ titulo, descripcion }) => (
               <article
                 key={titulo}

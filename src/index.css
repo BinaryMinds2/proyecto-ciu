@@ -46,7 +46,7 @@
 
 body {
   margin: 0;
-  min-width: 320px;
+  min-width: 0;
   min-height: 100vh;
   background: var(--bg);
   font-family: 'Plus Jakarta Sans', sans-serif;
@@ -104,16 +104,46 @@ body {
 }
 
 @layer components {
+  .page-container {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+
+  .page-section {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+  }
+
+  @media (min-width: 640px) {
+    .page-container {
+      padding-inline: 1.5rem;
+    }
+
+    .page-section {
+      padding-top: 3rem;
+      padding-bottom: 3.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .page-container {
+      padding-inline: 2rem;
+    }
+  }
+
   .eyebrow {
-    @apply text-xs font-bold uppercase tracking-[0.24em] text-gamer-accent sm:text-sm;
+    @apply mb-3 text-xs font-bold uppercase tracking-[0.24em] text-gamer-accent sm:text-sm;
   }
 
   .page-title {
-    @apply font-display text-3xl font-bold tracking-tight text-gamer-textMain sm:text-4xl lg:text-5xl;
+    @apply font-display text-3xl font-bold leading-[1.1] tracking-tight text-gamer-textMain sm:text-4xl lg:text-5xl;
   }
 
   .hero-title {
-    @apply font-display text-4xl font-bold tracking-tight text-gamer-textMain sm:text-5xl lg:text-6xl;
+    @apply font-display text-4xl font-bold leading-[1.1] tracking-tight text-gamer-textMain sm:text-5xl lg:text-6xl;
   }
 
   .section-title {
@@ -155,13 +185,12 @@ body {
   --checkout-turquoise: #3fc6c9;
   box-sizing: border-box;
   display: flex;
-  width: min(100%, 1600px);
   height: calc(100svh - 66px);
   min-height: 0;
   flex-direction: column;
   gap: 10px;
-  margin: 0 auto;
-  padding: 10px 18px 14px;
+  padding-top: 10px;
+  padding-bottom: 14px;
   color: rgb(var(--gamer-textMain));
 }
 
@@ -208,7 +237,7 @@ body {
   display: grid;
   min-height: 0;
   flex: 1;
-  grid-template-columns: 330px minmax(0, 1fr) 340px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 320px;
   gap: 14px;
 }
 
@@ -261,6 +290,10 @@ body {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   grid-template-rows: auto auto minmax(70px, 1fr);
   gap: 10px;
+}
+
+.checkout-customer-fields > .checkout-field:not(.checkout-field--message) {
+  align-content: end;
 }
 
 .checkout-field {
@@ -357,12 +390,14 @@ body {
 .checkout-delivery-options {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
   gap: 8px;
 }
 
 .checkout-payment-options {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
   gap: 8px;
 }
 
@@ -385,6 +420,13 @@ body {
   font-weight: 700;
   line-height: 1.25;
   transition: border-color 150ms ease, background 150ms ease;
+  overflow-wrap: anywhere;
+}
+
+.checkout-option > span,
+.checkout-option small {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .checkout-option input {
@@ -645,7 +687,7 @@ body {
   .checkout-page {
     height: auto;
     min-height: calc(100svh - 66px);
-    padding: 16px;
+    padding-block: 16px;
   }
 
   .checkout-layout {
@@ -712,7 +754,7 @@ body {
 @media (max-width: 560px) {
   .checkout-page {
     gap: 12px;
-    padding: 12px;
+    padding-block: 12px;
   }
 
   .checkout-header {
@@ -747,22 +789,16 @@ body {
   --contacto-purple: #7c5cbf;
   --contacto-turquoise: #3fc6c9;
   display: grid;
-  width: min(100% - 32px, 1120px);
   grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.2fr);
   align-items: start;
   gap: clamp(24px, 5vw, 64px);
-  margin: 0 auto;
-  padding: clamp(32px, 6vw, 72px) 0;
+  padding-top: var(--page-pt);
+  padding-bottom: var(--page-pb);
   color: rgb(var(--gamer-textMain));
 }
 
-.contacto-intro { padding-top: 8px; }
 .contacto-eyebrow {
   color: var(--contacto-turquoise);
-}
-
-.contacto-intro h1 {
-  margin: 8px 0 12px;
 }
 
 .contacto-description {
@@ -773,6 +809,7 @@ body {
 .contacto-cards { display: grid; gap: 12px; margin-top: 30px; }
 .contacto-info-card {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 14px;
   border: 1px solid rgb(var(--gamer-primary) / 0.22);
@@ -822,8 +859,9 @@ body {
   font-size: 18px;
 }
 
-.contacto-info-card h2 { margin: 0 0 3px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 700; }
-.contacto-info-card p { color: rgb(var(--gamer-textMuted)); font-size: 14px; line-height: 1.45; }
+.contacto-info-card > div { min-width: 0; }
+.contacto-info-card h2 { margin: 0 0 3px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 700; overflow-wrap: anywhere; }
+.contacto-info-card p { color: rgb(var(--gamer-textMuted)); font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
 .contacto-form {
   display: grid;
   gap: 18px;
@@ -923,17 +961,41 @@ body {
   font-size: 14px;
 }
 
-@media (max-width: 760px) {
+@media (max-width: 899px) {
   .contacto-page {
-    width: min(100% - 28px, 560px);
     grid-template-columns: 1fr;
     gap: 26px;
-    padding: 34px 0;
   }
 
   .contacto-cards { grid-template-columns: 1fr; gap: 9px; margin-top: 20px; }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 639px) {
   .contacto-fields { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 767px) {
+  .detail-page.page-bottom {
+    padding-bottom: 7rem;
+  }
+}
+
+:root {
+  --page-pt: 2.5rem;
+  --page-pb: 3rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --page-pt: 3rem;
+    --page-pb: 3.5rem;
+  }
+}
+
+.page-top {
+  padding-top: var(--page-pt);
+}
+
+.page-bottom {
+  padding-bottom: var(--page-pb);
 }

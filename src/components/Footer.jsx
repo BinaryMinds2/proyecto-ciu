@@ -104,7 +104,7 @@ function Footer({ isLightMode = false }) {
         </div>
 
         <div>
-          <h2 className="eyebrow mb-3">
+          <h2 className="eyebrow">
             Categorías
           </h2>
           <ul className="flex flex-col gap-2">
@@ -122,7 +122,7 @@ function Footer({ isLightMode = false }) {
         </div>
 
         <div>
-          <h2 className="eyebrow mb-3">
+          <h2 className="eyebrow">
             Información
           </h2>
           <ul className="flex flex-col gap-2">
@@ -140,7 +140,7 @@ function Footer({ isLightMode = false }) {
         </div>
 
         <div className="md:justify-self-end md:text-right">
-          <h2 className="eyebrow mb-3">
+          <h2 className="eyebrow">
             Comunidad
           </h2>
           <ul className="flex flex-wrap gap-3 md:justify-end">
