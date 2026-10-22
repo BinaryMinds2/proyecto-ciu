@@ -20,7 +20,9 @@ function ProductoCard({ producto, onAddToCart, isFavorite, onToggleFavorite }) {
   useEffect(() => () => clearTimeout(timeoutRef.current), [])
 
   const manejarAgregarAlCarrito = () => {
-    onAddToCart(producto)
+    const resultado = onAddToCart(producto)
+    if (resultado !== 'agregado') return
+
     setAgregado(true)
     clearTimeout(timeoutRef.current)
     timeoutRef.current = setTimeout(() => setAgregado(false), 1000)

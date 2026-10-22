@@ -123,13 +123,13 @@ function DetalleProducto({ onAddToCart, favoriteIds, onToggleFavorite }) {
             </div>
           </div>
 
-          <div className="mt-4 flex w-full flex-col gap-3 min-[560px]:flex-row">
+          <div className="mt-4 flex w-full flex-col flex-wrap gap-3 min-[560px]:flex-row">
             <button
               type="button"
               aria-label={`${isFavorite ? 'Quitar' : 'Agregar'} ${producto.nombre} ${isFavorite ? 'de' : 'a'} favoritos`}
               aria-pressed={isFavorite}
               onClick={() => onToggleFavorite(producto.id)}
-              className="primary-cta whitespace-nowrap rounded-lg border border-gamer-accent px-5 py-3 text-center text-gamer-accent transition hover:bg-gamer-accent hover:text-gamer-bg"
+              className="primary-cta rounded-lg border border-gamer-accent px-5 py-3 text-center text-gamer-accent transition hover:bg-gamer-accent hover:text-gamer-bg"
             >
               {isFavorite ? '♥ En favoritos' : '♡ Agregar a favoritos'}
             </button>
@@ -156,7 +156,7 @@ function DetalleProducto({ onAddToCart, favoriteIds, onToggleFavorite }) {
             </button>
             <Link
               to="/productos"
-              className="primary-cta whitespace-nowrap rounded-lg border border-gamer-accent px-5 py-3 text-center text-gamer-accent transition hover:bg-gamer-accent hover:text-gamer-bg"
+              className="primary-cta rounded-lg border border-gamer-accent px-5 py-3 text-center text-gamer-accent transition hover:bg-gamer-accent hover:text-gamer-bg"
             >
               Volver al catálogo
             </Link>
