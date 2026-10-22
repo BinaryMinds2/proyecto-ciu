@@ -22,7 +22,7 @@ function Nosotros() {
   return (
     <section className="page-top page-bottom bg-gamer-bg text-gamer-textMain">
       <div className="page-container">
-        <header className="mb-10 max-w-3xl text-left">
+        <header className="mb-10 text-left">
           <p className="eyebrow">
             Nexus Gaming Store
           </p>
@@ -32,7 +32,7 @@ function Nosotros() {
             Gaming para acercar equipamiento confiable a quienes quieren disfrutar y
             desarrollar su propio espacio de juego.
           </p>
-          <p className="body-copy mt-4 text-gamer-textMuted">
+          <p className="lead">
             Queremos que encontrar los componentes adecuados sea simple. Por eso reunimos
             productos seleccionados y acompañamos cada compra con información clara y
             atención personalizada.

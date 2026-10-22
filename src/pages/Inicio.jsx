@@ -25,7 +25,7 @@ function Inicio({
       <section className="relative isolate overflow-hidden bg-gamer-bg">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-32 top-1/2 size-96 -translate-y-1/2 rounded-full bg-gamer-primary/15 blur-3xl"
+          className="pointer-events-none absolute right-0 top-1/2 size-96 max-w-full -translate-y-1/2 rounded-full bg-gamer-primary/15 blur-3xl"
         />
 
         <div className="page-container page-top relative grid items-start gap-6 pb-8 lg:grid-cols-[1.05fr_1fr] lg:gap-12">

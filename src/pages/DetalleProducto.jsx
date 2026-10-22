@@ -62,7 +62,7 @@ function DetalleProducto({ onAddToCart, favoriteIds, onToggleFavorite }) {
         </nav>
 
         <div className="grid min-w-0 grid-cols-1 gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
-        <div className="mx-auto aspect-[16/10] max-h-[420px] w-full max-w-3xl overflow-hidden rounded-2xl border border-gamer-primary/30 bg-gamer-card p-2 max-[359px]:-mx-4 max-[359px]:w-[calc(100%+2rem)] max-[359px]:p-0.5 sm:p-4 lg:aspect-[4/3]">
+        <div className="mx-auto aspect-[16/10] max-h-[420px] w-full max-w-3xl overflow-hidden rounded-2xl border border-gamer-primary/30 bg-gamer-card p-2 max-[359px]:-mx-4 max-[359px]:w-[calc(100%+2rem)] max-[359px]:p-0.5 sm:p-4 lg:aspect-[4/3] lg:sticky lg:top-24 lg:self-start">
           <img
             src={producto.imagen}
             alt={producto.nombre}
@@ -138,7 +138,7 @@ function DetalleProducto({ onAddToCart, favoriteIds, onToggleFavorite }) {
               type="button"
               disabled={sinStock}
               onClick={manejarAgregarAlCarrito}
-              className={`primary-cta cursor-pointer whitespace-nowrap rounded-lg px-5 py-3 text-white transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-40 ${
+              className={`primary-cta cursor-pointer rounded-lg px-5 py-3 text-white transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-40 ${
                 agregado
                   ? 'bg-green-500 hover:bg-green-500'
                   : 'bg-gamer-primary hover:bg-gamer-primary/80'
