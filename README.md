@@ -63,11 +63,11 @@ detalles, administrar un carrito y completar un flujo de compra simulado.
 | Herramienta de desarrollo y build | Vite 8 |
 | Calidad de código | ESLint |
 | Tipografías | Chakra Petch y Plus Jakarta Sans (Google Fonts) |
-| Imágenes de productos | Unsplash y recursos locales de marca |
+| Imágenes de productos | Archivos locales en `public/productos/` y recursos locales de marca |
 
 El catálogo se carga desde un array local de objetos. La aplicación no requiere
-una API ni una base de datos. Las imágenes de productos y las tipografías
-remotas necesitan conexión a Internet para cargarse.
+una API ni una base de datos. Solo las tipografías de Google Fonts necesitan
+conexión a Internet para cargarse.
 
 ## Requisitos
 
@@ -248,6 +248,7 @@ toast son temporales.
 ```text
 .
 ├── public/                   # Archivos públicos servidos por Vite
+│   └── productos/            # Imágenes locales de productos
 ├── src/
 │   ├── assets/               # Logos, símbolos y banners de la marca
 │   ├── components/
@@ -256,6 +257,7 @@ toast son temporales.
 │   │   ├── FormularioCompra.jsx  # Checkout y confirmación simulada
 │   │   ├── Navbar.jsx            # Navegación, temas y accesos
 │   │   ├── ProductoCard.jsx      # Tarjeta y acción de carrito
+│   │   ├── ProductoNoEncontrado.jsx # Estado para producto no encontrado
 │   │   ├── Toast.jsx             # Notificaciones y acciones
 │   │   └── index.js              # Exportaciones de componentes
 │   ├── data/
@@ -280,9 +282,6 @@ toast son temporales.
 ├── tailwind.config.cjs           # Familias tipográficas y colores
 └── vite.config.js                # Configuración de Vite y plugins
 ```
-
-El archivo de estilos de plantilla `src/App.css` fue eliminado; los estilos
-globales y componentes están en `src/index.css` y en las clases de Tailwind.
 
 ## Scripts disponibles
 
