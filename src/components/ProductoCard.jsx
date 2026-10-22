@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
+import ProductoBadge from './ProductoBadge'
 
 const precioARS = (importe) =>
   new Intl.NumberFormat('es-AR', {
@@ -45,6 +46,7 @@ function ProductoCard({ producto, onAddToCart, isFavorite, onToggleFavorite }) {
             className="h-full w-full object-cover transition duration-300 hover:scale-105"
           />
         </Link>
+        <ProductoBadge etiqueta={producto.etiqueta} className="left-3 bottom-3" />
         {sinStock && (
           <span className="absolute right-3 top-3 rounded-full bg-red-500/90 px-3 py-1 text-xs font-bold uppercase tracking-wide text-white">
             Sin Stock

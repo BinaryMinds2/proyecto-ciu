@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { Link, useParams } from 'react-router-dom'
-import { ProductoCard, ProductoNoEncontrado } from '../components'
+import { ProductoBadge, ProductoCard, ProductoNoEncontrado } from '../components'
 import { productos } from '../data/productos'
 import { precioARS } from '../utils/format'
 
@@ -70,6 +70,7 @@ function DetalleProducto({ onAddToCart, favoriteIds, onToggleFavorite }) {
             decoding="async"
             className="h-full w-full rounded-xl object-cover"
           />
+          <ProductoBadge etiqueta={producto.etiqueta} className="left-5 top-5" />
         </div>
 
         <div className="flex min-w-0 flex-col items-start lg:justify-center">

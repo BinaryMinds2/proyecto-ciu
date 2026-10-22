@@ -46,6 +46,7 @@ detalles, administrar un carrito y completar un flujo de compra simulado.
   de stock.
 - Feedback visual temporal al agregar productos y aviso de unidades limitadas
   en las tarjetas de producto.
+- Sistema de etiquetas dinámicas en productos (Nuevo, Oferta, Más vendido).
 - Navbar adaptable, enlaces de categorías e información en el footer, tema claro
   y oscuro, y modo de descanso visual.
 - Formato de precios en pesos argentinos, diseño adaptable y tipografías

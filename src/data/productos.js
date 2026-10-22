@@ -5,6 +5,7 @@ export const productos = [
     categoria: "Periféricos",
     precio: 45000,
     imagen: "/productos/teclado-mecanico.jpg",
+    etiqueta: "Nuevo",
     descripcion: "Teclado mecánico compacto con switches red, iluminación RGB personalizable y estructura de aluminio.",
     caracteristicas: [
       "Formato compacto del 65%",
@@ -28,7 +29,8 @@ export const productos = [
       "Conexión de ultra baja latencia"
     ],
     stock: 8,
-    destacado: true
+    destacado: true,
+    etiqueta: "Más vendido"
   },
   {
     id: 3,
@@ -43,7 +45,8 @@ export const productos = [
       "Almohadillas de memoria viscoelástica",
       "Micrófono con cancelación de ruido"
     ],
-    stock: 0
+    stock: 0,
+    etiqueta: ""
   },
   {
     id: 4,
@@ -58,7 +61,8 @@ export const productos = [
       "Control de ganancia directo",
       "Soporte antivibración incluido"
     ],
-    stock: 5
+    stock: 5,
+    etiqueta: "Nuevo"
   },
   {
     id: 5,
@@ -73,7 +77,8 @@ export const productos = [
       "Tecnología DLSS",
       "Diseñada para gaming en 4K"
     ],
-    stock: 3
+    stock: 3,
+    etiqueta: "Oferta"
   },
   {
     id: 6,
@@ -89,7 +94,8 @@ export const productos = [
       "Soporte XMP"
     ],
     stock: 15,
-    destacado: true
+    destacado: true,
+    etiqueta: "Más vendido"
   },
   {
     id: 7,
@@ -104,7 +110,8 @@ export const productos = [
       "Interfaz NVMe",
       "Velocidad de lectura de hasta 3500 MB/s"
     ],
-    stock: 0
+    stock: 0,
+    etiqueta: "Oferta"
   },
   {
     id: 8,
@@ -119,7 +126,8 @@ export const productos = [
       "Heatpipes de cobre",
       "Ventilador silencioso de 120 mm"
     ],
-    stock: 7
+    stock: 7,
+    etiqueta: ""
   },
   {
     id: 9,
@@ -134,7 +142,8 @@ export const productos = [
       "Almohadón cervical ajustable",
       "Reposabrazos 4D"
     ],
-    stock: 4
+    stock: 4,
+    etiqueta: "Nuevo"
   },
   {
     id: 10,
@@ -150,7 +159,8 @@ export const productos = [
       "Iluminación LED RGB en los bordes"
     ],
     stock: 20,
-    destacado: true
+    destacado: true,
+    etiqueta: "Más vendido"
   },
   {
     id: 11,
@@ -164,7 +174,8 @@ export const productos = [
       "Compatible con monitores de 17 a 32 pulgadas",
       "Sistema de gestión de cables"
     ],
-    stock: 6
+    stock: 6,
+    etiqueta: ""
   },
   {
     id: 12,
@@ -179,7 +190,8 @@ export const productos = [
       "Control remoto",
       "Diseñada para iluminación ambiental"
     ],
-    stock: 10
+    stock: 10,
+    etiqueta: "Nuevo"
   },
   {
     id: 13,
@@ -187,6 +199,7 @@ export const productos = [
     precio: 620000,
     categoria: "Hardware",
     stock: 8,
+    etiqueta: "Más vendido",
     imagen: "/productos/procesador-ryzen7.jpg",
     descripcion: "El rey indiscutido del gaming. Arquitectura Zen 4 con tecnología 3D V-Cache para un rendimiento extremo en cuadros por segundo.",
     caracteristicas: [
@@ -202,6 +215,7 @@ export const productos = [
     precio: 1350000,
     categoria: "Hardware",
     stock: 3,
+    etiqueta: "Oferta",
     imagen: "/productos/gpu-radeon.jpg",
     descripcion: "Potencia gráfica bruta para juegos en 4K nativo con 24 GB de memoria VRAM GDDR6 y arquitectura RDNA 3.",
     caracteristicas: [
@@ -218,6 +232,7 @@ export const productos = [
     categoria: "Hardware",
     stock: 12,
     destacado: true,
+    etiqueta: "Más vendido",
     imagen: "/productos/ram-ddr5.jpg",
     descripcion: "Velocidades ultra rápidas y perfiles EXPO/XMP 3.0 con iluminación RGB dinámica direccionable por software.",
     caracteristicas: [
@@ -233,6 +248,7 @@ export const productos = [
     precio: 240000,
     categoria: "Hardware",
     stock: 15,
+    etiqueta: "Oferta",
     imagen: "/productos/ssd-2tb.jpg",
     descripcion: "Unidad de estado sólido de alto rendimiento para tiempos de carga inexistentes en juegos y edición pesada.",
     caracteristicas: [
@@ -248,6 +264,7 @@ export const productos = [
     precio: 410000,
     categoria: "Hardware",
     stock: 4,
+    etiqueta: "",
     imagen: "/productos/fuente-poder.jpg",
     descripcion: "La fuente modular más silenciosa y eficiente de su clase, con pantalla OLED incorporada para monitoreo de consumo en vivo.",
     caracteristicas: [
@@ -263,6 +280,7 @@ export const productos = [
     precio: 310000,
     categoria: "Hardware",
     stock: 6,
+    etiqueta: "Nuevo",
     imagen: "/productos/gabinete-gamer.jpg",
     descripcion: "Gabinete modular de vidrio templado dual con espacio ilimitado para refrigeración líquida custom y placas de gran tamaño.",
     caracteristicas: [
